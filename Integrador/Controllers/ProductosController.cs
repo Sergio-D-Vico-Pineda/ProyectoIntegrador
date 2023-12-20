@@ -48,7 +48,7 @@ namespace Integrador.Controllers
         // GET: Productos/Create
         public IActionResult Create()
         {
-            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre");
+            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Id");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre", producto.ModeloId);
+            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Id", producto.ModeloId);
             return View(producto);
         }
 
@@ -82,7 +82,7 @@ namespace Integrador.Controllers
             {
                 return NotFound();
             }
-            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre", producto.ModeloId);
+            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Id", producto.ModeloId);
             return View(producto);
         }
 
@@ -118,7 +118,7 @@ namespace Integrador.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre", producto.ModeloId);
+            ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Id", producto.ModeloId);
             return View(producto);
         }
 
