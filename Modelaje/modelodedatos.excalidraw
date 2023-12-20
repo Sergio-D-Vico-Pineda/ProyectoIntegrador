@@ -119,8 +119,8 @@
     },
     {
       "type": "text",
-      "version": 918,
-      "versionNonce": 913824903,
+      "version": 928,
+      "versionNonce": 232119653,
       "isDeleted": false,
       "id": "MxqHsDIdyM-SaPKFDn2E8",
       "fillStyle": "solid",
@@ -140,16 +140,16 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1703073039981,
+      "updated": 1703094954455,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 3,
-      "text": "Id PK\nnombre\nemail\nnif\ntelefono\ndireccion?\n\nIColl Pedidos?",
+      "text": "Id PK\nNombre\nEmail\nNif\nTelefono\nDireccion?\n\nIColl Pedidos?",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Id PK\nnombre\nemail\nnif\ntelefono\ndireccion?\n\nIColl Pedidos?",
+      "originalText": "Id PK\nNombre\nEmail\nNif\nTelefono\nDireccion?\n\nIColl Pedidos?",
       "lineHeight": 1.2,
       "baseline": 186
     },
@@ -283,8 +283,8 @@
     },
     {
       "type": "text",
-      "version": 1035,
-      "versionNonce": 512861895,
+      "version": 1059,
+      "versionNonce": 1069769035,
       "isDeleted": false,
       "id": "fdfZp_Z5IBdEiH-3V1D97",
       "fillStyle": "solid",
@@ -306,16 +306,16 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1703073039982,
+      "updated": 1703094941166,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 3,
-      "text": "Id PK\nFechaPedido = Now\nFechaEsperada = Now+3d\nFechaConfirmacion?\nFechaEnvio?\nFechaEntrega?\nFechaAnulado?\nFechaAnulacion\ncomentarios?\n\nclienteId FK\nestadoId FK\n\nIColl Detalles?\n",
+      "text": "Id PK\nFechaPedido = Now\nFechaEsperada = Now+3d\nFechaConfirmacion?\nFechaEnvio?\nFechaEntrega?\nFechaAnulado?\nFechaDevolucion?\ncomentarios?\n\nclienteId FK\nestadoId FK\n\nIColl Detalles?\n",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Id PK\nFechaPedido = Now\nFechaEsperada = Now+3d\nFechaConfirmacion?\nFechaEnvio?\nFechaEntrega?\nFechaAnulado?\nFechaAnulacion\ncomentarios?\n\nclienteId FK\nestadoId FK\n\nIColl Detalles?\n",
+      "originalText": "Id PK\nFechaPedido = Now\nFechaEsperada = Now+3d\nFechaConfirmacion?\nFechaEnvio?\nFechaEntrega?\nFechaAnulado?\nFechaDevolucion?\ncomentarios?\n\nclienteId FK\nestadoId FK\n\nIColl Detalles?\n",
       "lineHeight": 1.2,
       "baseline": 354
     },
@@ -483,8 +483,8 @@
     },
     {
       "type": "arrow",
-      "version": 397,
-      "versionNonce": 2099369705,
+      "version": 399,
+      "versionNonce": 715407589,
       "isDeleted": false,
       "id": "CmmPcpGqz0xnvQWv1_Tn1",
       "fillStyle": "solid",
@@ -493,12 +493,12 @@
       "roughness": 1,
       "opacity": 100,
       "angle": 0,
-      "x": -91.0019635700049,
-      "y": 498.4354085583983,
+      "x": -91.00196357000492,
+      "y": 498.43858468339016,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
       "width": 281.3888880411784,
-      "height": 4.497816560215767,
+      "height": 4.495891098268487,
       "seed": 1327917319,
       "groupIds": [],
       "frameId": null,
@@ -511,7 +511,7 @@
           "id": "wTcVwUQgXKnIkrjrwy8Pf"
         }
       ],
-      "updated": 1703073039982,
+      "updated": 1703094928014,
       "link": null,
       "locked": false,
       "startBinding": {
@@ -534,7 +534,7 @@
         ],
         [
           281.3888880411784,
-          4.497816560215767
+          4.495891098268487
         ]
       ]
     },
@@ -576,8 +576,8 @@
     },
     {
       "type": "arrow",
-      "version": 321,
-      "versionNonce": 1316557257,
+      "version": 323,
+      "versionNonce": 1218120613,
       "isDeleted": false,
       "id": "cZtWPde3irmZyRqgIHrLf",
       "fillStyle": "solid",
@@ -587,11 +587,11 @@
       "opacity": 100,
       "angle": 0,
       "x": 549.7620007651188,
-      "y": 466.0249923669577,
+      "y": 466.02621351019127,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
       "width": 180.20832061767578,
-      "height": 7.117139270908353,
+      "height": 7.117752797150217,
       "seed": 787430505,
       "groupIds": [],
       "frameId": null,
@@ -604,7 +604,7 @@
           "id": "pHn67KOkT210MwETYP4f_"
         }
       ],
-      "updated": 1703073039982,
+      "updated": 1703094928016,
       "link": null,
       "locked": false,
       "startBinding": {
@@ -627,7 +627,7 @@
         ],
         [
           180.20832061767578,
-          -7.117139270908353
+          -7.117752797150217
         ]
       ]
     },
@@ -2052,8 +2052,8 @@
     },
     {
       "type": "text",
-      "version": 958,
-      "versionNonce": 1484210569,
+      "version": 962,
+      "versionNonce": 1670933963,
       "isDeleted": false,
       "id": "uUKpbEBDiEXDnWKF-UQcx",
       "fillStyle": "solid",
@@ -2075,23 +2075,23 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1703073039983,
+      "updated": 1703094962440,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 3,
-      "text": "Id PK\nnombre\ndescripcion\n\nIColl Pedidos?",
+      "text": "Id PK\nNombre\nDescripcion\n\nIColl Pedidos?",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Id PK\nnombre\ndescripcion\n\nIColl Pedidos?",
+      "originalText": "Id PK\nNombre\nDescripcion\n\nIColl Pedidos?",
       "lineHeight": 1.2,
       "baseline": 114
     },
     {
       "type": "arrow",
-      "version": 332,
-      "versionNonce": 2126395271,
+      "version": 334,
+      "versionNonce": 1307453029,
       "isDeleted": false,
       "id": "WYJmKhRmuCSc5M9osIsi_",
       "fillStyle": "solid",
@@ -2100,12 +2100,12 @@
       "roughness": 1,
       "opacity": 100,
       "angle": 0,
-      "x": 101.25795439895711,
+      "x": 101.2384357435669,
       "y": 202.26407432556277,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
-      "width": 86.81705152241489,
-      "height": 102.06840296283156,
+      "width": 86.8365701778051,
+      "height": 102.08383852955058,
       "seed": 1987666695,
       "groupIds": [],
       "frameId": null,
@@ -2118,7 +2118,7 @@
           "id": "h9QYzYDg2KRKadPKQJGJz"
         }
       ],
-      "updated": 1703073039983,
+      "updated": 1703094928017,
       "link": null,
       "locked": false,
       "startBinding": {
@@ -2140,8 +2140,8 @@
           0
         ],
         [
-          86.81705152241489,
-          102.06840296283156
+          86.8365701778051,
+          102.08383852955058
         ]
       ]
     },
