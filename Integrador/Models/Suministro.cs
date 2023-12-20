@@ -5,12 +5,12 @@ namespace Integrador.Models
 {
     public class Suministro
     {
-        private int unidades;
-
         public int Id { get; set; }
 
+        [Display(Name = "Proveedor")]
         public int ProveedorId { get; set; }
 
+        [Display(Name = "Id del Producto")]
         public int ProductoId { get; set; }
 
         [Required(ErrorMessage = "La cantidad es un campo obligatorio.")]

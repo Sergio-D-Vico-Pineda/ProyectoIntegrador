@@ -43,6 +43,7 @@ namespace Integrador.Models
 
         public required int Stock { get; set; } = 0;
 
+        [Display(Name = "Modelo")]
         public int ModeloId { get; set; }
 
         public Modelo? Modelo { get; set; }

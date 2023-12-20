@@ -38,7 +38,10 @@ namespace Integrador.Models
 
         public string? Comentarios { get; set; }
 
+        [Display(Name = "Cliente")]
         public required int ClienteId { get; set; }
+
+        [Display(Name = "Estado")]
         public required int EstadoId { get; set; }
 
         public Cliente? Cliente { get; set; }
