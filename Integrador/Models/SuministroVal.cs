@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Integrador.Models
 {
-    public class Suministro
+    public class Suministro1
     {
         private int unidades;
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Integrador.Models
 {
-    public class DetallePedido
+    public class DetallePedido1
     {
         private decimal _precioTotal;
         private decimal _precioUnidad;
