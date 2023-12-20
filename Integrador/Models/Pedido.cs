@@ -12,13 +12,17 @@ namespace Integrador.Models
         [DataType(DataType.Date)]
         public required DateTime FechaPedido { get; set; } = DateTime.Now;
 
-        [Display(Name = "Fecha de envio")]
-        [DataType(DataType.Date)]
-        public DateTime? FechaEnvio { get; set; }
-
         [Display(Name = "Fecha esperada de entrega")]
         [DataType(DataType.Date)]
         public required DateTime FechaEsperada { get; set; } = DateTime.Now.AddDays(3);
+
+        [Display(Name = "Fecha de confirmación")]
+        [DataType(DataType.Date)]
+        public DateTime? FechaConfirmacion { get; set; }
+
+        [Display(Name = "Fecha de envio")]
+        [DataType(DataType.Date)]
+        public DateTime? FechaEnvio { get; set; }
 
         [Display(Name = "Fecha de entrega")]
         [DataType(DataType.Date)]
@@ -27,6 +31,10 @@ namespace Integrador.Models
         [Display(Name = "Fecha de anulación")]
         [DataType(DataType.Date)]
         public DateTime? FechaAnulado { get; set; }
+
+        [Display(Name ="Fecha de devolución")]
+        [DataType(DataType.Date)]
+        public DateTime? FechaDevolucion { get; set; }
 
         public string? Comentarios { get; set; }
 
