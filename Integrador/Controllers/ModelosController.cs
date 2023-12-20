@@ -48,7 +48,7 @@ namespace Integrador.Controllers
         // GET: Modelos/Create
         public IActionResult Create()
         {
-            ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre"); // id id
+            ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre", modelo.MarcaId); // id id
+            ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre", modelo.MarcaId);
             return View(modelo);
         }
 
