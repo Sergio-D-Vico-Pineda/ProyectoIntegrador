@@ -14,15 +14,7 @@ namespace Integrador.Models
         public int ProductoId { get; set; }
 
         [Required(ErrorMessage = "La cantidad es un campo obligatorio.")]
-        public required int Unidades
-        {
-            get { return unidades; }
-            set
-            {
-                if (value > 0)
-                    unidades = value;
-            }
-        }
+        public required int Unidades { get; set; }
 
         [Display(Name = "Fecha de suministro")]
         [Required(ErrorMessage = "La fecha del suministro es un campo obligatorio.")]
