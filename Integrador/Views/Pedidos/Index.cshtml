@@ -16,16 +16,22 @@
                 @Html.DisplayNameFor(model => model.FechaPedido)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaEnvio)
+                @Html.DisplayNameFor(model => model.FechaEsperada)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaEsperada)
+                @Html.DisplayNameFor(model => model.FechaConfirmacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaEnvio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaEntrega)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaAnulado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaDevolucion)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Comentarios)
@@ -46,10 +52,13 @@
                 @Html.DisplayFor(modelItem => item.FechaPedido)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaEnvio)
+                @Html.DisplayFor(modelItem => item.FechaEsperada)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaEsperada)
+                @Html.DisplayFor(modelItem => item.FechaConfirmacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEnvio)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaEntrega)
@@ -58,10 +67,13 @@
                 @Html.DisplayFor(modelItem => item.FechaAnulado)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.FechaDevolucion)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Comentarios)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Id)
+                @Html.DisplayFor(modelItem => item.Cliente.Email)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Estado.Descripcion)

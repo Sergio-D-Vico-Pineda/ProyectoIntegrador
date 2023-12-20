@@ -18,16 +18,22 @@
             @Html.DisplayFor(model => model.FechaPedido)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaEnvio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaEnvio)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaEsperada)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FechaEsperada)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaConfirmacion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaConfirmacion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaEnvio)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaEnvio)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaEntrega)
@@ -42,6 +48,12 @@
             @Html.DisplayFor(model => model.FechaAnulado)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaDevolucion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaDevolucion)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Comentarios)
         </dt>
         <dd class = "col-sm-10">
@@ -51,7 +63,7 @@
             @Html.DisplayNameFor(model => model.Cliente)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cliente.Id)
+            @Html.DisplayFor(model => model.Cliente.Email)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Estado)

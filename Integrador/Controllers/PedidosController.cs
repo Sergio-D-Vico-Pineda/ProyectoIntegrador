@@ -22,9 +22,7 @@ namespace Integrador.Controllers
         // GET: Pedidos
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.Pedidos
-                .Include(p => p.Cliente)
-                .Include(p => p.Estado);
+            var integradorContexto = _context.Pedidos.Include(p => p.Cliente).Include(p => p.Estado);
             return View(await integradorContexto.ToListAsync());
         }
 
@@ -51,7 +49,7 @@ namespace Integrador.Controllers
         // GET: Pedidos/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id");
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email");
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion");
             return View();
         }
@@ -61,7 +59,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FechaPedido,FechaEnvio,FechaEsperada,FechaEntrega,FechaAnulado,Comentarios,ClienteId,EstadoId")] Pedido pedido)
+        public async Task<IActionResult> Create([Bind("Id,FechaPedido,FechaEsperada,FechaConfirmacion,FechaEnvio,FechaEntrega,FechaAnulado,FechaDevolucion,Comentarios,ClienteId,EstadoId")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +67,7 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id", pedido.ClienteId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
             return View(pedido);
         }
@@ -87,7 +85,7 @@ namespace Integrador.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id", pedido.ClienteId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
             return View(pedido);
         }
@@ -97,7 +95,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FechaPedido,FechaEnvio,FechaEsperada,FechaEntrega,FechaAnulado,Comentarios,ClienteId,EstadoId")] Pedido pedido)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FechaPedido,FechaEsperada,FechaConfirmacion,FechaEnvio,FechaEntrega,FechaAnulado,FechaDevolucion,Comentarios,ClienteId,EstadoId")] Pedido pedido)
         {
             if (id != pedido.Id)
             {
@@ -124,7 +122,7 @@ namespace Integrador.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id", pedido.ClienteId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
             return View(pedido);
         }
