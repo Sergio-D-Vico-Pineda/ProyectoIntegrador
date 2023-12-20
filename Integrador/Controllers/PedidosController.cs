@@ -22,7 +22,9 @@ namespace Integrador.Controllers
         // GET: Pedidos
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.Pedidos.Include(p => p.Cliente).Include(p => p.Estado);
+            var integradorContexto = _context.Pedidos
+                .Include(p => p.Cliente)
+                .Include(p => p.Estado);
             return View(await integradorContexto.ToListAsync());
         }
 
