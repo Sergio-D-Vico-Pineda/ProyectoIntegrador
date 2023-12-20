@@ -1,10 +1,10 @@
 ﻿@model Integrador.Models.Producto
 
 @{
-    ViewData["Title"] = "Detalles del pedido";
+    ViewData["Title"] = "Detalles del producto";
 }
 
-<h1>Detalles del pedido</h1>
+<h1>Detalles del producto</h1>
 
 <div>
     <h4>Producto</h4>
@@ -22,12 +22,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Descripcion)
         </dd>
-        <dt class = "col-sm-2">
+        @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Precio)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Precio)
-        </dd>
+        </dd> *@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PrecioCadena)
         </dt>

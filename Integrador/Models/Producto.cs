@@ -15,15 +15,15 @@ namespace Integrador.Models
         [Required(ErrorMessage = "La descripción es requerida.")]
         public required string Descripcion { get; set; }
 
+        [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:n2")]
         [Column(TypeName = "decimal(18, 2)")]
-        [Required(ErrorMessage = "El precio es requerido.")]
-        public required decimal Precio { get; set; }
+        public decimal Precio { get; set; }
 
         [Display(Name = "Precio")]
         [RegularExpression(@"^[-0123456789]+[0-9.,]*$",
             ErrorMessage = "El valor introducido debe ser de tipo monetario.")]
-        [Required(ErrorMessage = "El precio cadena es requerido.")]
+        [Required(ErrorMessage = "El precio es requerido.")]
         public required string PrecioCadena
         {
             get
