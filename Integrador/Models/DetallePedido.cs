@@ -5,9 +5,6 @@ namespace Integrador.Models
 {
     public class DetallePedido
     {
-        private decimal _precioTotal;
-        private decimal _precioUnidad;
-
         public int Id { get; set; }
 
         [Display(Name = "Número de pedido")]
@@ -16,33 +13,23 @@ namespace Integrador.Models
         [Display(Name = "Id del producto")]
         public int ProductoId { get; set; }
 
-        public int Cantidad { get; set; }
+        [Required(ErrorMessage = "La cantidad es requerida.")]
+        public required int Cantidad { get; set; }
 
         [Display(Name = "Precio Unitario")]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal PrecioUnidad
-        {
-            get => _precioUnidad;
-            set
-            {
-                _precioUnidad = value;
-                _precioTotal = _precioUnidad * Cantidad;
-            }
-        }
+        [Required(ErrorMessage = "El precio de unidad es requerido.")]
+        public required decimal PrecioUnidad { get; set; }
 
         [Display(Name = "Precio Total")]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal PrecioTotal
-        {
-            get { return _precioTotal; }
-            set { _precioTotal = _precioUnidad * Cantidad; }
-        }
+        [Required(ErrorMessage = "El precio total es requerido.")]
+        public required decimal PrecioTotal { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal Descuento { get; set; }
+        public decimal? Descuento { get; set; }
 
-        public Producto? Producto { get; set; }
-
-        public Pedido? Pedido { get; set; }
+        public virtual Producto? Producto { get; set; }
+        public virtual Pedido? Pedido { get; set; }
     }
 }
