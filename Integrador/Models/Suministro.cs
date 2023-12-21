@@ -17,9 +17,8 @@ namespace Integrador.Models
         public required int Unidades { get; set; }
 
         [Display(Name = "Fecha de suministro")]
-        [Required(ErrorMessage = "La fecha del suministro es un campo obligatorio.")]
         [DataType(DataType.Date)]
-        public DateTime FechaSuministro { get; set; } = DateTime.Now;
+        public DateTime? FechaSuministro { get; set; } = DateTime.Now;
 
         public Proveedor? Proveedor { get; set; }
         public Producto? Producto { get; set; }

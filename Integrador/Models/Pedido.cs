@@ -8,13 +8,12 @@ namespace Integrador.Models
         public int Id { get; set; }
 
         [Display(Name = "Fecha de pedido")]
-        [Required(ErrorMessage = "La fecha del pedido es un campo obligatorio.")]
         [DataType(DataType.Date)]
-        public required DateTime FechaPedido { get; set; } = DateTime.Now;
+        public DateTime? FechaPedido { get; set; } = DateTime.Now; // Fecha actual por defecto
 
         [Display(Name = "Fecha esperada de entrega")]
         [DataType(DataType.Date)]
-        public required DateTime FechaEsperada { get; set; } = DateTime.Now.AddDays(3);
+        public DateTime? FechaEsperada { get; set; } = DateTime.Now.AddDays(3); // Fecha actual por defecto más 3 días
 
         [Display(Name = "Fecha de confirmación")]
         [DataType(DataType.Date)]
@@ -32,16 +31,18 @@ namespace Integrador.Models
         [DataType(DataType.Date)]
         public DateTime? FechaAnulado { get; set; }
 
-        [Display(Name ="Fecha de devolución")]
+        [Display(Name = "Fecha de devolución")]
         [DataType(DataType.Date)]
         public DateTime? FechaDevolucion { get; set; }
 
         public string? Comentarios { get; set; }
 
         [Display(Name = "Cliente")]
+        [Required(ErrorMessage = "El cliente es obligatorio.")]
         public required int ClienteId { get; set; }
 
         [Display(Name = "Estado")]
+        [Required(ErrorMessage = "El estado es obligatorio.")]
         public required int EstadoId { get; set; }
 
         public Cliente? Cliente { get; set; }
