@@ -22,7 +22,10 @@ namespace Integrador.Controllers
         // GET: Suministros
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Suministros.ToListAsync());
+            var integradorContexto = _context.Suministros
+                                             .Include(d => d.Proveedor)
+                                             .Include(d => d.Producto);
+            return View(await integradorContexto.ToListAsync());
         }
 
         // GET: Suministros/Details/5
@@ -34,6 +37,8 @@ namespace Integrador.Controllers
             }
 
             var suministro = await _context.Suministros
+                .Include(d => d.Proveedor)
+                .Include(d => d.Producto)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (suministro == null)
             {
@@ -46,6 +51,8 @@ namespace Integrador.Controllers
         // GET: Suministros/Create
         public IActionResult Create()
         {
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre");
+            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre");
             return View();
         }
 
@@ -62,6 +69,8 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
+            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
             return View(suministro);
         }
 
@@ -78,6 +87,8 @@ namespace Integrador.Controllers
             {
                 return NotFound();
             }
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
+            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
             return View(suministro);
         }
 
@@ -113,6 +124,8 @@ namespace Integrador.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
+            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
             return View(suministro);
         }
 
@@ -125,6 +138,8 @@ namespace Integrador.Controllers
             }
 
             var suministro = await _context.Suministros
+                .Include(d => d.Proveedor)
+                .Include(d => d.Producto)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (suministro == null)
             {
