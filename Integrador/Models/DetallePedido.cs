@@ -16,15 +16,23 @@ namespace Integrador.Models
         [Required(ErrorMessage = "La cantidad es requerida.")]
         public required int Cantidad { get; set; }
 
+        private decimal? precioUnidad;
         [Display(Name = "Precio Unitario")]
+        [Range(0.1, double.MaxValue, ErrorMessage = "El precio no puede ser negativo.")]
         [Column(TypeName = "decimal(18, 2)")]
-        [Required(ErrorMessage = "El precio de unidad es requerido.")]
-        public required decimal PrecioUnidad { get; set; }
+        public decimal? PrecioUnidad // Mayor que 0
+        {
+            get => precioUnidad;
+            set
+            {
+                if (value > 0)
+                    precioUnidad = value;
+            }
+        }
 
         [Display(Name = "Precio Total")]
         [Column(TypeName = "decimal(18, 2)")]
-        [Required(ErrorMessage = "El precio total es requerido.")]
-        public required decimal PrecioTotal { get; set; }
+        public decimal? PrecioTotal { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? Descuento { get; set; }

@@ -37,11 +37,22 @@ namespace Integrador.Models
         }
 
         [Required(ErrorMessage = "El campo Escaparate es requerido.")]
-        public required bool Escaparate { get; set; } = true;
+        public bool Escaparate { get; set; } // True por defecto
 
         public string? Imagen { get; set; }
 
-        public required int Stock { get; set; } = 0;
+        private int stock; 
+        [Range(0, int.MaxValue, ErrorMessage = "El valor debe ser un número entero positivo.")]
+        [Required(ErrorMessage = "El stock es requerido.")]
+        public int Stock // 0 por defecto
+        {
+            get => stock;
+            set
+            {
+                if (value >= 0)
+                    stock = value;
+            }
+        }
 
         [Display(Name = "Modelo")]
         public int ModeloId { get; set; }
