@@ -13,14 +13,29 @@ namespace Integrador.Models
         [Display(Name = "Id del Producto")]
         public int ProductoId { get; set; }
 
+        private int unidades;
+
         [Required(ErrorMessage = "La cantidad es un campo obligatorio.")]
-        public required int Unidades { get; set; }
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Debe contener solo números.")]
+        [Range(1, int.MaxValue, ErrorMessage = "La cantidad tiene que ser mayor que 0.")]
+        public int Unidades
+        {
+            get
+            {
+                return unidades;
+            }
+            set
+            {
+                if (value >= 0)
+                    unidades = value;
+            }
+        }
 
-        [Display(Name = "Fecha de suministro")]
         [DataType(DataType.Date)]
-        public DateTime? FechaSuministro { get; set; } = DateTime.Now;
+        [Display(Name = "Fecha de suministro")]
+        public DateTime? FechaSuministro { get; set; } = DateTime.Now; // No funciona
 
-        public Proveedor? Proveedor { get; set; }
-        public Producto? Producto { get; set; }
+        public virtual Proveedor? Proveedor { get; set; }
+        public virtual Producto? Producto { get; set; }
     }
 }
