@@ -8,6 +8,7 @@ namespace Integrador.Models
         [Display(Name = "Id del producto")]
         public int Id { get; set; }
 
+        [StringLength(50)]
         [Required(ErrorMessage = "El nombre es requerido.")]
         public required string Nombre { get; set; }
 

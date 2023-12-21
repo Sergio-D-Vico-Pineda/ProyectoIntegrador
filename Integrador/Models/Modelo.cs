@@ -6,6 +6,7 @@ namespace Integrador.Models
     {
         public int Id { get; set; }
 
+        [StringLength(30)]
         [Required(ErrorMessage = "El nombre es requerido.")]
         public required string Nombre { get; set; }
 

@@ -7,19 +7,23 @@ namespace Integrador.Models
     {
         public int Id { get; set; }
 
+        [StringLength(50)]
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         public required string Nombre { get; set; }
 
-        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
         [Display(Name = "Correo electrónico")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [EmailAddress(ErrorMessage = "El correo electrónico no es válido.")]
         public required string Email { get; set; }
 
-        [Required(ErrorMessage = "El NIF es obligatorio.")]
         [Display(Name = "NIF")]
+        [Required(ErrorMessage = "El NIF es obligatorio.")]
+        /*[RegularExpression(@"^\d{8}[A-Za-z]$", ErrorMessage = "El NIF no es válido.")]*/
         public required string Nif { get; set; }
 
-        [Required(ErrorMessage = "El teléfono es obligatorio.")]
+        [StringLength(12)]
         [Display(Name = "Teléfono")]
+        [Required(ErrorMessage = "El teléfono es obligatorio.")]
         public required string Telefono { get; set; }
 
         [Display(Name = "Dirección")]

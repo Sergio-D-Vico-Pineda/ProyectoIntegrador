@@ -7,32 +7,32 @@ namespace Integrador.Models
         [Display(Name = "Número de Pedido")]
         public int Id { get; set; }
 
-        [Display(Name = "Fecha de pedido")]
         [DataType(DataType.Date)]
+        [Display(Name = "Fecha de pedido")]
         public DateTime? FechaPedido { get; set; } = DateTime.Now; // Fecha actual por defecto
 
-        [Display(Name = "Fecha esperada de entrega")]
         [DataType(DataType.Date)]
+        [Display(Name = "Fecha esperada de entrega")]
         public DateTime? FechaEsperada { get; set; } = DateTime.Now.AddDays(3); // Fecha actual por defecto más 3 días
 
-        [Display(Name = "Fecha de confirmación")]
         [DataType(DataType.Date)]
+        [Display(Name = "Fecha de confirmación")]
         public DateTime? FechaConfirmacion { get; set; }
 
-        [Display(Name = "Fecha de envio")]
         [DataType(DataType.Date)]
+        [Display(Name = "Fecha de envio")]
         public DateTime? FechaEnvio { get; set; }
 
-        [Display(Name = "Fecha de entrega")]
         [DataType(DataType.Date)]
+        [Display(Name = "Fecha de entrega")]
         public DateTime? FechaEntrega { get; set; }
 
-        [Display(Name = "Fecha de anulación")]
         [DataType(DataType.Date)]
+        [Display(Name = "Fecha de anulación")]
         public DateTime? FechaAnulado { get; set; }
 
-        [Display(Name = "Fecha de devolución")]
         [DataType(DataType.Date)]
+        [Display(Name = "Fecha de devolución")]
         public DateTime? FechaDevolucion { get; set; }
 
         public string? Comentarios { get; set; }

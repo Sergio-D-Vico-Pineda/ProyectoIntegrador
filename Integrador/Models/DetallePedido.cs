@@ -17,6 +17,7 @@ namespace Integrador.Models
         public required int Cantidad { get; set; }
 
         private decimal? precioUnidad;
+
         [Display(Name = "Precio Unitario")]
         [Range(0.1, double.MaxValue, ErrorMessage = "El precio no puede ser negativo.")]
         [Column(TypeName = "decimal(18, 2)")]
