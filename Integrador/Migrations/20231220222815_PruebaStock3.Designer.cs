@@ -4,6 +4,7 @@ using Integrador.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Integrador.Migrations
 {
     [DbContext(typeof(IntegradorContexto))]
-    partial class IntegradorContextoModelSnapshot : ModelSnapshot
+    [Migration("20231220222815_PruebaStock3")]
+    partial class PruebaStock3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,10 +74,10 @@ namespace Integrador.Migrations
                     b.Property<int>("PedidoId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("PrecioTotal")
+                    b.Property<decimal>("PrecioTotal")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<decimal?>("PrecioUnidad")
+                    b.Property<decimal>("PrecioUnidad")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("ProductoId")
@@ -181,10 +184,10 @@ namespace Integrador.Migrations
                     b.Property<DateTime?>("FechaEnvio")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FechaEsperada")
+                    b.Property<DateTime>("FechaEsperada")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FechaPedido")
+                    b.Property<DateTime>("FechaPedido")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -228,7 +231,7 @@ namespace Integrador.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stock")
+                    b.Property<int?>("Stock")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -278,7 +281,7 @@ namespace Integrador.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("FechaSuministro")
+                    b.Property<DateTime>("FechaSuministro")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("ProductoId")

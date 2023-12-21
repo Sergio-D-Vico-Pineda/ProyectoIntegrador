@@ -4,6 +4,7 @@ using Integrador.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Integrador.Migrations
 {
     [DbContext(typeof(IntegradorContexto))]
-    partial class IntegradorContextoModelSnapshot : ModelSnapshot
+    [Migration("20231220230934_PruebaStock9")]
+    partial class PruebaStock9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,10 +74,10 @@ namespace Integrador.Migrations
                     b.Property<int>("PedidoId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("PrecioTotal")
+                    b.Property<decimal>("PrecioTotal")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<decimal?>("PrecioUnidad")
+                    b.Property<decimal>("PrecioUnidad")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("ProductoId")
