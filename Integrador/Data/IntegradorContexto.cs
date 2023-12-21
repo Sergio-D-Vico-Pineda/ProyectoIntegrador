@@ -16,7 +16,7 @@ namespace Integrador.Data
 
         public DbSet<DetallePedido>? DetallePedidos { get; set; }
 
-        public DbSet<Producto>? Produtos { get; set; }
+        public DbSet<Producto>? Productos { get; set; }
 
         public DbSet<Estado>? Estados { get; set; }
 
