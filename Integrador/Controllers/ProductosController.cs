@@ -22,7 +22,7 @@ namespace Integrador.Controllers
         // GET: Productos
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.Produtos.Include(p => p.Modelo);
+            var integradorContexto = _context.Productos.Include(p => p.Modelo);
             return View(await integradorContexto.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Produtos
+            var producto = await _context.Productos
                 .Include(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (producto == null)
@@ -77,7 +77,7 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Produtos.FindAsync(id);
+            var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
             {
                 return NotFound();
@@ -130,7 +130,7 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
-            var producto = await _context.Produtos
+            var producto = await _context.Productos
                 .Include(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (producto == null)
@@ -146,10 +146,10 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var producto = await _context.Produtos.FindAsync(id);
+            var producto = await _context.Productos.FindAsync(id);
             if (producto != null)
             {
-                _context.Produtos.Remove(producto);
+                _context.Productos.Remove(producto);
             }
 
             await _context.SaveChangesAsync();
@@ -158,7 +158,7 @@ namespace Integrador.Controllers
 
         private bool ProductoExists(int id)
         {
-            return _context.Produtos.Any(e => e.Id == id);
+            return _context.Productos.Any(e => e.Id == id);
         }
     }
 }
