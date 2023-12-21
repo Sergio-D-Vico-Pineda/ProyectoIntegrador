@@ -33,7 +33,7 @@ namespace Integrador.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de suministro")]
-        public DateTime? FechaSuministro { get; set; } = DateTime.Now; // No funciona
+        public DateTime? FechaSuministro { get; set; } = DateTime.Now; // Fecha actual por defecto
 
         public virtual Proveedor? Proveedor { get; set; }
         public virtual Producto? Producto { get; set; }
