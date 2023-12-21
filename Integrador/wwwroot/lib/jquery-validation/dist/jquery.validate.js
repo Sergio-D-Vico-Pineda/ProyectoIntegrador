@@ -368,7 +368,7 @@ $.extend( $.validator, {
 		$.extend( $.validator.defaults, settings );
 	},
 
-	messages: {
+	/*messages: {
 		required: "This field is required.",
 		remote: "Please fix this field.",
 		email: "Please enter a valid email address.",
@@ -385,6 +385,24 @@ $.extend( $.validator, {
 		max: $.validator.format( "Please enter a value less than or equal to {0}." ),
 		min: $.validator.format( "Please enter a value greater than or equal to {0}." ),
 		step: $.validator.format( "Please enter a multiple of {0}." )
+	},*/
+	messages: {
+		required: "Este campo es obligatorio.",
+		remote: "Por favor, corrige este campo.",
+		email: "Por favor, introduce una dirección de correo electrónico válida.",
+		url: "Por favor, introduce una URL válida.",
+		date: "Por favor, introduce una fecha válida.",
+		dateISO: "Por favor, introduce una fecha válida (ISO).",
+		number: "Por favor, introduce un número válido.",
+		digits: "Por favor, introduce solo dígitos.",
+		equalTo: "Por favor, introduce el mismo valor de nuevo.",
+		maxlength: $.validator.format("Por favor, introduce no más de {0} caracteres."),
+		minlength: $.validator.format("Por favor, introduce al menos {0} caracteres."),
+		rangelength: $.validator.format("Por favor, introduce un valor entre {0} y {1} caracteres."),
+		range: $.validator.format("Por favor, introduce un valor entre {0} y {1}."),
+		max: $.validator.format("Por favor, introduce un valor menor o igual a {0}."),
+		min: $.validator.format("Por favor, introduce un valor mayor o igual a {0}."),
+		step: $.validator.format("Por favor, introduce un múltiplo de {0}.")
 	},
 
 	autoCreateRanges: false,
