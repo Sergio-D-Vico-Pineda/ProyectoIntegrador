@@ -50,7 +50,7 @@ namespace Integrador.Controllers
         public IActionResult Create()
         {
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id");
-            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Descripcion");
+            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Nombre");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace Integrador.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id", detallePedido.PedidoId);
-            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Descripcion", detallePedido.ProductoId);
+            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Nombre", detallePedido.ProductoId);
             return View(detallePedido);
         }
 
@@ -86,7 +86,7 @@ namespace Integrador.Controllers
                 return NotFound();
             }
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id", detallePedido.PedidoId);
-            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Descripcion", detallePedido.ProductoId);
+            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Nombre", detallePedido.ProductoId);
             return View(detallePedido);
         }
 
@@ -123,7 +123,7 @@ namespace Integrador.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id", detallePedido.PedidoId);
-            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Descripcion", detallePedido.ProductoId);
+            ViewData["ProductoId"] = new SelectList(_context.Produtos, "Id", "Nombre", detallePedido.ProductoId);
             return View(detallePedido);
         }
 
