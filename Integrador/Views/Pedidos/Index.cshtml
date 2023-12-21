@@ -13,28 +13,10 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.FechaPedido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaEsperada)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaConfirmacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaEnvio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaEntrega)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaAnulado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaDevolucion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comentarios)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cliente)
@@ -42,48 +24,73 @@
             <th>
                 @Html.DisplayNameFor(model => model.Estado)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comentarios)
+            </th>
+            @* <th>
+            @Html.DisplayNameFor(model => model.FechaEsperada)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.FechaConfirmacion)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.FechaEnvio)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.FechaEntrega)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.FechaAnulado)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.FechaDevolucion)
+            </th> *@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaPedido)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaPedido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comentarios)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.FechaEsperada)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaEsperada)
+            @Html.DisplayFor(modelItem => item.FechaConfirmacion)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaConfirmacion)
+            @Html.DisplayFor(modelItem => item.FechaEnvio)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaEnvio)
+            @Html.DisplayFor(modelItem => item.FechaEntrega)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaEntrega)
+            @Html.DisplayFor(modelItem => item.FechaAnulado)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaAnulado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaDevolucion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comentarios)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado.Descripcion)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+            @Html.DisplayFor(modelItem => item.FechaDevolucion)
+            </td> *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
