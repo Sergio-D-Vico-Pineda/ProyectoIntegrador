@@ -16,6 +16,7 @@ namespace Integrador.Models
         [EmailAddress(ErrorMessage = "El correo electrónico no es válido.")]
         public required string Email { get; set; }
 
+        [StringLength(10)]
         [Display(Name = "NIF")]
         [Required(ErrorMessage = "El NIF es obligatorio.")]
         /*[RegularExpression(@"^\d{8}[A-Za-z]$", ErrorMessage = "El NIF no es válido.")]*/
