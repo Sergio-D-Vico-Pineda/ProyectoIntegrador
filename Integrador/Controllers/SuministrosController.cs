@@ -24,7 +24,8 @@ namespace Integrador.Controllers
         {
             var integradorContexto = _context.Suministros
                                              .Include(d => d.Proveedor)
-                                             .Include(d => d.Producto);
+                                             .Include(d => d.Producto)
+                                             .ThenInclude(d => d.Modelo);
             return View(await integradorContexto.ToListAsync());
         }
 
@@ -39,6 +40,7 @@ namespace Integrador.Controllers
             var suministro = await _context.Suministros
                 .Include(d => d.Proveedor)
                 .Include(d => d.Producto)
+                .ThenInclude(d => d.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (suministro == null)
             {
@@ -167,6 +169,12 @@ namespace Integrador.Controllers
         private bool SuministroExists(int id)
         {
             return _context.Suministros.Any(e => e.Id == id);
+        }
+
+        public Task<IActionResult> GetProductosByModelo(int? id)
+        {
+            var productos = _context.Productos.Where(p => p.ModeloId == id).ToList();
+            return Json(productos);
         }
     }
 }
