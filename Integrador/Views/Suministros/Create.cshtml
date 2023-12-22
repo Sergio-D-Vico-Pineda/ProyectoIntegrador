@@ -18,8 +18,15 @@
                 <span asp-validation-for="ProveedorId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Producto.Modelo" class="control-label"></label>
+                <select id="modeloSelect" asp-for="Producto.Modelo" name="IntModelo" class="form-control" asp-items="ViewBag.Modelos">
+                    <option value="">Todas</option>
+                </select>
+                @* <span asp-validation-for="ProductoId" class="text-danger"></span> *@
+            </div>
+            <div class="form-group">
                 <label asp-for="ProductoId" class="control-label"></label>
-                <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
+                <select id="productoSelect" asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
                 <span asp-validation-for="ProductoId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,3 +55,31 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+<script>
+    document.getElementById("modeloSelect").addEventListener("change", function () {
+        console.log("Hola")
+        var modeloId = this.value; // Obtén el valor seleccionado del primer select
+        // Realiza una petición AJAX al servidor para obtener los productos según el modelo seleccionado
+        // y actualiza el contenido del segundo select en función de la respuesta.
+        // Aquí puedes utilizar cualquier método o biblioteca de JavaScript para hacer la petición AJAX, como fetch o jQuery.ajax.
+        // Por ejemplo, utilizando fetch:
+        fetch('/Suministros/GetProductosByModelo/' + modeloId)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                var productoSelect = document.getElementById("productoSelect");
+                // Elimina las opciones existentes en el segundo select
+                while (productoSelect.firstChild) {
+                    productoSelect.firstChild.remove();
+                }
+                // Agrega las nuevas opciones al segundo select basado en la respuesta recibida del servidor
+                data.forEach(function (producto) {
+                    var option = document.createElement("option");
+                    option.value = producto.id;
+                    option.text = producto.nombre;
+                    productoSelect.appendChild(option);
+                });
+            });
+    });
+</script>
