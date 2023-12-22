@@ -38,10 +38,10 @@ namespace Integrador.Controllers
             }
 
             var suministro = await _context.Suministros
-                .Include(d => d.Proveedor)
-                .Include(d => d.Producto)
-                .ThenInclude(d => d.Modelo)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(s => s.Proveedor)
+                .Include(s => s.Producto)
+                .ThenInclude(p => p.Modelo)
+                .FirstOrDefaultAsync(s => s.Id == id);
             if (suministro == null)
             {
                 return NotFound();
@@ -140,9 +140,10 @@ namespace Integrador.Controllers
             }
 
             var suministro = await _context.Suministros
-                .Include(d => d.Proveedor)
-                .Include(d => d.Producto)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(s => s.Proveedor)
+                .Include(s => s.Producto)
+                .ThenInclude(p => p.Modelo)
+                .FirstOrDefaultAsync(s => s.Id == id);
             if (suministro == null)
             {
                 return NotFound();
@@ -171,7 +172,7 @@ namespace Integrador.Controllers
             return _context.Suministros.Any(e => e.Id == id);
         }
 
-        public Task<IActionResult> GetProductosByModelo(int? id)
+        public IActionResult GetProductosByModelo(int? id)
         {
             var productos = _context.Productos.Where(p => p.ModeloId == id).ToList();
             return Json(productos);
