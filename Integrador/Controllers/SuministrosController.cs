@@ -95,12 +95,25 @@ namespace Integrador.Controllers
             }
 
             var suministro = await _context.Suministros.FindAsync(id);
+
+            var modeloSeleccionado = await _context.Productos
+        .Include(p => p.Modelo)
+        .Where(p => p.Id == suministro.ProductoId)
+        .Select(p => p.Modelo)
+        .FirstOrDefaultAsync();
+
+            // Obtener todos los productos que tengan el mismo modelo que el seleccionado
+            var productos = await _context.Productos
+                .Where(p => p.ModeloId == modeloSeleccionado.Id)
+                .ToListAsync();
+
             if (suministro == null)
             {
                 return NotFound();
             }
+
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
+            ViewData["ProductoId"] = new SelectList(productos, "Id", "Nombre", suministro.ProductoId);
             return View(suministro);
         }
 
@@ -118,23 +131,30 @@ namespace Integrador.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                if (false)
                 {
-                    _context.Update(suministro);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError("key", "error");
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!SuministroExists(suministro.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(suministro);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!SuministroExists(suministro.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
