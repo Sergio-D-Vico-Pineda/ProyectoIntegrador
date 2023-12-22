@@ -55,6 +55,7 @@ namespace Integrador.Controllers
         {
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre");
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre");
+            ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
             return View();
         }
 
@@ -67,12 +68,21 @@ namespace Integrador.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(suministro);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (suministro.ProductoId == 0)
+                {
+                    ModelState.AddModelError("ProductoId", "Debe seleccionar un producto.");
+                    ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
+                }
+                else
+                {
+                    _context.Add(suministro);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
+
             return View(suministro);
         }
 
@@ -174,8 +184,17 @@ namespace Integrador.Controllers
 
         public IActionResult GetProductosByModelo(int? id)
         {
-            var productos = _context.Productos.Where(p => p.ModeloId == id).ToList();
+            var productos = _context.Productos.ToList();
+            if (id != null)
+            {
+                productos = _context.Productos.Where(p => p.ModeloId == id).ToList();
+            }
             return Json(productos);
+        }
+        public IActionResult GetModelos()
+        {
+            var modelos = _context.Modelos.ToList();
+            return Json(modelos);
         }
     }
 }

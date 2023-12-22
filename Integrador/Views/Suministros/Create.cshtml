@@ -22,7 +22,7 @@
                 <select id="modeloSelect" asp-for="Producto.Modelo" name="IntModelo" class="form-control" asp-items="ViewBag.Modelos">
                     <option value="">Todas</option>
                 </select>
-                @* <span asp-validation-for="ProductoId" class="text-danger"></span> *@
+                <span asp-validation-for="Producto.Modelo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ProductoId" class="control-label"></label>
@@ -40,7 +40,7 @@
                 <span asp-validation-for="FechaSuministro" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input id="btnCr" type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -56,30 +56,60 @@
     }
 }
 <script>
-    document.getElementById("modeloSelect").addEventListener("change", function () {
-        console.log("Hola")
-        var modeloId = this.value; // Obtén el valor seleccionado del primer select
-        // Realiza una petición AJAX al servidor para obtener los productos según el modelo seleccionado
-        // y actualiza el contenido del segundo select en función de la respuesta.
-        // Aquí puedes utilizar cualquier método o biblioteca de JavaScript para hacer la petición AJAX, como fetch o jQuery.ajax.
-        // Por ejemplo, utilizando fetch:
+
+    let modeloSelect = document.getElementById("modeloSelect");
+    let productoSelect = document.getElementById("productoSelect");
+    productoSelect.value = 0;
+
+    /*fetch('/Suministros/GetModelos')
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            data.forEach(function (modelo) {
+                let option = document.createElement("option");
+                option.value = modelo.id;
+                option.text = modelo.nombre;
+                modeloSelect.appendChild(option);
+            });
+        });*/
+
+    modeloSelect.addEventListener("change", function () {
+        let modeloId = this.value;
+
         fetch('/Suministros/GetProductosByModelo/' + modeloId)
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-                var productoSelect = document.getElementById("productoSelect");
-                // Elimina las opciones existentes en el segundo select
+                let productoId = productoSelect.value;
                 while (productoSelect.firstChild) {
                     productoSelect.firstChild.remove();
                 }
-                // Agrega las nuevas opciones al segundo select basado en la respuesta recibida del servidor
-                data.forEach(function (producto) {
-                    var option = document.createElement("option");
-                    option.value = producto.id;
-                    option.text = producto.nombre;
+                if (data.length == 0) {
+                    let option = document.createElement("option");
+                    option.value = -1;
+                    option.text = "No hay productos de ese modelo.";
                     productoSelect.appendChild(option);
-                });
+                    productoSelect.disabled = true;
+                } else {
+                    productoSelect.disabled = false;
+                    data.forEach(function (producto) {
+                        let option = document.createElement("option");
+                        option.value = producto.id;
+                        option.text = producto.nombre;
+                        productoSelect.appendChild(option);
+                    });
+                    if (data.find(producto => producto.id == productoId)) {
+                        productoSelect.value = productoId;
+                    } else
+                        productoSelect.value = 0;
+                }
+
+                document.getElementById("btnCr").disabled = productoSelect.disabled;
+
             });
     });
+
+
 </script>

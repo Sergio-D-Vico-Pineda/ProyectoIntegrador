@@ -10,7 +10,8 @@ namespace Integrador.Models
         [Display(Name = "Proveedor")]
         public int ProveedorId { get; set; }
 
-        [Display(Name = "Id del Producto")]
+        [Display(Name = "Producto")]
+        [Required(ErrorMessage = "El producto es un campo obligatorio.")]
         public int ProductoId { get; set; }
 
         private int unidades;
