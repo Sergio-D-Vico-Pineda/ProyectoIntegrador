@@ -11,6 +11,7 @@ namespace Integrador.Models
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         public required string Nombre { get; set; }
 
+        [StringLength(50)]
         [Display(Name = "Correo electrónico")]
         [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
         [EmailAddress(ErrorMessage = "El correo electrónico no es válido.")]
