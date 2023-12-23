@@ -127,7 +127,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion,Precio,PrecioCadena,Escaparate,Imagen,Stock,ModeloId")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion,Precio,PrecioCadena,Escaparate,Imagen,Stock,ModeloId")] Producto producto, IFormFile? Imagen)
         {
             if (id != producto.Id)
             {
@@ -136,6 +136,16 @@ namespace Integrador.Controllers
 
             if (ModelState.IsValid)
             {
+                string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                string strExt = Path.GetExtension(Imagen.FileName);
+                string strName = producto.Id.ToString() + strExt;
+                string strRuta = Path.Combine(strRutaImg, strName);
+                using (var fileStream = new FileStream(strRuta, FileMode.Create, FileAccess.ReadWrite))
+                {
+                    Imagen.CopyTo(fileStream);
+                }
+
+                producto.Imagen = strName;
                 try
                 {
                     _context.Update(producto);
@@ -159,7 +169,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Productos/CambiarImagen/5
-        public async Task<IActionResult> CambiarImg(int? id)
+        /*public async Task<IActionResult> CambiarImg(int? id)
         {
             if (id == null || _context.Productos == null)
             {
@@ -176,10 +186,10 @@ namespace Integrador.Controllers
             }
 
             return View(producto);
-        }
+        }*/
 
         // POST: /Productos/CambiarImagen/5
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CambiarImg(int? id, IFormFile imagen)
         {
@@ -220,7 +230,7 @@ namespace Integrador.Controllers
                 }
             }
             return View(producto);
-        }
+        }*/
 
 
         // GET: Productos/Delete/5
