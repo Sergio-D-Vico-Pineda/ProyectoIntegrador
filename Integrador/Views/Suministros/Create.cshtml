@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label asp-for="Producto.Modelo" class="control-label"></label>
                 <select id="modeloSelect" asp-for="Producto.Modelo" name="IntModelo" class="form-control" asp-items="ViewBag.Modelos">
-                    <option value="">Todas</option>
+                    @* <option value="">Todas</option> *@
                 </select>
                 <span asp-validation-for="Producto.Modelo" class="text-danger"></span>
             </div>
@@ -61,21 +61,14 @@
     let productoSelect = document.getElementById("productoSelect");
     productoSelect.value = 0;
 
-    /*fetch('/Suministros/GetModelos')
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            data.forEach(function (modelo) {
-                let option = document.createElement("option");
-                option.value = modelo.id;
-                option.text = modelo.nombre;
-                modeloSelect.appendChild(option);
-            });
-        });*/
+    modeloSelect.addEventListener("change", ListaModelo);
 
-    modeloSelect.addEventListener("change", function () {
+    function ListaModelo() {
         let modeloId = this.value;
+
+        if (modeloId == undefined) {
+            modeloId = modeloSelect.firstElementChild.value;
+        }
 
         fetch('/Suministros/GetProductosByModelo/' + modeloId)
             .then(function (response) {
@@ -100,16 +93,12 @@
                         option.text = producto.nombre;
                         productoSelect.appendChild(option);
                     });
-                    if (data.find(producto => producto.id == productoId)) {
-                        productoSelect.value = productoId;
-                    } else
-                        productoSelect.value = 0;
+
                 }
-
                 document.getElementById("btnCr").disabled = productoSelect.disabled;
-
             });
-    });
+    }
 
+    ListaModelo();
 
 </script>

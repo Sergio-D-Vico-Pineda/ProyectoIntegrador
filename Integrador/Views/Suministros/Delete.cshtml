@@ -24,6 +24,12 @@
             @Html.DisplayFor(model => model.Proveedor.Email)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Producto.Modelo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Producto.Modelo.Nombre)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ProductoId)
         </dt>
         <dd class="col-sm-10">
@@ -41,6 +47,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FechaSuministro)
         </dd>
+    </dl>
     </dl>
 
     <form asp-action="Delete">
