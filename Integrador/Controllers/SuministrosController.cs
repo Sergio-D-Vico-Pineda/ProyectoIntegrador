@@ -71,7 +71,6 @@ namespace Integrador.Controllers
                 if (suministro.ProductoId == 0)
                 {
                     ModelState.AddModelError("ProductoId", "Debe seleccionar un producto.");
-                    ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
                 }
                 else
                 {
@@ -82,6 +81,7 @@ namespace Integrador.Controllers
             }
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
+            ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
 
             return View(suministro);
         }
@@ -211,10 +211,6 @@ namespace Integrador.Controllers
             }
             return Json(productos);
         }
-        public IActionResult GetModelos()
-        {
-            var modelos = _context.Modelos.ToList();
-            return Json(modelos);
-        }
+
     }
 }
