@@ -17,7 +17,7 @@ namespace Integrador.Models
         public required string Descripcion { get; set; }
 
         [DataType(DataType.Currency)]
-        [DisplayFormat(DataFormatString = "{0:n2")]
+        /*[DisplayFormat(DataFormatString = "{0:n2")] Da error*/
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Precio { get; set; }
 
@@ -40,7 +40,7 @@ namespace Integrador.Models
         [Required(ErrorMessage = "El campo Escaparate es requerido.")]
         public bool Escaparate { get; set; } // True por defecto
 
-        public string? Imagen { get; set; }
+        public string? Imagen { get; set; } = "default.jpeg";
 
         private int stock; 
         [Range(0, int.MaxValue, ErrorMessage = "El valor debe ser un número entero positivo.")]

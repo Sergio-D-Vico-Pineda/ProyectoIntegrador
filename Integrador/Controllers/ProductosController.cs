@@ -13,10 +13,12 @@ namespace Integrador.Controllers
     public class ProductosController : Controller
     {
         private readonly IntegradorContexto _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductosController(IntegradorContexto context)
+        public ProductosController(IntegradorContexto context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Productos
@@ -57,12 +59,46 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,PrecioCadena,Escaparate,Imagen,Stock,ModeloId")] Producto producto)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,PrecioCadena,Escaparate,Imagen,Stock,ModeloId")] Producto producto, IFormFile? Imagen)
         {
             if (ModelState.IsValid)
-            {
+            {                
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
+                var ultimoProducto = await _context.Productos
+                    .OrderByDescending(p => p.Id)
+                    .FirstOrDefaultAsync();
+
+                if (Imagen != null)
+                {
+                    string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                    string strExt = Path.GetExtension(Imagen.FileName);
+                    string strName = ultimoProducto.Id.ToString() + strExt;
+                    string strRuta = Path.Combine(strRutaImg, strName);
+                    using (var fileStream = new FileStream(strRuta, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        Imagen.CopyTo(fileStream);
+                    }
+
+                    ultimoProducto.Imagen = strName;
+                    try
+                    {
+                        _context.Update(ultimoProducto);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!ProductoExists(ultimoProducto.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre", producto.ModeloId);
@@ -121,6 +157,71 @@ namespace Integrador.Controllers
             ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre", producto.ModeloId);
             return View(producto);
         }
+
+        // GET: Productos/CambiarImagen/5
+        public async Task<IActionResult> CambiarImg(int? id)
+        {
+            if (id == null || _context.Productos == null)
+            {
+                return NotFound();
+            }
+
+            var producto = await _context.Productos
+                .Include(p => p.Modelo)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            return View(producto);
+        }
+
+        // POST: /Productos/CambiarImagen/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarImg(int? id, IFormFile imagen)
+        {
+            var producto = await _context.Productos.FindAsync(id);
+
+            if (id == null || producto == null || imagen == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                string strExt = Path.GetExtension(imagen.FileName);
+                string strName = producto.Id.ToString() + strExt;
+                string strRuta = Path.Combine(strRutaImg, strName);
+                using (var fileStream = new FileStream(strRuta, FileMode.Create, FileAccess.ReadWrite))
+                {
+                    imagen.CopyTo(fileStream);
+                }
+
+                producto.Imagen = strName;
+                try
+                {
+                    _context.Update(producto);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductoExists(producto.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return View(producto);
+        }
+
 
         // GET: Productos/Delete/5
         public async Task<IActionResult> Delete(int? id)
