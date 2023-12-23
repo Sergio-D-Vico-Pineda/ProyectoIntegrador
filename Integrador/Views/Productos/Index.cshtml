@@ -24,12 +24,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Descripcion)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.Precio)
-            </th> *@
             <th>
-                @Html.DisplayNameFor(model => model.PrecioCadena)
+                @Html.DisplayNameFor(model => model.Precio)
             </th>
+            @* <th>
+            @Html.DisplayNameFor(model => model.PrecioCadena)
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Escaparate)
             </th>
@@ -58,17 +58,26 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Descripcion)
                 </td>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.Precio)
-            </td> *@
                 <td>
-                    @Html.DisplayFor(modelItem => item.PrecioCadena)
+                    @Html.DisplayFor(modelItem => item.Precio)
                 </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.PrecioCadena)
+            </td> *@
                 <td>
                     @Html.DisplayFor(modelItem => item.Escaparate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Imagen)
+                    @* @Html.DisplayFor(modelItem => item.Imagen) *@
+                    @{
+                        var nombreImagen = "default.jpeg";
+                        if (item.Imagen != null)
+                        {
+                            nombreImagen = item.Imagen;
+                        }
+                    }
+                    <img src="~/img/@nombreImagen" height="80" width="80"
+                         asp-append-version="true" alt="No hay imagen" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Stock)
