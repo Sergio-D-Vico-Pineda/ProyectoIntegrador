@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Integrador.Models.Producto>
+
+@{
+    ViewData["Title"] = "Escaparate";
+}
+
+<h1>Escaparate</h1>
+
+
+@foreach (var item in Model)
+{
+    <div>
+        <div>
+            @Html.DisplayFor(modelItem => item.Modelo.Nombre)
+        </div>
+        <div>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </div>
+        <div>
+            @Html.DisplayFor(modelItem => item.Precio)
+        </div>
+        <div>
+            @{
+                var nombreImagen = "default.jpeg";
+                if (item.Imagen != null)
+                {
+                    nombreImagen = item.Imagen;
+                }
+            }
+            <img src="~/img/@nombreImagen" height="80" width="80"
+                 asp-append-version="true" alt="Sin imagen" />
+        </div>
+        <div>
+            Añadir al carrito?
+        </div>
+    </div>
+}
+
