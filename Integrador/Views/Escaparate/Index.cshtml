@@ -4,35 +4,75 @@
     ViewData["Title"] = "Escaparate";
 }
 
-<h1>Escaparate</h1>
+<h1 class="text-center">Escaparate</h1>
+
+<div class="row gx-3">
+    <aside class="col-12 col-sm-4 col-md-3">
+        <h2>Buscador</h2>
+        <form>
+            <div class="mb-3">
+                <label for="buscador" class="form-label">Buscador</label>
+                <input type="text" class="form-control" id="buscador">
+            </div>
+        </form>
+        <h2>Filtros</h2>
+        <form>
+            <div class="mb-3">
+                <label for="marcas" class="form-label">Marcas</label>
+                <select class="form-select" id="marcas">
+                    <option value="0">Sin marca</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="modelos" class="form-label">Modelos</label>
+                <select class="form-select" id="modelos">
+                    <option value="0">Sin modelo</option>
+                </select>
+            </div>
+        </form>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <button type="reset" class="btn btn-secondary">Borrar filtros</button>
+    </aside>
+    <div class="col-12 col-sm-8 col-md-9">
+        <div class="row g-4 justify-content-center justify-content-xl-start text-center text-sm-start">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-sm-7 col-md-5 col-xl-3">
+                    <div class="card">
+
+                        @{
+                            var nombreImagen = "default.jpeg";
+                            if (item.Imagen != null)
+                            {
+                                nombreImagen = item.Imagen;
+                            }
+                        }
+                        <img src="~/img/@nombreImagen" class="card-img-top object-fit-contain mt-3" height="80" width="80"
+                             asp-append-version="true" alt="Sin imagen" />
 
 
-@foreach (var item in Model)
-{
-    <div>
-        <div>
-            @Html.DisplayFor(modelItem => item.Modelo.Nombre)
-        </div>
-        <div>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </div>
-        <div>
-            @Html.DisplayFor(modelItem => item.Precio)
-        </div>
-        <div>
-            @{
-                var nombreImagen = "default.jpeg";
-                if (item.Imagen != null)
-                {
-                    nombreImagen = item.Imagen;
-                }
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+
+
+                            <p class="card-text">
+                                @Html.DisplayFor(modelItem => item.Modelo.Nombre)
+                                <br />
+                                @Html.DisplayFor(modelItem => item.Precio)
+                            </p>
+
+                            <div>
+                            </div>
+
+                            <div>
+                                <a href="#" class="btn btn-primary">
+                                    Añadir al carrito
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
-            <img src="~/img/@nombreImagen" height="80" width="80"
-                 asp-append-version="true" alt="Sin imagen" />
-        </div>
-        <div>
-            Añadir al carrito?
         </div>
     </div>
-}
-
+</div>

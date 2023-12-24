@@ -5,15 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Integrador.Controllers
 {
-    public class EscaparateController : Controller
+    public class EscaparateController(IntegradorContexto context) : Controller
     {
 
-        private readonly IntegradorContexto _context;
-
-        public EscaparateController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET /Escaparate/Index
         public async Task<IActionResult> Index(int? MarcaId)
