@@ -136,16 +136,21 @@ namespace Integrador.Controllers
 
             if (ModelState.IsValid)
             {
-                string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
-                string strExt = Path.GetExtension(Imagen.FileName);
-                string strName = producto.Id.ToString() + strExt;
-                string strRuta = Path.Combine(strRutaImg, strName);
-                using (var fileStream = new FileStream(strRuta, FileMode.Create, FileAccess.ReadWrite))
+
+                if (Imagen != null)
                 {
-                    Imagen.CopyTo(fileStream);
+                    string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                    string strExt = Path.GetExtension(Imagen.FileName);
+                    string strName = producto.Id.ToString() + strExt;
+                    string strRuta = Path.Combine(strRutaImg, strName);
+                    using (var fileStream = new FileStream(strRuta, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        Imagen.CopyTo(fileStream);
+                    }
+
+                    producto.Imagen = strName;
                 }
 
-                producto.Imagen = strName;
                 try
                 {
                     _context.Update(producto);
@@ -193,18 +198,21 @@ namespace Integrador.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var producto = await _context.Productos.FindAsync(id);
+
             if (producto != null)
             {
                 _context.Productos.Remove(producto);
-                if (producto.Imagen != null)
-                {
-                    string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
-                    string strRuta = Path.Combine(strRutaImg, producto.Imagen);
-                    System.IO.File.Delete(strRuta);
-                }
             }
 
             await _context.SaveChangesAsync();
+
+            if (producto.Imagen != null)
+            {
+                string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                string strRuta = Path.Combine(strRutaImg, producto.Imagen);
+                System.IO.File.Delete(strRuta);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
