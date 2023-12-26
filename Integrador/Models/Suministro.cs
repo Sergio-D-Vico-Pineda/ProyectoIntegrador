@@ -17,7 +17,7 @@ namespace Integrador.Models
         private int unidades;
 
         [Required(ErrorMessage = "La cantidad es un campo obligatorio.")]
-        [RegularExpression("^[0-9]+$", ErrorMessage = "Debe contener solo números.")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Debe contener solo números positivos.")]
         [Range(1, int.MaxValue, ErrorMessage = "La cantidad tiene que ser mayor que 0.")]
         public int Unidades
         {

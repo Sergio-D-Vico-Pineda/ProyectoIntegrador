@@ -74,6 +74,9 @@ namespace Integrador.Controllers
                 }
                 else
                 {
+                    var producto = await _context.Productos.FindAsync(suministro.ProductoId);
+                    producto.Stock += suministro.Unidades;
+
                     _context.Add(suministro);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
