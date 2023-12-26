@@ -54,7 +54,7 @@ namespace Integrador.Controllers
         public IActionResult Create()
         {
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre");
-            ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre");
+            /*ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre");*/
             ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
             return View();
         }
@@ -81,7 +81,7 @@ namespace Integrador.Controllers
             }
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
-            ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
+            /*ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");*/
 
             return View(suministro);
         }
