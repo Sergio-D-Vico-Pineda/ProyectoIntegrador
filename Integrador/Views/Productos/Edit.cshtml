@@ -47,12 +47,9 @@
                 @* <label asp-for="Imagen" class="control-label"></label>
                 <input asp-for="Imagen" class="form-control" />
                 <span asp-validation-for="Imagen" class="text-danger"></span> *@
+                @Html.HiddenFor(model => model.Imagen)
                 @{
-                    var nombreImagen = "default.jpeg";
-                    if (Model.Imagen != null)
-                    {
-                        nombreImagen = Model.Imagen;
-                    }
+                    var nombreImagen = Model.Imagen ?? "default.jpeg"; 
                 }
                 <img src="~/img/@nombreImagen" height="250" width="250"
                      asp-append-version="true" alt="Sin imagen" />
