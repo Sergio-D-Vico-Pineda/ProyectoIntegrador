@@ -27,7 +27,7 @@
             <div class="form-group">
                 <label asp-for="ProductoId" class="control-label"></label>
                 <select id="productoSelect" asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId"></select>
-                <span asp-validation-for="ProductoId" class="text-danger"></span>
+                <span id="productoSpan" asp-validation-for="ProductoId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Unidades" class="control-label"></label>
@@ -59,6 +59,7 @@
 
     let modeloSelect = document.getElementById("modeloSelect");
     let productoSelect = document.getElementById("productoSelect");
+    let productoSpan = document.getElementById("productoSpan");
     productoSelect.value = 0;
 
     modeloSelect.addEventListener("change", ListaModelo);
@@ -79,23 +80,21 @@
                 while (productoSelect.firstChild) {
                     productoSelect.firstChild.remove();
                 }
+                document.getElementById("btnCr").disabled = productoSelect.disabled = data.length == 0;
+                productoSpan.innerText = data.length == 0 ? "Debe seleccionar un producto." : "";
                 if (data.length == 0) {
                     let option = document.createElement("option");
                     option.value = -1;
                     option.text = "No hay productos de ese modelo.";
                     productoSelect.appendChild(option);
-                    productoSelect.disabled = true;
                 } else {
-                    productoSelect.disabled = false;
                     data.forEach(function (producto) {
                         let option = document.createElement("option");
                         option.value = producto.id;
                         option.text = producto.nombre;
                         productoSelect.appendChild(option);
                     });
-
                 }
-                document.getElementById("btnCr").disabled = productoSelect.disabled;
             });
     }
 
