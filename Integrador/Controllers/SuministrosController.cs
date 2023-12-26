@@ -100,10 +100,10 @@ namespace Integrador.Controllers
             var suministro = await _context.Suministros.FindAsync(id);
 
             var modeloSeleccionado = await _context.Productos
-        .Include(p => p.Modelo)
-        .Where(p => p.Id == suministro.ProductoId)
-        .Select(p => p.Modelo)
-        .FirstOrDefaultAsync();
+                    .Include(p => p.Modelo)
+                    .Where(p => p.Id == suministro.ProductoId)
+                    .Select(p => p.Modelo)
+                    .FirstOrDefaultAsync();
 
             // Obtener todos los productos que tengan el mismo modelo que el seleccionado
             var productos = await _context.Productos
@@ -134,30 +134,35 @@ namespace Integrador.Controllers
 
             if (ModelState.IsValid)
             {
-                if (false)
+                var suministroOriginal = await _context.Suministros.AsNoTracking().FirstOrDefaultAsync(s => s.Id == suministro.Id);
+                var diferenciaUnidades = suministro.Unidades - suministroOriginal.Unidades;
+
+                var producto = await _context.Productos.FindAsync(suministro.ProductoId);
+                producto.Stock += diferenciaUnidades;
+
+                // Verificar si el stock es menor que 0 y establecerlo en 0 si es el caso
+                if (producto.Stock < 0)
                 {
-                    ModelState.AddModelError("key", "error");
+                    producto.Stock = 0;
                 }
-                else
+                try
                 {
-                    try
-                    {
-                        _context.Update(suministro);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!SuministroExists(suministro.Id))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction(nameof(Index));
+                    _context.Update(suministro);
+                    await _context.SaveChangesAsync();
                 }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SuministroExists(suministro.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+
             }
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
@@ -194,6 +199,15 @@ namespace Integrador.Controllers
             if (suministro != null)
             {
                 _context.Suministros.Remove(suministro);
+
+                var producto = await _context.Productos.FindAsync(suministro.ProductoId);
+                producto.Stock -= suministro.Unidades;
+
+                // Verificar si el stock es menor que 0 y establecerlo en 0 si es el caso
+                if (producto.Stock < 0)
+                {
+                    producto.Stock = 0;
+                }
             }
 
             await _context.SaveChangesAsync();
