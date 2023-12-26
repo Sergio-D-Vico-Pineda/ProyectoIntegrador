@@ -62,7 +62,7 @@ namespace Integrador.Controllers
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,PrecioCadena,Escaparate,Imagen,Stock,ModeloId")] Producto producto, IFormFile? Imagen)
         {
             if (ModelState.IsValid)
-            {                
+            {
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 var ultimoProducto = await _context.Productos
@@ -196,6 +196,12 @@ namespace Integrador.Controllers
             if (producto != null)
             {
                 _context.Productos.Remove(producto);
+                if (producto.Imagen != null)
+                {
+                    string strRutaImg = Path.Combine(_webHostEnvironment.WebRootPath, "img");
+                    string strRuta = Path.Combine(strRutaImg, producto.Imagen);
+                    System.IO.File.Delete(strRuta);
+                }
             }
 
             await _context.SaveChangesAsync();
