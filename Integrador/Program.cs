@@ -1,3 +1,4 @@
+using Integrador;
 using Integrador.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +21,23 @@ builder.Services.AddDbContext<IntegradorContexto>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// Configuración de los servicios de ASP.NET Core Identity
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings. Configuración de las características de las contraseñas
+    options.Password.RequireDigit = true; // Un numero
+    options.Password.RequireLowercase = true; // Minúscula
+    options.Password.RequireNonAlphanumeric = false; // No sé
+    options.Password.RequireUppercase = false; // Mayúscula
+    options.Password.RequiredLength = 6; // Longitud mínima
+    options.Password.RequiredUniqueChars = 1; // Caracteres diferentes
+});
 
 var app = builder.Build();
 
@@ -49,5 +64,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Escaparate}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.InitializeAsync(services).Wait();
+}
 
 app.Run();
