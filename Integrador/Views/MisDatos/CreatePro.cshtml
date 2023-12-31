@@ -19,11 +19,11 @@
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-            </div> *@
+            <div class="form-group visually-hidden" hidden>
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" value="@User.Identity.Name" readonly hidden />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Nif" class="control-label"></label>
                 <input asp-for="Nif" class="form-control" />

@@ -1,0 +1,58 @@
+﻿@using Integrador.Views.MisDatos
+
+<ul class="nav nav-pills flex-column">
+    @if (User.IsInRole("Cliente"))
+    {
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="EditCli" asp-controller="MisDatos">
+                Perfil
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="ChangePassword">
+                Cambiar Contraseña
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data">
+                Borrar cuenta
+            </a>
+        </li>
+    }
+    else if (User.IsInRole("Proveedor"))
+    {
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="EditPro" asp-controller="MisDatos">
+                Perfil
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password">
+                Cambiar Contraseña
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data">
+                Borrar cuenta
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile">
+                Administrador
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password">
+                Cambiar Contraseña
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data">
+                Borrar cuenta
+            </a>
+        </li>
+    }
+</ul>
