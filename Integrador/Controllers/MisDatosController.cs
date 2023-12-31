@@ -1,7 +1,10 @@
 ﻿using Integrador.Data;
 using Integrador.Models;
+using Integrador.Views.MisDatos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Integrador.Controllers
@@ -9,10 +12,20 @@ namespace Integrador.Controllers
     public class MisDatosController : Controller
     {
         private readonly IntegradorContexto _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<MisDatosController> _logger;
 
-        public MisDatosController(IntegradorContexto context)
+
+        public MisDatosController(IntegradorContexto context,
+                                  UserManager<IdentityUser> userManager,
+                                  SignInManager<IdentityUser> signInManager,
+                                  ILogger<MisDatosController> logger)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
 
         // PROVEEDORES
@@ -171,5 +184,55 @@ namespace Integrador.Controllers
         {
             return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        // Pruebas
+
+        public async Task<IActionResult> ChangePassword()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var hasPassword = await _userManager.HasPasswordAsync(user);
+            if (!hasPassword)
+            {
+                return RedirectToAction("SetPassword");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel.InputModel input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, input.OldPassword, input.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+
+                ModelState.AddModelError(string.Empty, "La contraseña es incorrecta.");
+
+                return View();
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            _logger.LogInformation("User changed their password successfully.");
+
+            ViewData["Status"] = "Tu contraseña ha sido cambiada.";
+
+            return View();
+        }
+
     }
 }
