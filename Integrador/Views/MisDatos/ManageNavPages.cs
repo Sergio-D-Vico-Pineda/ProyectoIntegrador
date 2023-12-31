@@ -29,12 +29,12 @@ namespace Integrador.Views.MisDatos
                 // Comprobar los roles del usuario
                 if (userManager.IsInRoleAsync(user, "Cliente").Result)
                 {
-                    // Devolver algo si el usuario tiene el rol Cliente o Proveedor
+                    // Cliente
                     return "EditCli";
                 }
                 else
                 {
-                    // Devolver algo diferente si el usuario no tiene ninguno de esos roles
+                    // Proveedor
                     return "EditPro";
                 }
             }

@@ -8,32 +8,12 @@
                 Perfil
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="ChangePassword">
-                Cambiar Contraseña
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data">
-                Borrar cuenta
-            </a>
-        </li>
     }
     else if (User.IsInRole("Proveedor"))
     {
         <li class="nav-item">
             <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="EditPro" asp-controller="MisDatos">
                 Perfil
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password">
-                Cambiar Contraseña
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data">
-                Borrar cuenta
             </a>
         </li>
     }
@@ -44,15 +24,15 @@
                 Administrador
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password">
-                Cambiar Contraseña
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data">
-                Borrar cuenta
-            </a>
-        </li>
     }
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-action="ChangePassword" asp-controller="MisDatos">
+            Cambiar Contraseña
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data">
+            Borrar cuenta
+        </a>
+    </li>
 </ul>
