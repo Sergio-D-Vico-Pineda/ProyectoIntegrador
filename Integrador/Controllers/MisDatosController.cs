@@ -185,7 +185,7 @@ namespace Integrador.Controllers
             return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        // Pruebas
+        // GET: MisDatos/ChangePassword
 
         public async Task<IActionResult> ChangePassword()
         {
@@ -203,7 +203,10 @@ namespace Integrador.Controllers
             return View();
         }
 
+        // POST: MisDatos/ChangePassword
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel.InputModel input)
         {
             if (!ModelState.IsValid)
@@ -231,6 +234,18 @@ namespace Integrador.Controllers
 
             ViewData["Status"] = "Tu contraseña ha sido cambiada.";
 
+            return View();
+        }
+
+        public async Task<IActionResult> DeletePersonalData()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            ViewBag.Require = await _userManager.HasPasswordAsync(user);
             return View();
         }
 
