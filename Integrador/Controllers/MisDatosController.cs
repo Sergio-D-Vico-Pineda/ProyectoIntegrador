@@ -16,7 +16,6 @@ namespace Integrador.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<MisDatosController> _logger;
 
-
         public MisDatosController(IntegradorContexto context,
                                   UserManager<IdentityUser> userManager,
                                   SignInManager<IdentityUser> signInManager,
@@ -249,5 +248,34 @@ namespace Integrador.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePersonalData(DeletePersonalDataModel.InputModel input)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            if (await _userManager.HasPasswordAsync(user) && !await _userManager.CheckPasswordAsync(user, input.Password))
+            {
+                ModelState.AddModelError(string.Empty, "La contraseña es incorrecta.");
+                return View();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            var userId = await _userManager.GetUserIdAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred deleting user.");
+            }
+
+            await _signInManager.SignOutAsync();
+
+            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+
+            return Redirect("~/");
+        }
     }
 }
