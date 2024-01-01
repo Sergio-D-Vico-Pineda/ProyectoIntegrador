@@ -7,7 +7,7 @@
 <h1 class="text-center">Escaparate</h1>
 
 <div class="row gx-3">
-    <aside class="col-12 col-sm-4 col-md-3">
+    <aside class="col-12 col-sm-4 col-md-2">
         <h2>Buscador</h2>
         <form>
             <div class="mb-3">
@@ -33,7 +33,7 @@
         <button type="submit" class="btn btn-primary">Buscar</button>
         <button type="reset" class="btn btn-secondary">Borrar filtros</button>
     </aside>
-    <div class="col-12 col-sm-8 col-md-9">
+    <div class="col-12 col-sm-8 col-md-10">
         <div class="row g-4 justify-content-center justify-content-xl-start text-center text-sm-start">
             @foreach (var item in Model)
             {
@@ -63,6 +63,9 @@
                             <div>
                                 <a href="#" class="btn btn-primary">
                                     Añadir al carrito
+                                </a>
+                                <a class="btn btn-secondary" asp-action="Details" asp-controller="Productos" asp-route-id="@item.Id">
+                                    Info ℹ
                                 </a>
                             </div>
                         </div>
