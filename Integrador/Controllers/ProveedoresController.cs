@@ -7,17 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    public class ProveedoresController : Controller
+    [Authorize(Roles = " Administrador")]
+    public class ProveedoresController(IntegradorContexto context) : Controller
     {
-        private readonly IntegradorContexto _context;
-
-        public ProveedoresController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET: Proveedores
         public async Task<IActionResult> Index()
@@ -35,9 +32,10 @@ namespace Integrador.Controllers
 
             var proveedor = await _context.Proveedores
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (proveedor == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(proveedor);
@@ -74,9 +72,10 @@ namespace Integrador.Controllers
             }
 
             var proveedor = await _context.Proveedores.FindAsync(id);
+
             if (proveedor == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             return View(proveedor);
         }
@@ -126,9 +125,10 @@ namespace Integrador.Controllers
 
             var proveedor = await _context.Proveedores
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (proveedor == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(proveedor);

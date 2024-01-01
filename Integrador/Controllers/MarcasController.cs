@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
@@ -20,12 +21,14 @@ namespace Integrador.Controllers
         }
 
         // GET: Marcas
+        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Marcas.ToListAsync());
         }
 
         // GET: Marcas/Details/5
+        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,15 +38,17 @@ namespace Integrador.Controllers
 
             var marca = await _context.Marcas
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (marca == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(marca);
         }
 
         // GET: Marcas/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
@@ -66,6 +71,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Marcas/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,9 +80,10 @@ namespace Integrador.Controllers
             }
 
             var marca = await _context.Marcas.FindAsync(id);
+
             if (marca == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             return View(marca);
         }
@@ -117,6 +124,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Marcas/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,9 +134,10 @@ namespace Integrador.Controllers
 
             var marca = await _context.Marcas
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (marca == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(marca);

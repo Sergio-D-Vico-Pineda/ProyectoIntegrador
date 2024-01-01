@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
@@ -22,6 +23,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Productos
+        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Index()
         {
             var integradorContexto = _context.Productos.Include(p => p.Modelo);
@@ -29,6 +31,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Productos/Details/5
+        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,15 +42,17 @@ namespace Integrador.Controllers
             var producto = await _context.Productos
                 .Include(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (producto == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(producto);
         }
 
         // GET: Productos/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre");
@@ -106,6 +111,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Productos/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -114,9 +120,10 @@ namespace Integrador.Controllers
             }
 
             var producto = await _context.Productos.FindAsync(id);
+
             if (producto == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["ModeloId"] = new SelectList(_context.Modelos, "Id", "Nombre", producto.ModeloId);
             return View(producto);
@@ -174,6 +181,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Productos/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -184,9 +192,10 @@ namespace Integrador.Controllers
             var producto = await _context.Productos
                 .Include(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (producto == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(producto);

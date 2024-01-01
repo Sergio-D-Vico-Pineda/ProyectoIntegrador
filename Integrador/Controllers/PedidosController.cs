@@ -7,17 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    public class PedidosController : Controller
+    [Authorize(Roles = "Cliente, Administrador")]
+    public class PedidosController(IntegradorContexto context) : Controller
     {
-        private readonly IntegradorContexto _context;
-
-        public PedidosController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET: Pedidos
         public async Task<IActionResult> Index()
@@ -38,9 +35,10 @@ namespace Integrador.Controllers
                 .Include(p => p.Cliente)
                 .Include(p => p.Estado)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (pedido == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(pedido);
@@ -81,9 +79,10 @@ namespace Integrador.Controllers
             }
 
             var pedido = await _context.Pedidos.FindAsync(id);
+
             if (pedido == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
@@ -139,9 +138,10 @@ namespace Integrador.Controllers
                 .Include(p => p.Cliente)
                 .Include(p => p.Estado)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (pedido == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(pedido);

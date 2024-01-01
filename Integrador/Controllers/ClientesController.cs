@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ClientesController : Controller
     {
         private readonly IntegradorContexto _context;
@@ -37,7 +39,7 @@ namespace Integrador.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cliente == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(cliente);
@@ -76,7 +78,7 @@ namespace Integrador.Controllers
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             return View(cliente);
         }
@@ -126,9 +128,10 @@ namespace Integrador.Controllers
 
             var cliente = await _context.Clientes
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (cliente == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(cliente);

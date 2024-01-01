@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
@@ -20,6 +21,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos
+        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Index()
         {
             var integradorContexto = _context.Modelos.Include(m => m.Marca);
@@ -27,6 +29,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Details/5
+        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,15 +40,17 @@ namespace Integrador.Controllers
             var modelo = await _context.Modelos
                 .Include(m => m.Marca)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (modelo == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(modelo);
         }
 
         // GET: Modelos/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre");
@@ -70,6 +75,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,9 +84,10 @@ namespace Integrador.Controllers
             }
 
             var modelo = await _context.Modelos.FindAsync(id);
+
             if (modelo == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre", modelo.MarcaId);
             return View(modelo);
@@ -123,6 +130,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,9 +141,10 @@ namespace Integrador.Controllers
             var modelo = await _context.Modelos
                 .Include(m => m.Marca)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (modelo == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(modelo);

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
+    [Authorize(Roles = "Cliente, Administrador")]
     public class DetallePedidosController : Controller
     {
         private readonly IntegradorContexto _context;
@@ -42,7 +44,7 @@ namespace Integrador.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (detallePedido == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(detallePedido);
@@ -83,9 +85,10 @@ namespace Integrador.Controllers
             }
 
             var detallePedido = await _context.DetallePedidos.FindAsync(id);
+
             if (detallePedido == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id", detallePedido.PedidoId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", detallePedido.ProductoId);
@@ -141,9 +144,10 @@ namespace Integrador.Controllers
                 .Include(d => d.Pedido)
                 .Include(d => d.Producto)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (detallePedido == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(detallePedido);

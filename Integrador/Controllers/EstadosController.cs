@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class EstadosController : Controller
     {
         private readonly IntegradorContexto _context;
@@ -35,9 +37,10 @@ namespace Integrador.Controllers
 
             var estado = await _context.Estados
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (estado == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(estado);
@@ -74,9 +77,10 @@ namespace Integrador.Controllers
             }
 
             var estado = await _context.Estados.FindAsync(id);
+
             if (estado == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             return View(estado);
         }
@@ -126,9 +130,10 @@ namespace Integrador.Controllers
 
             var estado = await _context.Estados
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (estado == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(estado);

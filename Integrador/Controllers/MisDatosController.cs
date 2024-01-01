@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Integrador.Controllers
 {
+    [Authorize(Roles = "Proveedor, Cliente")]
     public class MisDatosController : Controller
     {
         private readonly IntegradorContexto _context;
@@ -29,7 +30,6 @@ namespace Integrador.Controllers
 
 
         // GET: MisDatos/Create
-        [Authorize(Roles = "Proveedor, Cliente")]
         public IActionResult Create(string role)
         {
             if (role == "Proveedor")
@@ -40,7 +40,6 @@ namespace Integrador.Controllers
                 return NotFound();
         }
 
-        [Authorize(Roles = "Proveedor, Cliente")]
         public async Task<IActionResult> Index()
         {
             string? email = User.Identity.Name;
@@ -53,14 +52,25 @@ namespace Integrador.Controllers
                 .Where(c => c.Email == email)
                 .FirstOrDefaultAsync();
 
-            if (proveedor == null && cliente == null) return NotFound();
+            if (proveedor == null && cliente == null)
+            {
+                if (User.IsInRole("Proveedor") && !_context.Proveedores.Any(p => p.Email == email))
+                {
+                    return RedirectToAction("Create", "MisDatos", new { role = "Proveedor" });
+                }
+
+                if (User.IsInRole("Cliente") && !_context.Clientes.Any(c => c.Email == email))
+                {
+                    return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+                }
+                return NotFound();
+            }
 
             if (proveedor != null)
                 return View("EditPro", proveedor);
-            else if (cliente != null)
-                return View("EditCli", cliente);
             else
-                return NotFound();
+                return View("EditCli", cliente);
+
         }
 
         // PROVEEDORES
@@ -177,20 +187,15 @@ namespace Integrador.Controllers
         }
 
         // GET: MisDatos/ChangePassword
-        [Authorize(Roles = "Cliente, Proveedor")]
         public async Task<IActionResult> ChangePassword()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var hasPassword = await _userManager.HasPasswordAsync(user);
-            if (!hasPassword)
-            {
-                return RedirectToAction("SetPassword");
-            }
             return View();
         }
 
@@ -228,10 +233,10 @@ namespace Integrador.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Cliente, Proveedor")]
         public async Task<IActionResult> DeletePersonalData()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
