@@ -10,35 +10,7 @@ namespace Integrador.Views.MisDatos
 {
     public static class ManageNavPages
     {
-        public static string Index
-        {
-            get
-            {
-                // Create an instance of HttpContextAccessor
-                var httpContextAccessor = new HttpContextAccessor();
-
-                // Access the HttpContext property using the instance
-                var httpContext = httpContextAccessor.HttpContext;
-                // Obtener el User Manager
-                var userManager = (UserManager<IdentityUser>)httpContext.RequestServices.GetService(typeof(UserManager<IdentityUser>));
-
-                // Obtener el usuario actual
-
-                var user = userManager.GetUserAsync(httpContextAccessor.HttpContext.User).Result;
-
-                // Comprobar los roles del usuario
-                if (userManager.IsInRoleAsync(user, "Cliente").Result)
-                {
-                    // Cliente
-                    return "EditCli";
-                }
-                else
-                {
-                    // Proveedor
-                    return "EditPro";
-                }
-            }
-        }
+        public static string Index => "Index";
 
         public static string ChangePassword => "ChangePassword";
 

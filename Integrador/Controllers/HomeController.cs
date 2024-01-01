@@ -18,24 +18,16 @@ namespace Integrador.Controllers
 
         public IActionResult Index()
         {
-            /*string? rolUsuario =  ? "Proveedor" : "Usuario";*/
             string? emailUsuario = User.Identity.Name;
 
-            if (User.IsInRole("Proveedor"))
+            if (User.IsInRole("Proveedor") && !_context.Proveedores.Any(p => p.Email == emailUsuario))
             {
-                var proveedor = _context.Proveedores.FirstOrDefault(p => p.Email == emailUsuario);
-                if (proveedor == null)
-                {
-                    return RedirectToAction("CreatePro", "MisDatos");
-                }
+                return RedirectToAction("Create", "MisDatos", new { role = "Proveedor" });
             }
-            else if (User.IsInRole("Cliente"))
+
+            if (User.IsInRole("Cliente") && !_context.Clientes.Any(c => c.Email == emailUsuario))
             {
-                var cliente = _context.Clientes.FirstOrDefault(c => c.Email == emailUsuario);
-                if (cliente == null)
-                {
-                    return RedirectToAction("CreateCli", "MisDatos");
-                }
+                return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
             }
 
             return View();

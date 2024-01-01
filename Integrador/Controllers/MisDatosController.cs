@@ -27,14 +27,43 @@ namespace Integrador.Controllers
             _logger = logger;
         }
 
-        // PROVEEDORES
 
-        // GET: MisDatos/CreatePro
-        [Authorize(Roles = "Proveedor")]
-        public IActionResult CreatePro()
+        // GET: MisDatos/Create
+        [Authorize(Roles = "Proveedor, Cliente")]
+        public IActionResult Create(string role)
         {
-            return View();
+            if (role == "Proveedor")
+                return View("CreatePro");
+            else if (role == "Cliente")
+                return View("CreateCli");
+            else
+                return NotFound();
         }
+
+        [Authorize(Roles = "Proveedor, Cliente")]
+        public async Task<IActionResult> Index()
+        {
+            string? email = User.Identity.Name;
+
+            Proveedor? proveedor = await _context.Proveedores
+                .Where(p => p.Email == email)
+                .FirstOrDefaultAsync();
+
+            Cliente? cliente = await _context.Clientes
+                .Where(c => c.Email == email)
+                .FirstOrDefaultAsync();
+
+            if (proveedor == null && cliente == null) return NotFound();
+
+            if (proveedor != null)
+                return View("EditPro", proveedor);
+            else if (cliente != null)
+                return View("EditCli", cliente);
+            else
+                return NotFound();
+        }
+
+        // PROVEEDORES
 
         // POST: MisDatos/CreatePro
         [HttpPost]
@@ -52,21 +81,6 @@ namespace Integrador.Controllers
             }
 
             return View();
-        }
-
-        // GET: MisDatos/EditPro
-        [Authorize(Roles = "Proveedor")]
-        public async Task<IActionResult> EditPro()
-        {
-            string? email = User.Identity.Name;
-
-            Proveedor? proveedor = await _context.Proveedores
-                .Where(p => p.Email == email)
-                .FirstOrDefaultAsync();
-
-            if (proveedor == null) return NotFound();
-
-            return View(proveedor);
         }
 
         // POST: MisDatos/EditPro
@@ -108,13 +122,6 @@ namespace Integrador.Controllers
 
         // CLIENTES
 
-        // GET: MisDatos/CreateCli
-        [Authorize(Roles = "Cliente")]
-        public IActionResult CreateCli()
-        {
-            return View();
-        }
-
         // POST: MisDatos/CreateCli
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -131,21 +138,6 @@ namespace Integrador.Controllers
             }
 
             return View();
-        }
-
-        // GET: MisDatos/EditCli
-        [Authorize(Roles = "Cliente")]
-        public async Task<IActionResult> EditCli()
-        {
-            string? email = User.Identity.Name;
-
-            Cliente? cliente = await _context.Clientes
-                .Where(c => c.Email == email)
-                .FirstOrDefaultAsync();
-
-            if (cliente == null) return NotFound();
-
-            return View(cliente);
         }
 
         // POST: MisDatos/EditCli
@@ -185,7 +177,7 @@ namespace Integrador.Controllers
         }
 
         // GET: MisDatos/ChangePassword
-
+        [Authorize(Roles = "Cliente, Proveedor")]
         public async Task<IActionResult> ChangePassword()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -236,6 +228,7 @@ namespace Integrador.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Cliente, Proveedor")]
         public async Task<IActionResult> DeletePersonalData()
         {
             var user = await _userManager.GetUserAsync(User);

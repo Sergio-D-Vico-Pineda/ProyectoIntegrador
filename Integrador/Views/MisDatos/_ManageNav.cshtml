@@ -1,18 +1,10 @@
 ﻿@using Integrador.Views.MisDatos
 
 <ul class="nav nav-pills flex-column">
-    @if (User.IsInRole("Cliente"))
+    @if (User.IsInRole("Cliente") || User.IsInRole("Proveedor"))
     {
         <li class="nav-item">
-            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="EditCli" asp-controller="MisDatos">
-                Perfil
-            </a>
-        </li>
-    }
-    else if (User.IsInRole("Proveedor"))
-    {
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="EditPro" asp-controller="MisDatos">
+            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="Index" asp-controller="MisDatos">
                 Perfil
             </a>
         </li>
@@ -35,4 +27,5 @@
             Borrar cuenta
         </a>
     </li>
+    
 </ul>
