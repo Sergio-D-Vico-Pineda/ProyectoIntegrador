@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Integrador.Models.ViewUsuarios>
+
+@{
+    ViewData["Title"] = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Usuarios</h1>
+
+<p>
+    <a asp-action="Create">Nuevo administrador</a>
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Usuario
+        </th>
+        <th>
+            Rol
+        </th>
+        <th>Acciones</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelIdtem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelIdtem => item.RolDeUsuario)
+            </td>
+            <td>
+                @* Borrar usuario*@
+                <form asp-action="Delete" asp-controller="Usuarios" method="post">
+                    <input type="hidden" name="userId" value="@item.Email" />
+                    <input type="submit" value="Borrar" class="btn btn-danger" />
+                </form>
+            </td>
+        </tr>
+    }
+</table>
