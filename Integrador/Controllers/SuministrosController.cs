@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
@@ -20,16 +21,40 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.Suministros
-                                             .Include(d => d.Proveedor)
-                                             .Include(d => d.Producto)
-                                             .ThenInclude(d => d.Modelo);
-            return View(await integradorContexto.ToListAsync());
+            if (User.IsInRole("Administrador"))
+            {
+
+                var integradorContexto = _context.Suministros
+                                                 .Include(d => d.Proveedor)
+                                                 .Include(d => d.Producto)
+                                                 .ThenInclude(d => d.Modelo);
+                return View(await integradorContexto.ToListAsync());
+            }
+            else
+            {
+                var email = User.Identity.Name;
+
+                Proveedor? proveedor = await _context.Proveedores
+                                .Where(p => p.Email == email)
+                                .FirstOrDefaultAsync();
+
+                if (proveedor == null) return NotFound();
+
+                var integradorContexto = _context.Suministros
+                                .Where(s => s.ProveedorId == proveedor.Id)
+                                .OrderByDescending(s => s.FechaSuministro)
+                                .Include(s => s.Proveedor)
+                                .Include(s => s.Producto)
+                                .ThenInclude(p => p.Modelo);
+                return View(await integradorContexto.ToListAsync());
+            }
         }
 
         // GET: Suministros/Details/5
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,19 +67,29 @@ namespace Integrador.Controllers
                 .Include(s => s.Producto)
                 .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(s => s.Id == id);
+
             if (suministro == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(suministro);
         }
 
         // GET: Suministros/Create
-        public IActionResult Create()
+        [Authorize(Roles = "Proveedor, Administrador")]
+        public IActionResult Create(int? id)
         {
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre");
-            /*ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre");*/
+            if (User.IsInRole("Administrador"))
+                ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre");
+            if (id != null)
+            {
+                var a = _context.Proveedores
+                    .Where(p => p.Email == User.Identity.Name)
+                    .FirstOrDefault();
+                ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", a.Id);
+                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", id);
+            }
             ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
             return View();
         }
@@ -64,8 +99,20 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProveedorId,ProductoId,Unidades,FechaSuministro")] Suministro suministro)
+        public async Task<IActionResult> Create([Bind("ProveedorId,ProductoId,Unidades,FechaSuministro")] Suministro suministro)
         {
+            if (User.IsInRole("Proveedor"))
+            {
+                // Asignar proveedor al suministro
+                var proveedorId = await _context.Proveedores
+                            .Where(p => p.Email == User.Identity.Name)
+                            .FirstOrDefaultAsync();
+                if (proveedorId != null)
+                {
+                    suministro.ProveedorId = proveedorId.Id;
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 if (suministro.ProductoId == 0)
@@ -90,14 +137,33 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Edit/5
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
+            var suministro = await _context.Suministros.FindAsync(id);
             if (id == null)
             {
                 return NotFound();
             }
 
-            var suministro = await _context.Suministros.FindAsync(id);
+            if (suministro == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (User.IsInRole("Proveedor"))
+            {
+                // Asignar proveedor al suministro
+                var proveedor = await _context.Proveedores
+                            .Where(p => p.Email == User.Identity.Name)
+                            .FirstOrDefaultAsync();
+
+                if (suministro.ProveedorId != proveedor.Id)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+            }
 
             var modeloSeleccionado = await _context.Productos
                     .Include(p => p.Modelo)
@@ -110,10 +176,7 @@ namespace Integrador.Controllers
                 .Where(p => p.ModeloId == modeloSeleccionado.Id)
                 .ToListAsync();
 
-            if (suministro == null)
-            {
-                return NotFound();
-            }
+
 
             ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(productos, "Id", "Nombre", suministro.ProductoId);
@@ -130,6 +193,18 @@ namespace Integrador.Controllers
             if (id != suministro.Id)
             {
                 return NotFound();
+            }
+
+            if (User.IsInRole("Proveedor"))
+            {
+                // Asignar proveedor al suministro
+                var proveedor = await _context.Proveedores
+                            .Where(p => p.Email == User.Identity.Name)
+                            .FirstOrDefaultAsync();
+                if (proveedor != null)
+                {
+                    suministro.ProveedorId = proveedor.Id;
+                }
             }
 
             if (ModelState.IsValid)
@@ -170,6 +245,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Delete/5
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -182,9 +258,10 @@ namespace Integrador.Controllers
                 .Include(s => s.Producto)
                 .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(s => s.Id == id);
+
             if (suministro == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(suministro);
@@ -227,6 +304,17 @@ namespace Integrador.Controllers
                 productos = _context.Productos.Where(p => p.ModeloId == id).ToList();
             }
             return Json(productos);
+        }
+
+        public async Task<IActionResult> GetModeloByProducto(int? id)
+        {
+            var modeloSeleccionado = await _context.Productos
+                .Include(p => p.Modelo)
+                .Where(p => p.Id == id)
+                .Select(p => p.Modelo)
+                .FirstOrDefaultAsync();
+
+            return Json(modeloSeleccionado);
         }
 
     }
