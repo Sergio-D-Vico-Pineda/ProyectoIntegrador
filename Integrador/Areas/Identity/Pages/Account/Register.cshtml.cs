@@ -86,8 +86,6 @@ namespace Integrador.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/Home");
             if (ModelState.IsValid)
             {
-
-
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
