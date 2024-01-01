@@ -23,6 +23,7 @@ namespace Integrador.Views.MisDatos
 
         public class InputModel
         {
+            [Display(Name = "Contraseña")]
             [Required(ErrorMessage = "La contraseña es obligatoria.")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
