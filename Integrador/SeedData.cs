@@ -40,7 +40,7 @@ namespace Integrador
         {
             // Comprobar si existe el administrador predetermindado
             var testAdmin = userManager.Users
-            .Where(x => x.UserName == "admin@empresa.com")
+            .Where(x => x.UserName == "a@a.com")
             .SingleOrDefault();
 
             // Si existe sale de la función
@@ -49,11 +49,11 @@ namespace Integrador
             // Si no existe, se crea el administrador predeterminado "admin@empresa.com"
             testAdmin = new IdentityUser
             {
-                UserName = "admin@empresa.com",
-                Email = "admin@empresa.com"
+                UserName = "a@a.com",
+                Email = "a@a.com"
             };
 
-            string admPasswd = "Admin-123";
+            string admPasswd = "admin1";
 
             IdentityResult userResult = await userManager.CreateAsync(testAdmin, admPasswd);
 
