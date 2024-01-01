@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">El Hogar de las Fundas</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">El Hogar de las Fundas</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,38 +20,83 @@
                 <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Escaparate" asp-action="Index">Escaparate</a>
+                            <a class="nav-link" asp-controller="Escaparate" asp-action="Index">Escaparate</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Usuarios
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Proveedores" asp-action="Index">Proveedores</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Pedidos
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="DetallePedidos" asp-action="Index">DetallePedidos</a></li>
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Estados" asp-action="Index">Estados</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Productos
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Productos" asp-action="Index">Productos</a></li>
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Marcas" asp-action="Index">Marcas</a></li>
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Modelos" asp-action="Index">Modelos</a></li>
-                                <li><a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Suministros" asp-action="Index">Suministros</a></li>
-                            </ul>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Usuarios
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Proveedores" asp-action="Index">Proveedores</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Pedidos
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item nav-link" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="DetallePedidos" asp-action="Index">DetallePedidos</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Estados" asp-action="Index">Estados</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Productos
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item nav-link" asp-controller="Productos" asp-action="Index">Productos</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Marcas" asp-action="Index">Marcas</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Modelos" asp-action="Index">Modelos</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Suministros" asp-action="Index">Suministros</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else if (User.IsInRole("Cliente"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Pedidos
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @*PEDIDOS DEL CLIENTE*@
+                                        <li><a class="dropdown-item nav-link" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="DetallePedidos" asp-action="Index">DetallePedidos</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Productos
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item nav-link" asp-controller="Productos" asp-action="Index">Productos</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Marcas" asp-action="Index">Marcas</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Modelos" asp-action="Index">Modelos</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else if (User.IsInRole("Proveedor"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Productos
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @*SUMINISTROS DEL PROVEEDOR*@
+                                        <li><a class="dropdown-item nav-link" asp-controller="Suministros" asp-action="Index">Suministros</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Productos" asp-action="Index">Productos</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Marcas" asp-action="Index">Marcas</a></li>
+                                        <li><a class="dropdown-item nav-link" asp-controller="Modelos" asp-action="Index">Modelos</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        }
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -66,7 +111,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Integrador - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Integrador - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
