@@ -50,20 +50,42 @@
                         <div class="card-body">
                             <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
 
-
                             <p class="card-text">
                                 @Html.DisplayFor(modelItem => item.Modelo.Nombre)
                                 <br />
                                 @Html.DisplayFor(modelItem => item.Precio)
+                                @if (User.IsInRole("Proveedor"))
+                                {
+                                    <br />
+                                    @Html.DisplayFor(modelItem => item.Stock)   
+                                    @if (item.Stock != 1)
+                                    {
+                                        <span>unidades</span>
+                                    } else
+                                    {
+                                        <span>unidad</span>
+                                    }
+                                }
+
                             </p>
 
                             <div>
-                            </div>
+                                @if (!User.IsInRole("Proveedor"))
+                                {
+                                    @if (item.Stock > 0)
+                                    {
+                                        <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="btn btn-primary disabled">Sin stock</span>
+                                    }
 
-                            <div>
-                                <a href="#" class="btn btn-primary">
-                                    Añadir al carrito
-                                </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Create" asp-controller="Suministros" asp-route-id="@item.Id" class="btn btn-primary">Añadir stock SUM</a>
+                                }
                                 <a class="btn btn-secondary" asp-action="Details" asp-controller="Productos" asp-route-id="@item.Id">
                                     Info ℹ
                                 </a>

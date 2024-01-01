@@ -17,16 +17,19 @@
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" disabled />
             </div>
-            <div class="form-group">
-                <label asp-for="ProveedorId" class="control-label"></label>
-                <select asp-for="ProveedorId" class="form-control" asp-items="ViewBag.ProveedorId"></select>
-                <span asp-validation-for="ProveedorId" class="text-danger"></span>
-            </div>
+            @if (User.IsInRole("Administrador"))
+            {
+                <div class="form-group">
+                    <label asp-for="ProveedorId" class="control-label"></label>
+                    <select asp-for="ProveedorId" class="form-control" asp-items="ViewBag.ProveedorId"></select>
+                    <span asp-validation-for="ProveedorId" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group">
                 <label asp-for="Producto.Modelo" class="control-label"></label>
                 <input asp-for="Producto.Modelo.Nombre" class="form-control" disabled />
                 @* <select id="modeloSelect" asp-for="Producto.Modelo" name="IntModelo" class="form-control" asp-items="ViewBag.Modelos">
-                    <option value="">Todas</option>
+                <option value="">Todas</option>
                 </select> *@
                 <span asp-validation-for="Producto.Modelo" class="text-danger"></span>
             </div>
