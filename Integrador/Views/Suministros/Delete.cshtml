@@ -21,7 +21,13 @@
             @Html.DisplayNameFor(model => model.ProveedorId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Proveedor.Email)
+            @if (Model.Proveedor.Email.EndsWith("-DEL."))
+            {
+                <del>@Model.Proveedor.Email</del>
+            }
+            else
+                @Html.DisplayFor(model => model.Proveedor.Email)
+
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Producto.Modelo)

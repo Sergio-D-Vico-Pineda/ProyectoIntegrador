@@ -21,7 +21,14 @@
             @Html.DisplayNameFor(model => model.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+            @if (Model.Email.EndsWith("-DEL."))
+            {
+                <del>@Model.Email</del>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.Email)
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nif)

@@ -41,6 +41,10 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
+                    @if (item.Proveedor.Email.EndsWith("-DEL."))
+                    {
+                        <del>@item.Proveedor.Email</del>
+                    } else 
                     @Html.DisplayFor(modelItem => item.Proveedor.Email)
                 </td>
                 <td>
