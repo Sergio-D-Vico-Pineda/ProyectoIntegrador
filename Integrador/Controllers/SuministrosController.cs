@@ -78,16 +78,22 @@ namespace Integrador.Controllers
 
         // GET: Suministros/Create
         [Authorize(Roles = "Proveedor, Administrador")]
-        public IActionResult Create(int? id)
+        public async Task<IActionResult> Create(int? id)
         {
             if (User.IsInRole("Administrador"))
-                ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre");
+            {
+                var listaProveedores = await _context.Proveedores.Where(p => !p.Email.Contains("-DEL."))
+                .ToListAsync();
+
+                ViewData["ProveedorId"] = new SelectList(listaProveedores, "Id", "Nombre");
+            }
+                
             if (id != null)
             {
-                var a = _context.Proveedores
+                var proveedor = _context.Proveedores
                     .Where(p => p.Email == User.Identity.Name)
                     .FirstOrDefault();
-                ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", a.Id);
+                ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", proveedor.Id);
                 ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", id);
             }
             ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
@@ -153,7 +159,7 @@ namespace Integrador.Controllers
 
             if (User.IsInRole("Proveedor"))
             {
-                // Asignar proveedor al suministro
+                // Comprobar que el suministro pertence al proveedor
                 var proveedor = await _context.Proveedores
                             .Where(p => p.Email == User.Identity.Name)
                             .FirstOrDefaultAsync();
@@ -176,9 +182,7 @@ namespace Integrador.Controllers
                 .Where(p => p.ModeloId == modeloSeleccionado.Id)
                 .ToListAsync();
 
-
-
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Email", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(productos, "Id", "Nombre", suministro.ProductoId);
             return View(suministro);
         }
