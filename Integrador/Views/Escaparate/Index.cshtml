@@ -7,7 +7,7 @@
 <h1 class="text-center">Escaparate</h1>
 
 <div class="row gx-3">
-    <aside class="col-12 col-sm-4 col-md-2">
+    <aside class="col-12 col-md-3">
         <h2>Buscador</h2>
         <form>
             <div class="mb-3">
@@ -33,63 +33,57 @@
         <button type="submit" class="btn btn-primary">Buscar</button>
         <button type="reset" class="btn btn-secondary">Borrar filtros</button>
     </aside>
-    <div class="col-12 col-sm-8 col-md-10">
-        <div class="row g-4 justify-content-center justify-content-xl-start text-center text-sm-start">
+    <div class="col-12 col-md-9">
+        <div class="row d-flex ps-3 justify-content-evenly gap">
             @foreach (var item in Model)
             {
-                <div class="col-12 col-sm-7 col-md-5 col-xl-3">
-                    <div class="card">
+                <div class="card" style="max-width:280px;">
+                    @{
+                        var nombreImagen = item.Imagen ?? "default.jpeg";
+                    }
+                    <img src="~/img/@nombreImagen" class="card-img-top object-fit-contain mt-3" height="80" width="80"
+                         asp-append-version="true" alt="Sin imagen" />
 
-                        @{
-                            var nombreImagen = item.Imagen ?? "default.jpeg";
-                        }
-                        <img src="~/img/@nombreImagen" class="card-img-top object-fit-contain mt-3" height="80" width="80"
-                             asp-append-version="true" alt="Sin imagen" />
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
 
-
-                        <div class="card-body">
-                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
-
-                            <p class="card-text">
-                                @Html.DisplayFor(modelItem => item.Modelo.Nombre)
+                        <p class="card-text">
+                            @Html.DisplayFor(modelItem => item.Modelo.Nombre)
+                            <br />
+                            @Html.DisplayFor(modelItem => item.Precio)
+                            @if (User.IsInRole("Proveedor"))
+                            {
                                 <br />
-                                @Html.DisplayFor(modelItem => item.Precio)
-                                @if (User.IsInRole("Proveedor"))
+                                @Html.DisplayFor(modelItem => item.Stock)
+                                @if (item.Stock != 1)
                                 {
-                                    <br />
-                                    @Html.DisplayFor(modelItem => item.Stock)   
-                                    @if (item.Stock != 1)
-                                    {
-                                        <span>unidades</span>
-                                    } else
-                                    {
-                                        <span>unidad</span>
-                                    }
-                                }
-
-                            </p>
-
-                            <div>
-                                @if (!User.IsInRole("Proveedor"))
-                                {
-                                    @if (item.Stock > 0)
-                                    {
-                                        <a href="#" class="btn btn-primary">Añadir al carrito</a>
-                                    }
-                                    else
-                                    {
-                                        <span class="btn btn-primary disabled">Sin stock</span>
-                                    }
-
+                                    <span>unidades</span>
                                 }
                                 else
                                 {
-                                    <a asp-action="Create" asp-controller="Suministros" asp-route-id="@item.Id" class="btn btn-primary">Añadir stock SUM</a>
+                                    <span>unidad</span>
                                 }
-                                <a class="btn btn-secondary" asp-action="Details" asp-controller="Productos" asp-route-id="@item.Id">
-                                    Info ℹ
-                                </a>
-                            </div>
+                            }
+                        </p>
+                        <div>
+                            @if (!User.IsInRole("Proveedor"))
+                            {
+                                @if (item.Stock > 0)
+                                {
+                                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                                }
+                                else
+                                {
+                                    <span class="btn btn-primary disabled">Sin stock</span>
+                                }
+                            }
+                            else
+                            {
+                                <a asp-action="Create" asp-controller="Suministros" asp-route-id="@item.Id" class="btn btn-primary">Añadir stock SUM</a>
+                            }
+                            <a class="btn btn-secondary" asp-action="Details" asp-controller="Productos" asp-route-id="@item.Id">
+                                Info ℹ
+                            </a>
                         </div>
                     </div>
                 </div>
