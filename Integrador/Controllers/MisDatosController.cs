@@ -11,10 +11,10 @@ namespace Integrador.Controllers
 {
     [Authorize(Roles = "Proveedor, Cliente")]
     public class MisDatosController(IntegradorContexto context,
-                                  UserManager<IdentityUser> userManager,
-                                  SignInManager<IdentityUser> signInManager,
+                              UserManager<IdentityUser> userManager,
+                              SignInManager<IdentityUser> signInManager,
                               ILogger<MisDatosController> logger) : Controller
-        {
+    {
         private readonly IntegradorContexto _context = context;
         private readonly UserManager<IdentityUser> _userManager = userManager;
         private readonly SignInManager<IdentityUser> _signInManager = signInManager;
@@ -255,11 +255,41 @@ namespace Integrador.Controllers
                 return View();
             }
 
+            if (User.IsInRole("Proveedor"))
+            {
+                var pro = await _context.Proveedores.Where(p => p.Email == user.Email).FirstOrDefaultAsync();
+
+                if (pro != null)
+                {
+                    pro.Email += "-DEL.";
+                    _context.Update(pro);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return NotFound($"Unable to load user with ID '{user.Email}'.");
+                }
+            }
+            else if (User.IsInRole("Cliente"))
+            {
+                var cli = await _context.Clientes.Where(c => c.Email == user.Email).FirstOrDefaultAsync();
+                if (cli != null)
+                {
+                    cli.Email += "-DEL.";
+                    _context.Update(cli);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return NotFound($"Unable to load user with ID '{user.Email}'.");
+                }
+            }
+
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Unexpected error occurred deleting user.");
+                throw new InvalidOperationException($"Error inesperado borrando usuario.");
             }
 
             await _signInManager.SignOutAsync();
