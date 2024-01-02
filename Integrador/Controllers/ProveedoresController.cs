@@ -8,13 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Integrador.Controllers
 {
     [Authorize(Roles = " Administrador")]
-    public class ProveedoresController(IntegradorContexto context) : Controller
+    public class ProveedoresController(IntegradorContexto context, UserManager<IdentityUser> userManager) : Controller
     {
         private readonly IntegradorContexto _context = context;
+        private readonly UserManager<IdentityUser> _userManager = userManager;
 
         // GET: Proveedores
         public async Task<IActionResult> Index()
@@ -31,6 +33,9 @@ namespace Integrador.Controllers
             }
 
             var proveedor = await _context.Proveedores
+                .Include(p => p.Suministros)
+                    .ThenInclude(s => s.Producto)
+                        .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (proveedor == null)
@@ -116,7 +121,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Proveedores/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? admin = false)
         {
             if (id == null)
             {
@@ -124,6 +129,9 @@ namespace Integrador.Controllers
             }
 
             var proveedor = await _context.Proveedores
+                .Include(p => p.Suministros)
+                    .ThenInclude(s => s.Producto)
+                        .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (proveedor == null)
@@ -131,22 +139,40 @@ namespace Integrador.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewBag.admin = admin;
             return View(proveedor);
         }
 
         // POST: Proveedores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, bool? admin)
         {
             var proveedor = await _context.Proveedores.FindAsync(id);
+
             if (proveedor != null)
             {
                 _context.Proveedores.Remove(proveedor);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            if (admin == true)
+            {
+                var user = await _userManager.FindByEmailAsync(proveedor.Email);
+                var result = await _userManager.DeleteAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    // Manejar el error en caso de que no se pueda eliminar al usuario
+                    return BadRequest(result.Errors);
+                }
+                return RedirectToAction(nameof(Index), "Usuarios");
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ProveedorExists(int id)

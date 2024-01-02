@@ -42,10 +42,75 @@
             @Html.DisplayFor(model => model.Direccion)
         </dd>
     </dl>
+    @if (Model.Suministros.Count > 0)
+    {
+        <div>
+            <h4>Suministros</h4>
+            <hr />
+            <table class="table border-bottom">
+                <tr>
+                    <th>
+                        Fecha del suministro
+                    </th>
+                    <th>
+                        Modelo
+                    </th>
+                    <th>
+                        Producto
+                    </th>
+                    <th>
+                        Unidades
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model.Suministros)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaSuministro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Unidades)
+                        </td>
+                        <td>
+                            <div class="d-print-none">
+                                <a asp-action="Edit" asp-controller="Suministros"
+                                   asp-route-id="@item.Id">Editar</a> |
+                                <a asp-action="Delete" asp-controller="Suministros"
+                                   asp-route-id="@item.Id">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        @if (Model.Suministros.Count == 0)
+        {
+            if (ViewBag.admin)
+            {
+                <input type="hidden" name="admin" value="true" />
+            }
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        }
+        else
+        {
+            <div class="alert alert-danger" style="width: fit-content;" role="alert">
+                No se puede borrar el proveedor porque tiene suministros.
+            </div>
+            <input type="submit" value="Delete" class="btn btn-danger" disabled />
+        }
+        |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

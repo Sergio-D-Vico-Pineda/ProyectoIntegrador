@@ -4,13 +4,15 @@ using Integrador.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Integrador.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    public class UsuariosController(ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : Controller
+    public class UsuariosController(IntegradorContexto contexto, ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : Controller
     {
         private readonly ApplicationDbContext _context = context;
+        private readonly IntegradorContexto _contexto = contexto;
         private readonly UserManager<IdentityUser> _userManager = userManager;
         private readonly SignInManager<IdentityUser> _signInManager = signInManager;
 
@@ -55,7 +57,6 @@ namespace Integrador.Controllers
             return View(model);
         }
 
-
         // POST: Usuarios/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -66,6 +67,32 @@ namespace Integrador.Controllers
             if (user == null)
             {
                 return NotFound($"Unable to find user with ID '{userId}'.");
+            }
+
+            // Comprobar el rol del usuario que se va a borrar
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            if (userRoles.Contains("Proveedor"))
+            {
+                Proveedor? proveedor = await _contexto.Proveedores
+                .Where(p => p.Email == user.Email)
+                .FirstOrDefaultAsync();
+
+                if (proveedor != null)
+                {
+                    return RedirectToAction("Delete", "Proveedores", new { id = proveedor.Id, admin = true });
+                }
+            }
+            else if (userRoles.Contains("Cliente"))
+            {
+                Cliente? cliente = await _contexto.Clientes
+                    .Where(c => c.Email == user.Email)
+                    .FirstOrDefaultAsync();
+
+                if (cliente != null)
+                {
+                    return RedirectToAction("Delete", "Clientes", new { id = cliente.Id });
+                }
             }
 
             var currentUserId = User.Identity.Name;
