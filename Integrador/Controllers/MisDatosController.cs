@@ -10,23 +10,15 @@ using Microsoft.EntityFrameworkCore;
 namespace Integrador.Controllers
 {
     [Authorize(Roles = "Proveedor, Cliente")]
-    public class MisDatosController : Controller
-    {
-        private readonly IntegradorContexto _context;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<MisDatosController> _logger;
-
-        public MisDatosController(IntegradorContexto context,
+    public class MisDatosController(IntegradorContexto context,
                                   UserManager<IdentityUser> userManager,
                                   SignInManager<IdentityUser> signInManager,
-                                  ILogger<MisDatosController> logger)
+                              ILogger<MisDatosController> logger) : Controller
         {
-            _context = context;
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-        }
+        private readonly IntegradorContexto _context = context;
+        private readonly UserManager<IdentityUser> _userManager = userManager;
+        private readonly SignInManager<IdentityUser> _signInManager = signInManager;
+        private readonly ILogger<MisDatosController> _logger = logger;
 
 
         // GET: MisDatos/Create
@@ -42,6 +34,7 @@ namespace Integrador.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // HOME CONTROLLER 
             string? email = User.Identity.Name;
 
             Proveedor? proveedor = await _context.Proveedores

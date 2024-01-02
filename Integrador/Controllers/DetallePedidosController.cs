@@ -12,14 +12,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace Integrador.Controllers
 {
     [Authorize(Roles = "Cliente, Administrador")]
-    public class DetallePedidosController : Controller
+    public class DetallePedidosController(IntegradorContexto context) : Controller
     {
-        private readonly IntegradorContexto _context;
-
-        public DetallePedidosController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET: DetallePedidos
         public async Task<IActionResult> Index()

@@ -5,19 +5,13 @@ using System.Diagnostics;
 
 namespace Integrador.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IntegradorContexto context) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IntegradorContexto _context;
-
-        public HomeController(ILogger<HomeController> logger, IntegradorContexto context)
-        {
-            _logger = logger;
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         public IActionResult Index()
         {
+            // MISDATOS CONTROLLER
             string? emailUsuario = User.Identity.Name;
 
             if (User.IsInRole("Proveedor") && !_context.Proveedores.Any(p => p.Email == emailUsuario))
