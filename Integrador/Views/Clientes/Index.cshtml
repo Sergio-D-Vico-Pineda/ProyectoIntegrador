@@ -44,7 +44,14 @@
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @if (item.Email.EndsWith("-DEL."))
+                    {
+                        <del>@item.Email</del>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Email)
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nif)
