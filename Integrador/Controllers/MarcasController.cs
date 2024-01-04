@@ -24,7 +24,10 @@ namespace Integrador.Controllers
         [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Marcas.ToListAsync());
+            var marcas = _context.Marcas
+                .Include(m => m.Modelos);
+            return View(await marcas.ToListAsync());
+            /*return View(await _context.Marcas.ToListAsync());*/
         }
 
         // GET: Marcas/Details/5
@@ -37,6 +40,7 @@ namespace Integrador.Controllers
             }
 
             var marca = await _context.Marcas
+                .Include(m => m.Modelos)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (marca == null)
