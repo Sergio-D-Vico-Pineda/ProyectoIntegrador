@@ -11,17 +11,57 @@
     <h4>Marca</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nombre)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nombre)
         </dd>
     </dl>
-    
+
+    @if (Model.Modelos.Count > 0)
+    {
+        <div>
+            <h4>@Html.DisplayNameFor(model => model.Modelos)</h4>
+            <hr />
+            <table class="table border-bottom">
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                @foreach (var item in Model.Modelos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.Nombre)
+                        </td>
+                        <td class="d-print-none">
+                            <a asp-action="Delete" asp-controller="Modelos"
+                               asp-route-id="@item.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        @if (Model.Modelos.Count == 0)
+        {
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        }
+        else
+        {
+            <div class="alert alert-danger" style="width: fit-content;" role="alert">
+                No se puede borrar una marca con modelos.
+            </div>
+            <input type="submit" value="Delete" class="btn btn-danger" disabled />
+        }
+        |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

@@ -137,6 +137,7 @@ namespace Integrador.Controllers
             }
 
             var marca = await _context.Marcas
+                .Include(m => m.Modelos)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (marca == null)
