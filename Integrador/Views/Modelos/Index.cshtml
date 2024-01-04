@@ -22,6 +22,9 @@
                 Modelo
                 @* @Html.DisplayNameFor(model => model.Nombre) *@
             </th>
+            <th>
+                Núm. Productos
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -33,10 +36,15 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Marca.Nombre)
+                    <a asp-action="Details" asp-controller="Marcas" asp-route-id="@item.MarcaId">
+                        @Html.DisplayFor(modelItem => item.Marca.Nombre)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @item.Productos.Count
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

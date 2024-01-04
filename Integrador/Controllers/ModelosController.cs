@@ -19,7 +19,9 @@ namespace Integrador.Controllers
         [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Index()
         {
-            var modelos = _context.Modelos.Include(m => m.Marca);
+            var modelos = _context.Modelos
+                .Include(m => m.Marca)
+                .Include(m => m.Productos);
             return View(await modelos.ToListAsync());
         }
 
