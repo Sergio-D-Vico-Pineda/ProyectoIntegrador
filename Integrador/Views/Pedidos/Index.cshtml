@@ -59,7 +59,14 @@
                     @Html.DisplayFor(modelItem => item.FechaPedido)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Cliente.Email)
+                    @if (item.Cliente.Email.EndsWith("-DEL."))
+                    {
+                        <del>@item.Cliente.Email</del>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Cliente.Email)
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Estado.Nombre)
