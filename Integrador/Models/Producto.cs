@@ -56,7 +56,7 @@ namespace Integrador.Models
         }
 
         [Display(Name = "Modelo")]
-        public int ModeloId { get; set; }
+        public required int ModeloId { get; set; }
 
         public Modelo? Modelo { get; set; }
 
