@@ -66,9 +66,45 @@
         </dd>
     </dl>
 
+    @if (Model.DetallePedidos.Count > 0)
+    {
+        <div>
+            <h4>Detalle</h4>
+            <hr />
+            <table class="table border-bottom">
+                <tr>
+                    <th>
+                        Id. Pedidos
+                    </th>
+                </tr>
+                @foreach (var item in Model.DetallePedidos)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-controller="Pedidos" asp-route-id="@item.PedidoId">
+                                @item.PedidoId
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        @if (Model.DetallePedidos.Count == 0)
+        {
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        }
+        else
+        {
+            <div class="alert alert-danger" style="width: fit-content;" role="alert">
+                No se puede borrar el producto que ha sido pedido.
+            </div>
+            <input type="submit" value="Delete" class="btn btn-danger" disabled />
+        }
+        |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

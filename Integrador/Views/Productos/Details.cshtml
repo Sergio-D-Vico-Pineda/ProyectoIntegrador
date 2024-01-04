@@ -65,8 +65,38 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Stock)
         </dd>
+        <dt class="col-sm-2">
+            Veces pedido
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DetallePedidos.Count
+        </dd>
     </dl>
 </div>
+
+@if (Model.DetallePedidos.Count > 0)
+{
+    <div>
+        <h4>Detalle</h4>
+        <hr />
+        <table class="table border-bottom">
+            <tr>
+                <th>
+                    Id. Pedido
+                </th>
+            </tr>
+            @foreach (var pedido in Model.DetallePedidos)
+            {
+                <tr>
+                    <td>
+                        @pedido.PedidoId
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

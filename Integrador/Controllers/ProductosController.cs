@@ -26,8 +26,10 @@ namespace Integrador.Controllers
         [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.Productos.Include(p => p.Modelo);
-            return View(await integradorContexto.ToListAsync());
+            var productos = _context.Productos
+                .Include(p => p.Modelo)
+                .Include(p => p.DetallePedidos);
+            return View(await productos.ToListAsync());
         }
 
         // GET: Productos/Details/5
@@ -41,6 +43,7 @@ namespace Integrador.Controllers
 
             var producto = await _context.Productos
                 .Include(p => p.Modelo)
+                .Include(p => p.DetallePedidos)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (producto == null)
@@ -191,6 +194,7 @@ namespace Integrador.Controllers
 
             var producto = await _context.Productos
                 .Include(p => p.Modelo)
+                .Include(p => p.DetallePedidos)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (producto == null)
