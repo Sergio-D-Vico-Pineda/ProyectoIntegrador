@@ -62,5 +62,7 @@ namespace Integrador.Models
 
         public ICollection<DetallePedido>? DetallePedidos { get; set; }
 
+        public ICollection<Suministro>? Suministros { get; set; }
+
     }
 }
