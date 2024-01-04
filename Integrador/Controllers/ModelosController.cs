@@ -138,6 +138,7 @@ namespace Integrador.Controllers
 
             var modelo = await _context.Modelos
                 .Include(m => m.Marca)
+                .Include(m => m.Productos)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (modelo == null)
