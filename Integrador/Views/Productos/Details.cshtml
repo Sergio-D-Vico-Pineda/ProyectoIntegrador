@@ -20,7 +20,9 @@
             @Html.DisplayNameFor(model => model.Modelo)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Modelo.Nombre)
+            <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.ModeloId">
+                @Html.DisplayFor(model => model.Modelo.Nombre)
+            </a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Descripcion)
