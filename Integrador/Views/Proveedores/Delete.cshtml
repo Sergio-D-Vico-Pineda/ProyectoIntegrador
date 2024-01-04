@@ -104,7 +104,7 @@
         <input type="hidden" asp-for="Id" />
         @if (Model.Suministros.Count == 0)
         {
-            if (ViewBag.admin)
+            if (ViewBag.admin && User.IsInRole("Administrador"))
             {
                 <input type="hidden" name="admin" value="true" />
             }
@@ -118,6 +118,13 @@
             <input type="submit" value="Delete" class="btn btn-danger" disabled />
         }
         |
-        <a asp-action="Index">Back to List</a>
+        @if (ViewBag.admin && User.IsInRole("Administrador"))
+        {
+            <a asp-action="Index" asp-controller="Usuarios">Back to List</a>
+        }
+        else
+        {
+            <a asp-action="Index">Back to List</a>
+        }
     </form>
 </div>
