@@ -14,5 +14,7 @@ namespace Integrador.Models
         public required int MarcaId { get; set; }
 
         public Marca? Marca { get; set; }
+
+        public ICollection<Producto>? Productos { get; set; }
     }
 }

@@ -11,21 +11,16 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    public class ModelosController : Controller
+    public class ModelosController(IntegradorContexto context) : Controller
     {
-        private readonly IntegradorContexto _context;
-
-        public ModelosController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET: Modelos
         [Authorize(Roles = "Proveedor, Cliente, Administrador")]
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.Modelos.Include(m => m.Marca);
-            return View(await integradorContexto.ToListAsync());
+            var modelos = _context.Modelos.Include(m => m.Marca);
+            return View(await modelos.ToListAsync());
         }
 
         // GET: Modelos/Details/5
@@ -39,6 +34,7 @@ namespace Integrador.Controllers
 
             var modelo = await _context.Modelos
                 .Include(m => m.Marca)
+                .Include(m => m.Productos)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (modelo == null)
