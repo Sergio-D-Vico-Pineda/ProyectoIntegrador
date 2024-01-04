@@ -49,52 +49,55 @@
     </dl>
 </div>
 
-<div>
-    <h4>Suministros</h4>
-    <hr />
-    <table class="table border-bottom">
-        <tr>
-            <th>
-                Fecha del suministro
-            </th>
-            <th>
-                Modelo
-            </th>
-            <th>
-                Producto
-            </th>
-            <th>
-                Unidades
-            </th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.Suministros)
-        {
+@if (Model.Suministros.Count > 0)
+{
+    <div>
+        <h4>Suministros</h4>
+        <hr />
+        <table class="table border-bottom">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FechaSuministro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Unidades)
-                </td>
-                <td>
-                    <div class="d-print-none">
-                        <a asp-action="Edit" asp-controller="Suministros"
-                           asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Delete" asp-controller="Suministros"
-                           asp-route-id="@item.Id">Eliminar</a>
-                    </div>
-                </td>
+                <th>
+                    Fecha del suministro
+                </th>
+                <th>
+                    Modelo
+                </th>
+                <th>
+                    Producto
+                </th>
+                <th>
+                    Unidades
+                </th>
+                <th></th>
             </tr>
-        }
-    </table>
-</div>
+            @foreach (var item in Model.Suministros)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaSuministro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unidades)
+                    </td>
+                    <td>
+                        <div class="d-print-none">
+                            <a asp-action="Edit" asp-controller="Suministros"
+                               asp-route-id="@item.Id">Editar</a> |
+                            <a asp-action="Delete" asp-controller="Suministros"
+                               asp-route-id="@item.Id">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
 
 <div class="d-print-none">
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
