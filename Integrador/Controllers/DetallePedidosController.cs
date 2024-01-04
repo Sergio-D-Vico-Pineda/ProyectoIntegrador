@@ -19,10 +19,11 @@ namespace Integrador.Controllers
         // GET: DetallePedidos
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.DetallePedidos
-                                             .Include(d => d.Pedido)
-                                             .Include(d => d.Producto);
-            return View(await integradorContexto.ToListAsync());
+            var detallePedidos = _context.DetallePedidos
+                            .Include(dp => dp.Pedido)
+                            .Include(dp => dp.Producto)
+                            .ThenInclude(p => p.Modelo);
+            return View(await detallePedidos.ToListAsync());
         }
 
         // GET: DetallePedidos/Details/5
@@ -36,6 +37,7 @@ namespace Integrador.Controllers
             var detallePedido = await _context.DetallePedidos
                 .Include(d => d.Pedido)
                 .Include(d => d.Producto)
+                .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (detallePedido == null)
             {

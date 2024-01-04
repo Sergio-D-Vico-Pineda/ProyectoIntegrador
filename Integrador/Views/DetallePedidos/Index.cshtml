@@ -13,6 +13,21 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Pedido.ClienteId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pedido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.Modelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.Descripcion)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Cantidad)
             </th>
             <th>
@@ -24,42 +39,48 @@
             <th>
                 @Html.DisplayNameFor(model => model.Descuento)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Producto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pedido)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cantidad)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecioUnidad)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecioTotal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descuento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Producto.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pedido.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pedido.ClienteId)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="Pedidos" asp-route-id="@item.PedidoId">
+                        @Html.DisplayFor(modelItem => item.PedidoId)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecioUnidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecioTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descuento)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
