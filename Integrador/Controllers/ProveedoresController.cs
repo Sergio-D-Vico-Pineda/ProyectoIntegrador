@@ -167,12 +167,12 @@ namespace Integrador.Controllers
                     // Manejar el error en caso de que no se pueda eliminar al usuario
                     return BadRequest(result.Errors);
                 }
+
                 return RedirectToAction(nameof(Index), "Usuarios");
             }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         private bool ProveedorExists(int id)

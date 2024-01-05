@@ -91,7 +91,7 @@ namespace Integrador.Controllers
 
                 if (cliente != null)
                 {
-                    return RedirectToAction("Delete", "Clientes", new { id = cliente.Id });
+                    return RedirectToAction("Delete", "Clientes", new { id = cliente.Id, admin = true });
                 }
             }
 
