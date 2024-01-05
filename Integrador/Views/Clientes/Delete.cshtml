@@ -11,16 +11,16 @@
     <h4>Cliente</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nombre)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nombre)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @if (Model.Email.EndsWith("-DEL."))
             {
                 <del>@Model.Email</del>
@@ -30,29 +30,87 @@
                 @Html.DisplayFor(model => model.Email)
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nif)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nif)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Telefono)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Telefono)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Direccion)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Direccion)
         </dd>
     </dl>
-    
+
+    @if (Model.Pedidos.Count > 0)
+    {
+        <div>
+            <h4>Pedidos</h4>
+            <hr />
+            <table class="table border-bottom">
+                <tr>
+                    <th>
+                        Id. pedido
+                    </th>
+                    <th>
+                        Estado del pedido
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.Pedidos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado.Nombre)
+                        </td>
+                        <td>
+                            <div class="d-print-none">
+                                <a asp-action="Delete" asp-controller="Pedidos"
+                                   asp-route-id="@item.Id">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        @if (Model.Pedidos.Count == 0)
+        {
+            if (ViewBag.admin && User.IsInRole("Administrador"))
+            {
+                <input type="hidden" name="admin" value="true" />
+            }
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        }
+        else
+        {
+            <div class="alert alert-danger" style="width: fit-content;" role="alert">
+                No se puede borrar un cliente con pedidos realizados.
+            </div>
+            <input type="submit" value="Delete" class="btn btn-danger" disabled />
+        }
+        |
+        @if (ViewBag.admin && User.IsInRole("Administrador"))
+        {
+            <a asp-action="Index" asp-controller="Usuarios">Back to List</a>
+        }
+        else
+        {
+            <a asp-action="Index">Back to List</a>
+        }
     </form>
 </div>

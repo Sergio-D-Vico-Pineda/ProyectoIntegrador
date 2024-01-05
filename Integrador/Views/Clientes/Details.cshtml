@@ -49,6 +49,53 @@
         </dd>
     </dl>
 </div>
+
+@if (Model.Pedidos.Count > 0)
+{
+    <div>
+        <h4>Pedidos</h4>
+        <hr />
+        <table class="table border-bottom">
+            <tr>
+                <th>
+                    Id. pedido
+                </th>
+                <th>
+                    Estado del pedido
+                </th>
+                <th>
+                    Núm. de productos
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.Pedidos)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DetallePedidos.Count)
+                    </td>
+                    <td>
+                        <div class="d-print-none">
+                            <a asp-action="Edit" asp-controller="Pedidos"
+                               asp-route-id="@item.Id">Editar</a> |
+                            <a asp-action="Details" asp-controller="Pedidos"
+                               asp-route-id="@item.Id">Detalles</a> |
+                            <a asp-action="Delete" asp-controller="Pedidos"
+                               asp-route-id="@item.Id">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

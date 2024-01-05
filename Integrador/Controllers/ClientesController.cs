@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Integrador.Controllers
 {
@@ -15,10 +16,12 @@ namespace Integrador.Controllers
     public class ClientesController : Controller
     {
         private readonly IntegradorContexto _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ClientesController(IntegradorContexto context)
+        public ClientesController(IntegradorContexto context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Clientes
@@ -36,7 +39,11 @@ namespace Integrador.Controllers
             }
 
             var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(c => c.Pedidos)
+                .ThenInclude(p => p.Estado)
+                .Include(c => c.Pedidos)
+                .ThenInclude(p => p.DetallePedidos)
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (cliente == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -119,7 +126,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? admin)
         {
             if (id == null)
             {
@@ -127,28 +134,46 @@ namespace Integrador.Controllers
             }
 
             var cliente = await _context.Clientes
+                .Include(c => c.Pedidos)
+                .ThenInclude(p => p.Estado)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (cliente == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-
+            ViewBag.admin = admin;
             return View(cliente);
         }
 
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, bool? admin)
         {
             var cliente = await _context.Clientes.FindAsync(id);
+
             if (cliente != null)
             {
                 _context.Clientes.Remove(cliente);
             }
 
             await _context.SaveChangesAsync();
+
+            if (admin == true && User.IsInRole("Administrador"))
+            {
+                var user = await _userManager.FindByEmailAsync(cliente.Email);
+                var result = await _userManager.DeleteAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    // Manejar el error en caso de que no se pueda eliminar al usuario
+                    return BadRequest(result.Errors);
+                }
+
+                return RedirectToAction(nameof(Index), "Usuarios");
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
