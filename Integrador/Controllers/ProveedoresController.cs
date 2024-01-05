@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Integrador.Controllers
 {
-    [Authorize(Roles = " Administrador")]
+    [Authorize(Roles = "Administrador")]
     public class ProveedoresController(IntegradorContexto context, UserManager<IdentityUser> userManager) : Controller
     {
         private readonly IntegradorContexto _context = context;
