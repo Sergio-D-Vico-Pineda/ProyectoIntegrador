@@ -300,14 +300,14 @@ namespace Integrador.Controllers
             return _context.Suministros.Any(e => e.Id == id);
         }
 
-        public IActionResult GetProductosByModelo(int? id)
+        public async Task<IActionResult> GetProductosByModelo(int? id)
         {
             var productos = _context.Productos;
             if (id != null)
             {
-                return Json(productos.Where(p => p.ModeloId == id).ToList());
+                return Json(await productos.Where(p => p.ModeloId == id).ToListAsync());
             }
-            return Json(productos.ToList());
+            return Json(await productos.ToListAsync());
         }
 
         public async Task<IActionResult> GetModeloByProducto(int? id)
