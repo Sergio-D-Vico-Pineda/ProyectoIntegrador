@@ -87,7 +87,7 @@ namespace Integrador.Controllers
 
                 ViewData["ProveedorId"] = new SelectList(listaProveedores, "Id", "Nombre");
             }
-                
+
             if (id != null)
             {
                 var proveedor = _context.Proveedores
@@ -302,12 +302,17 @@ namespace Integrador.Controllers
 
         public IActionResult GetProductosByModelo(int? id)
         {
-            var productos = _context.Productos.ToList();
+            IQueryable<Producto> productos;
             if (id != null)
             {
-                productos = _context.Productos.Where(p => p.ModeloId == id).ToList();
+                productos = _context.Productos
+                    .Where(p => p.ModeloId == id);
             }
-            return Json(productos);
+            else
+            {
+                productos = _context.Productos;
+            }
+            return Json(productos.ToList());
         }
 
         public async Task<IActionResult> GetModeloByProducto(int? id)
