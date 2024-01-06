@@ -302,12 +302,12 @@ namespace Integrador.Controllers
 
         public IActionResult GetProductosByModelo(int? id)
         {
-            var productos = _context.Productos.ToList();
+            var productos = _context.Productos;
             if (id != null)
             {
-                productos = _context.Productos.Where(p => p.ModeloId == id).ToList();
+                return Json(productos.Where(p => p.ModeloId == id).ToList());
             }
-            return Json(productos);
+            return Json(productos.ToList());
         }
 
         public async Task<IActionResult> GetModeloByProducto(int? id)
