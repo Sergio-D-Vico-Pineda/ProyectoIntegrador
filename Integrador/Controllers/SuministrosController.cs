@@ -93,7 +93,8 @@ namespace Integrador.Controllers
                 var proveedor = _context.Proveedores
                     .Where(p => p.Email == User.Identity.Name)
                     .FirstOrDefault();
-                ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", proveedor.Id);
+                if (proveedor != null)
+                    ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", proveedor.Id);
                 ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", id);
             }
             ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
