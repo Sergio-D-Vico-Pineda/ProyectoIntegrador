@@ -12,42 +12,25 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+            @if (User.IsInRole("Administrador"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cliente)
+                </th>
+            }
             <th>
                 @Html.DisplayNameFor(model => model.FechaPedido)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cliente)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Estado)
             </th>
             <th>
                 Núm. Productos
             </th>
-            @*<th>
-            @Html.DisplayNameFor(model => model.Comentarios)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.FechaEsperada)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.FechaConfirmacion)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.FechaEnvio)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.FechaEntrega)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.FechaAnulado)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.FechaDevolucion)
-            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -55,21 +38,24 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @if (item.Cliente.Email.EndsWith("-DEL."))
+                        {
+                            <del>@item.Cliente.Email</del>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Cliente.Email)
+                        }
+                    </td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.FechaPedido)
-                </td>
-                <td>
-                    @if (item.Cliente.Email.EndsWith("-DEL."))
-                    {
-                        <del>@item.Cliente.Email</del>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Cliente.Email)
-                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Estado.Nombre)
@@ -77,29 +63,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DetallePedidos.Count)
                 </td>
-                @*<td>
-            @Html.DisplayFor(modelItem => item.Comentarios)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.FechaEsperada)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.FechaConfirmacion)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.FechaEnvio)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.FechaEntrega)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.FechaAnulado)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.FechaDevolucion)
-            </td> *@
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <span>|</span>
+                    }
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
