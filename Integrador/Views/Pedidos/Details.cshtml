@@ -66,42 +66,67 @@
                     <span>@Html.DisplayFor(model => model.Comentarios)</span>
                 }
             </dd>
+
+
+            @if (Model.FechaEsperada != null)
+            {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaEsperada)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaEsperada)
             </dd>
+            }
+
+            @if (Model.FechaConfirmacion != null)
+            {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaConfirmacion)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaConfirmacion)
             </dd>
+            }
+
+            @if (Model.FechaEnvio != null)
+            {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaEnvio)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaEnvio)
             </dd>
+            }
+
+            @if (Model.FechaEntrega != null)
+            {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaEntrega)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaEntrega)
             </dd>
+            }
+
+            @if (Model.FechaAnulado != null)
+            {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaAnulado)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaAnulado)
             </dd>
+            }
+
+            @if (Model.FechaDevolucion != null)
+            {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaDevolucion)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaDevolucion)
             </dd>
+            }
         </dl>
     </div>
     @if (Model.DetallePedidos.Count > 0 && Model.Estado.Nombre == "Pendiente")
