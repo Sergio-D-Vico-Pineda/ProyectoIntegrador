@@ -14,6 +14,8 @@ namespace Integrador.Models
         public required int ProductoId { get; set; }
 
         [Required(ErrorMessage = "La cantidad es requerida.")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Debe contener solo números enteros positivos.")]
+        [Range(1, double.MaxValue, ErrorMessage = "La cantidad tiene que ser mayor que 0.")]
         public required int Cantidad { get; set; }
 
         private decimal? precioUnidad;

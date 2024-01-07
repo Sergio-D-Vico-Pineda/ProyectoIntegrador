@@ -212,7 +212,6 @@ namespace Integrador.Controllers
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, input.OldPassword, input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
-
                 ModelState.AddModelError(string.Empty, "La contraseña es incorrecta.");
 
                 return View();
