@@ -70,7 +70,7 @@
                             {
                                 @if (item.Stock > 0)
                                 {
-                                    <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                                    <a asp-action="AgregarCarrito" asp-route-id="@item.Id" class="btn btn-primary">Añadir al carrito</a>
                                 }
                                 else
                                 {

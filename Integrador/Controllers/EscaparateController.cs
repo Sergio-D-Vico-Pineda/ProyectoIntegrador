@@ -1,4 +1,6 @@
 ﻿using Integrador.Data;
+using Integrador.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +16,108 @@ namespace Integrador.Controllers
         public async Task<IActionResult> Index(int? MarcaId)
         {
             ViewData["ListaMarcas"] = new SelectList(_context.Marcas, "Id", "Nombre");
+
             var productos = _context.Productos
                 .Include(p => p.Modelo)
                 .Where(p => p.Escaparate);
+            /*.Where(p => p.Escaparate && p.MarcaId == MarcaId);*/
+
             return View(await productos.ToListAsync());
+        }
+
+        // GET /Escaparate/AgregarCarrito
+        [Authorize(Roles = "Cliente")]
+        public async Task<IActionResult> AgregarCarrito(int? id)
+        {
+            if (id == 0) return RedirectToAction(nameof(Index), "Escaparate");
+
+            var producto = await _context.Productos
+                .Include(p => p.Modelo)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
+
+            return View(producto);
+        }
+
+        // POST /Escaparate/AgregarCarrito
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AgregarCarrito(int id, int? descuento, int cantidad = 1)
+        {
+            var producto = await _context.Productos.FindAsync(id);
+
+            if (cantidad <= 0)
+            {
+                ModelState.AddModelError("dpCantidad", "La cantidad tiene que ser un número entero positivo.");
+
+                producto = await _context.Productos
+                .Include(p => p.Modelo)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
+
+                return View(producto);
+            }
+
+            if (producto == null) return NotFound();
+
+            if (HttpContext.Session.GetString("NumPedido") == null)
+            {
+                Cliente? cliente = await _context.Clientes
+                .Where(c => c.Email == User.Identity.Name)
+                .FirstOrDefaultAsync();
+
+                Pedido pedido = new()
+                {
+                    ClienteId = cliente.Id,
+                    EstadoId = 1,
+                    FechaPedido = DateTime.Now,
+                    FechaEsperada = DateTime.Now.AddDays(3)
+                };
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(pedido);
+                    await _context.SaveChangesAsync();
+                }
+
+                HttpContext.Session.SetString("NumPedido", pedido.Id.ToString());
+            }
+
+            DetallePedido? dpd = await _context.DetallePedidos
+                .Where(dp => dp.PedidoId == Convert.ToInt32(HttpContext.Session.GetString("NumPedido")))
+                .Where(dp => dp.ProductoId == producto.Id)
+                .FirstOrDefaultAsync();
+
+            if (dpd != null)
+            {
+                dpd.Cantidad += cantidad;
+                dpd.PrecioTotal = producto.Precio * dpd.Cantidad;
+                if (ModelState.IsValid)
+                {
+                    _context.Update(dpd);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                dpd = new()
+                {
+                    // Convert.ToInt32(producto.PedidoId),
+                    PedidoId = Convert.ToInt32(HttpContext.Session.GetString("NumPedido")),
+                    Cantidad = cantidad,
+                    ProductoId = producto.Id,
+                    PrecioUnidad = producto.Precio,
+                    PrecioTotal = producto.Precio * cantidad,
+                    Descuento = descuento ?? 0
+                };
+                if (ModelState.IsValid)
+                {
+                    _context.Add(dpd);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
