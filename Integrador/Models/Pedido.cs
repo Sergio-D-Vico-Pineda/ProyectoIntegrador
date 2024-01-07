@@ -12,7 +12,7 @@ namespace Integrador.Models
         public DateTime? FechaPedido { get; set; } = DateTime.Now; // Fecha actual por defecto
 
         [DataType(DataType.Date)]
-        [Display(Name = "Fecha esperada de entrega")]
+        [Display(Name = "Fecha estimada")]
         public DateTime? FechaEsperada { get; set; } = DateTime.Now.AddDays(3); // Fecha actual por defecto más 3 días
 
         [DataType(DataType.Date)]

@@ -43,6 +43,12 @@
                 @Html.DisplayFor(model => model.Estado.Descripcion)
             </dd>
             <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Comentarios)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Comentarios)
+            </dd>
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaEsperada)
             </dt>
             <dd class="col-sm-8">
@@ -78,15 +84,9 @@
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaDevolucion)
             </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Comentarios)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.Comentarios)
-            </dd>
         </dl>
     </div>
-    @if (Model.DetallePedidos.Count > 0)
+    @if (Model.DetallePedidos.Count > 0 && Model.Estado.Nombre == "Pendiente")
     {
         <div class="col-12 col-lg-6">
             <h4>Productos del pedido</h4>
@@ -123,7 +123,16 @@
                             @Html.DisplayFor(modelItem => item.Producto.Descripcion)
                         </td>
                         <td>
+                            @if (item.Cantidad > 1)
+                            {
+                                <form>
+                                    <input class="btn btn-primary" value="-" type="submit" />
+                                </form>
+                            }
                             @Html.DisplayFor(modelItem => item.Cantidad)
+                            <form>
+                                <input class="btn btn-primary" value="+" type="submit" />
+                            </form>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PrecioUnidad)
@@ -137,14 +146,31 @@
                     </tr>
                 }
             </table>
+            @{
+                decimal? total = 0;
+                foreach (var item in Model.DetallePedidos)
+                {
+                    total += item.PrecioUnidad * item.Cantidad;
+                }
+            }
+            <h5>
+                Total: @total.ToString() €
+            </h5>
         </div>
     }
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="d-print-none text-center d-flex justify-content-evenly">
+    <a class="btn btn-primary" href="javascript:window.print()">Imprimir</a>
+    <form asp-action="Confirmar" asp-route-id="@Model?.Id">
+        <input class="btn btn-primary" type="submit" value="Confirmar" />
+    </form>
 </div>
 
-<div class="d-print-none text-center">
-    <a class="btn btn-primary" href="javascript:window.print()">Imprimir</a>
+<div>
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> <span>|</span>
+    }
+    <a asp-action="Index">Back to List</a>
 </div>
