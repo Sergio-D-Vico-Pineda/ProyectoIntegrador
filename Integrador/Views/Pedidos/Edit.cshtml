@@ -34,6 +34,11 @@
                 <span asp-validation-for="EstadoId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Comentarios" class="control-label"></label>
+                <input asp-for="Comentarios" class="form-control" />
+                <span asp-validation-for="Comentarios" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="FechaEsperada" class="control-label"></label>
                 <input asp-for="FechaEsperada" class="form-control" disabled />
                 <span asp-validation-for="FechaEsperada" class="text-danger"></span>
@@ -62,11 +67,6 @@
                 <label asp-for="FechaDevolucion" class="control-label"></label>
                 <input asp-for="FechaDevolucion" class="form-control" />
                 <span asp-validation-for="FechaDevolucion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Comentarios" class="control-label"></label>
-                <input asp-for="Comentarios" class="form-control" />
-                <span asp-validation-for="Comentarios" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
