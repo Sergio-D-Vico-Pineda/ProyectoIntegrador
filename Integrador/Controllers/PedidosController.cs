@@ -19,12 +19,13 @@ namespace Integrador.Controllers
         // GET: Pedidos
         public async Task<IActionResult> Index()
         {
-            var pedidos = _context.Pedidos;
+            var pedidos = _context.Pedidos
+                    .Include(p => p.Cliente)
+                    .Include(p => p.Estado)
+                    .Include(p => p.DetallePedidos);
             if (User.IsInRole("Administrador"))
             {
                 return View(await pedidos
-                    .Include(p => p.Cliente)
-                    .Include(p => p.Estado)
                     .ToListAsync());
             }
             else
@@ -39,8 +40,6 @@ namespace Integrador.Controllers
 
                 return View(await pedidos
                     .Where(p => p.ClienteId == cliente.Id)
-                    .Include(p => p.Cliente)
-                    .Include(p => p.Estado)
                     .ToListAsync());
             }
         }
@@ -212,6 +211,28 @@ namespace Integrador.Controllers
             }
 
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST /Pedidos/ConfirmarPedido
+        [HttpPost, ActionName("Confirmar")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmarPedido(int id)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Cliente)
+                .Include(p => p.Estado)
+                .Include(p => p.DetallePedidos)
+                .ThenInclude(dp => dp.Producto)
+                .ThenInclude(p => p.Modelo)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (pedido != null)
+            {
+                pedido.EstadoId = 2;
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
