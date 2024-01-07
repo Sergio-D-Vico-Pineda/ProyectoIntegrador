@@ -25,9 +25,12 @@
                 @Html.DisplayNameFor(model => model.Estado)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comentarios)
+                Núm. Productos
             </th>
-            @* <th>
+            @*<th>
+            @Html.DisplayNameFor(model => model.Comentarios)
+            </th>
+            <th>
             @Html.DisplayNameFor(model => model.FechaEsperada)
             </th>
             <th>
@@ -72,9 +75,12 @@
                     @Html.DisplayFor(modelItem => item.Estado.Nombre)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Comentarios)
+                    @Html.DisplayFor(modelItem => item.DetallePedidos.Count)
                 </td>
-                @* <td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Comentarios)
+            </td>
+            <td>
             @Html.DisplayFor(modelItem => item.FechaEsperada)
             </td>
             <td>
