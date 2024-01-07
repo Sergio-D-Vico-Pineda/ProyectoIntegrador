@@ -11,27 +11,23 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    public class SuministrosController : Controller
+    [Authorize(Roles = "Proveedor, Administrador")]
+    public class SuministrosController(IntegradorContexto context) : Controller
     {
-        private readonly IntegradorContexto _context;
-
-        public SuministrosController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET: Suministros
-        [Authorize(Roles = "Proveedor, Administrador")]
+        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Index()
         {
+            var suministros = _context.Suministros;
             if (User.IsInRole("Administrador"))
             {
-
-                var integradorContexto = _context.Suministros
-                                                 .Include(d => d.Proveedor)
-                                                 .Include(d => d.Producto)
-                                                 .ThenInclude(d => d.Modelo);
-                return View(await integradorContexto.ToListAsync());
+                return View(await suministros
+                        .Include(d => d.Proveedor)
+                        .Include(d => d.Producto)
+                        .ThenInclude(d => d.Modelo)
+                        .ToListAsync());
             }
             else
             {
@@ -43,18 +39,18 @@ namespace Integrador.Controllers
 
                 if (proveedor == null) return NotFound();
 
-                var integradorContexto = _context.Suministros
-                                .Where(s => s.ProveedorId == proveedor.Id)
-                                .OrderByDescending(s => s.FechaSuministro)
-                                .Include(s => s.Proveedor)
-                                .Include(s => s.Producto)
-                                .ThenInclude(p => p.Modelo);
-                return View(await integradorContexto.ToListAsync());
+                return View(await suministros
+                        .Where(s => s.ProveedorId == proveedor.Id)
+                        .OrderByDescending(s => s.FechaSuministro)
+                        .Include(s => s.Proveedor)
+                        .Include(s => s.Producto)
+                        .ThenInclude(p => p.Modelo)
+                        .ToListAsync());
             }
         }
 
         // GET: Suministros/Details/5
-        [Authorize(Roles = "Proveedor, Administrador")]
+        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -62,7 +58,7 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
-            var suministro = await _context.Suministros
+            Suministro? suministro = await _context.Suministros
                 .Include(s => s.Proveedor)
                 .Include(s => s.Producto)
                 .ThenInclude(p => p.Modelo)
@@ -77,17 +73,18 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Create
-        [Authorize(Roles = "Proveedor, Administrador")]
+        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Create(int? id)
         {
             if (User.IsInRole("Administrador"))
             {
-                var listaProveedores = await _context.Proveedores.Where(p => !p.Email.Contains("-DEL."))
-                .ToListAsync();
+                var listaProveedores = await _context.Proveedores
+                    .Where(p => !p.Email.Contains("-DEL."))
+                    .ToListAsync();
 
                 ViewData["ProveedorId"] = new SelectList(listaProveedores, "Id", "Nombre");
             }
-                
+
             if (id != null)
             {
                 var proveedor = _context.Proveedores
@@ -144,24 +141,19 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Edit/5
-        [Authorize(Roles = "Proveedor, Administrador")]
+        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Edit(int? id)
         {
             var suministro = await _context.Suministros.FindAsync(id);
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            if (suministro == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
+            if (id == null) return NotFound();
+
+            if (suministro == null) return RedirectToAction(nameof(Index));
 
             if (User.IsInRole("Proveedor"))
             {
                 // Comprobar que el suministro pertence al proveedor
-                var proveedor = await _context.Proveedores
+                Proveedor? proveedor = await _context.Proveedores
                             .Where(p => p.Email == User.Identity.Name)
                             .FirstOrDefaultAsync();
 
@@ -250,7 +242,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Delete/5
-        [Authorize(Roles = "Proveedor, Administrador")]
+        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
