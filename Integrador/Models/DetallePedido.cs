@@ -35,10 +35,6 @@ namespace Integrador.Models
             }
         }
 
-        [Display(Name = "Precio Total")]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? PrecioTotal { get; set; }
-
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? Descuento { get; set; }
 

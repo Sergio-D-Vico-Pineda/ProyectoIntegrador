@@ -91,7 +91,6 @@ namespace Integrador.Controllers
             if (dpd != null)
             {
                 dpd.Cantidad += cantidad;
-                dpd.PrecioTotal = producto.Precio * dpd.Cantidad;
                 if (ModelState.IsValid)
                 {
                     _context.Update(dpd);
@@ -107,7 +106,6 @@ namespace Integrador.Controllers
                     Cantidad = cantidad,
                     ProductoId = producto.Id,
                     PrecioUnidad = producto.Precio,
-                    PrecioTotal = producto.Precio * cantidad,
                     Descuento = descuento ?? 0
                 };
                 if (ModelState.IsValid)
