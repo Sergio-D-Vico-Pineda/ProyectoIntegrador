@@ -226,14 +226,122 @@ namespace Integrador.Controllers
                 .ThenInclude(dp => dp.Producto)
                 .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (pedido != null)
             {
                 pedido.EstadoId = 2;
+                pedido.FechaConfirmacion = DateTime.Now;
+                pedido.FechaEsperada = DateTime.Now.AddDays(7);
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+
+                HttpContext.Session.Remove("NumPedido");
+            }
+
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
+        }
+
+        // POST /Pedidos/Anulado
+        [HttpPost, ActionName("Anular")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AnularPedido(int id)
+        {
+            var pedido = await _context.Pedidos
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (pedido != null)
+            {
+                pedido.EstadoId = 5;
+                pedido.FechaAnulado = DateTime.Now;
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
+        }
+
+        // POST /Pedidos/Enviado
+        [HttpPost, ActionName("Enviado")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Enviado(int id)
+        {
+            var pedido = await _context.Pedidos
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (pedido != null)
+            {
+                pedido.EstadoId = 3;
+                pedido.FechaEnvio = DateTime.Now;
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
+        }
+
+        // POST /Pedidos/Entregado
+        [HttpPost, ActionName("Entregado")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Entregado(int id)
+        {
+            var pedido = await _context.Pedidos
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (pedido != null)
+            {
+                pedido.EstadoId = 4;
+                pedido.FechaEntrega = DateTime.Now;
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        // POST /Pedidos/Devolver
+        [HttpPost, ActionName("Devolver")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Devolver(int id)
+        {
+            var pedido = await _context.Pedidos
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (pedido != null)
+            {
+                pedido.EstadoId = 6;
+                pedido.FechaDevolucion = DateTime.Now;
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
+        }
+
+        // POST /Pedidos/Mas
+        [HttpPost, ActionName("Mas")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MasPedido(int id, int dpid)
+        {
+            DetallePedido? dp = await _context.DetallePedidos
+                .Where(dp => dp.PedidoId == id)
+                .FirstOrDefaultAsync(dp => dp.Id == dpid);
+
+            dp.Cantidad++;
+            _context.Update(dp);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
+        }
+
+        // POST /Pedidos/Menos
+        [HttpPost, ActionName("Menos")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MenosPedido(int id, int dpid)
+        {
+            DetallePedido? dp = await _context.DetallePedidos
+                .Where(dp => dp.PedidoId == id)
+                .FirstOrDefaultAsync(dp => dp.Id == dpid);
+
+            dp.Cantidad--;
+            _context.Update(dp);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
         }
 
         private bool PedidoExists(int id)
