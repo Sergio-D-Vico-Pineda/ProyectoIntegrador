@@ -31,9 +31,12 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
-            var pedido = await _context.Pedidos
+            Pedido? pedido = await _context.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Estado)
+                .Include(p => p.DetallePedidos)
+                .ThenInclude(dp => dp.Producto)
+                .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (pedido == null)
@@ -73,10 +76,7 @@ namespace Integrador.Controllers
         // GET: Pedidos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var pedido = await _context.Pedidos.FindAsync(id);
 
@@ -84,6 +84,8 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+            }
+
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
             return View(pedido);
@@ -134,9 +136,12 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
-            var pedido = await _context.Pedidos
+            Pedido? pedido = await _context.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Estado)
+                .Include(p => p.DetallePedidos)
+                .ThenInclude(dp => dp.Producto)
+                .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (pedido == null)
@@ -153,6 +158,19 @@ namespace Integrador.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var pedido = await _context.Pedidos.FindAsync(id);
+
+            var detallePedidos = await _context.DetallePedidos
+                .Where(dp => dp.PedidoId == id)
+                .ToListAsync();
+
+            if (detallePedidos != null)
+            {
+                foreach (var detalle in detallePedidos)
+                {
+                    _context.DetallePedidos.Remove(detalle);
+                }
+            }
+
             if (pedido != null)
             {
                 _context.Pedidos.Remove(pedido);

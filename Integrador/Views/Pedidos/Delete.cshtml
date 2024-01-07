@@ -7,81 +7,147 @@
 <h1>Borrar pedido</h1>
 
 <h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Pedido</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaPedido)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaPedido)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Cliente)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Cliente.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Estado.Descripcion)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaEsperada)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaEsperada)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaConfirmacion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaConfirmacion)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaEnvio)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaEnvio)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaEntrega)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaEntrega)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaAnulado)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaAnulado)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaDevolucion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaDevolucion)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Comentarios)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Comentarios)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-12 col-lg">
+        <h4>Pedido</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaPedido)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FechaPedido)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Cliente)
+            </dt>
+            <dd class="col-sm-8">
+                @if (Model.Cliente.Email.EndsWith("-DEL."))
+                {
+                    <del>@Model.Cliente.Email</del>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Cliente.Email)
+                }
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Estado)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Estado.Descripcion)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaEsperada)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FechaEsperada)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaConfirmacion)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FechaConfirmacion)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaEnvio)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FechaEnvio)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaEntrega)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FechaEntrega)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaAnulado)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FechaAnulado)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.FechaDevolucion)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.FechaDevolucion)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Comentarios)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Comentarios)
+            </dd>
+        </dl>
+    </div>
+    @if (Model.DetallePedidos.Count > 0)
+    {
+        <div class="col-12 col-lg-6">
+            <h4>Productos del pedido</h4>
+            <hr />
+            <table class="table border-bottom">
+                <tr>
+                    <th>
+                        Modelo
+                    </th>
+                    <th>
+                        Producto
+                    </th>
+                    <th>
+                        Descripción
+                    </th>
+                    <th>
+                        Cantidad
+                    </th>
+                    <th>
+                        Precio
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.DetallePedidos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cantidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PrecioUnidad)
+                        </td>
+                        <td>
+                            <div class="d-print-none">
+                                <a asp-action="Delete" asp-controller="DetallePedidos"
+                                   asp-route-id="@item.Id">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+</div>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<form asp-action="Delete">
+    <div class="alert alert-danger" style="width: fit-content;" role="alert">
+        Al borrar este pedido se perderán todos sus datos.
+    </div>
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Delete" class="btn btn-danger" /> |
+    <a asp-action="Index">Back to List</a>
+</form>
 </div>
