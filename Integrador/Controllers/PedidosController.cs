@@ -19,8 +19,30 @@ namespace Integrador.Controllers
         // GET: Pedidos
         public async Task<IActionResult> Index()
         {
-            var integradorContexto = _context.Pedidos.Include(p => p.Cliente).Include(p => p.Estado);
-            return View(await integradorContexto.ToListAsync());
+            var pedidos = _context.Pedidos;
+            if (User.IsInRole("Administrador"))
+            {
+                return View(await pedidos
+                    .Include(p => p.Cliente)
+                    .Include(p => p.Estado)
+                    .ToListAsync());
+            }
+            else
+            {
+                var email = User.Identity.Name;
+
+                Cliente? cliente = await _context.Clientes
+                    .Where(c => c.Email == email)
+                    .FirstOrDefaultAsync();
+
+                if (cliente == null) return NotFound();
+
+                return View(await pedidos
+                    .Where(p => p.ClienteId == cliente.Id)
+                    .Include(p => p.Cliente)
+                    .Include(p => p.Estado)
+                    .ToListAsync());
+            }
         }
 
         // GET: Pedidos/Details/5
@@ -48,10 +70,15 @@ namespace Integrador.Controllers
         }
 
         // GET: Pedidos/Create
-        public IActionResult Create()
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email");
-            ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion");
+            var listaClientes = await _context.Clientes
+                .Where(p => !p.Email.Contains("-DEL."))
+                .ToListAsync();
+
+            ViewData["ClienteId"] = new SelectList(listaClientes, "Id", "Email");
+            ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", 1);
             return View();
         }
 
@@ -80,10 +107,18 @@ namespace Integrador.Controllers
 
             var pedido = await _context.Pedidos.FindAsync(id);
 
-            if (pedido == null)
+            if (pedido == null) return RedirectToAction(nameof(Index));
+
+            if (User.IsInRole("Cliente"))
             {
-                return RedirectToAction(nameof(Index));
-            }
+                Cliente? cliente = await _context.Clientes
+                    .Where(c => c.Email == User.Identity.Name)
+                    .FirstOrDefaultAsync();
+
+                if (pedido.ClienteId != cliente.Id)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
