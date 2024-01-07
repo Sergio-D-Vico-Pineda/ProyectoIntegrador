@@ -42,11 +42,29 @@
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Estado.Descripcion)
             </dd>
+
+            @* COMENTARIOS *@
             <dt class="col-sm-4">
+                @if (Model.Comentarios != null)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">
                 @Html.DisplayNameFor(model => model.Comentarios)
+                    </a>
+                }
+                else
+                {
+                    @Html.DisplayNameFor(model => model.Comentarios)
+                }
             </dt>
             <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.Comentarios)
+                @if (Model.Comentarios == null)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">Añadir comentarios 📝</a>
+                }
+                else
+                {
+                    <span>@Html.DisplayFor(model => model.Comentarios)</span>
+                }
             </dd>
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.FechaEsperada)
