@@ -126,7 +126,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id, bool? admin)
+        public async Task<IActionResult> Delete(int? id, bool? admin = false)
         {
             if (id == null)
             {
