@@ -48,7 +48,7 @@
                 @if (Model.Comentarios != null)
                 {
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">
-                @Html.DisplayNameFor(model => model.Comentarios)
+                        @Html.DisplayNameFor(model => model.Comentarios)
                     </a>
                 }
                 else
@@ -70,66 +70,66 @@
 
             @if (Model.FechaEsperada != null)
             {
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaEsperada)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaEsperada)
-            </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaEsperada)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaEsperada)
+                </dd>
             }
 
             @if (Model.FechaConfirmacion != null)
             {
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaConfirmacion)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaConfirmacion)
-            </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaConfirmacion)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaConfirmacion)
+                </dd>
             }
 
             @if (Model.FechaEnvio != null)
             {
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaEnvio)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaEnvio)
-            </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaEnvio)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaEnvio)
+                </dd>
             }
 
             @if (Model.FechaEntrega != null)
             {
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaEntrega)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaEntrega)
-            </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaEntrega)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaEntrega)
+                </dd>
             }
 
             @if (Model.FechaAnulado != null)
             {
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaAnulado)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaAnulado)
-            </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaAnulado)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaAnulado)
+                </dd>
             }
 
             @if (Model.FechaDevolucion != null)
             {
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaDevolucion)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaDevolucion)
-            </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaDevolucion)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaDevolucion)
+                </dd>
             }
         </dl>
     </div>
-    @if (Model.DetallePedidos.Count > 0 && Model.Estado.Nombre == "Pendiente")
+    @if (Model.DetallePedidos.Count > 0)
     {
         <div class="col-12 col-lg-6">
             <h4>Productos del pedido</h4>
@@ -151,7 +151,6 @@
                     <th>
                         Precio
                     </th>
-                    <th></th>
                 </tr>
                 @foreach (var item in Model.DetallePedidos)
                 {
@@ -165,26 +164,34 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Producto.Descripcion)
                         </td>
-                        <td>
-                            @if (item.Cantidad > 1)
-                            {
-                                <form>
-                                    <input class="btn btn-primary" value="-" type="submit" />
-                                </form>
-                            }
-                            @Html.DisplayFor(modelItem => item.Cantidad)
-                            <form>
-                                <input class="btn btn-primary" value="+" type="submit" />
-                            </form>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PrecioUnidad)
-                        </td>
-                        <td>
-                            <div class="d-print-none">
-                                <a asp-action="Delete" asp-controller="DetallePedidos"
-                                   asp-route-id="@item.Id">Eliminar</a>
+                        <td class="text-center">
+                            <div class="d-flex flex-row align-items-baseline gap-3">
+                                @if (item.Cantidad > 1 && Model.Estado.Nombre == "Pendiente")
+                                {
+                                    <form asp-action="Menos" asp-route-id="@Model?.Id" class="d-print-none">
+                                        <input type="hidden" name="dpid" value="@item.Id" />
+                                        <input class="btn btn-primary" value="➖" type="submit" />
+                                    </form>
+                                }
+                                else if (item.Cantidad == 1 && Model.Estado.Nombre == "Pendiente")
+                                {
+                                    <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
+                                        <input type="hidden" name="pedidoid" value="@Model.Id" />
+                                        <input class="btn btn-danger" value="🗑" type="submit" />
+                                    </form>
+                                }
+                                <span class="flex-grow-1">@Html.DisplayFor(modelItem => item.Cantidad)</span>
+                                @if (Model.Estado.Nombre == "Pendiente")
+                                {
+                                    <form asp-action="Mas" asp-route-id="@Model?.Id" class="d-print-none">
+                                        <input type="hidden" name="dpid" value="@item.Id" />
+                                        <input class="btn btn-primary" value="➕" type="submit" />
+                                    </form>
+                                }
                             </div>
+                        </td>
+                        <td class="text-end">
+                            <span class="text-nowrap">@Html.DisplayFor(modelItem => item.PrecioUnidad) €</span>
                         </td>
                     </tr>
                 }
@@ -203,11 +210,57 @@
     }
 </div>
 
-<div class="d-print-none text-center d-flex justify-content-evenly">
+<div class="d-print-none text-center d-flex justify-content-evenly align-items-center">
     <a class="btn btn-primary" href="javascript:window.print()">Imprimir</a>
-    <form asp-action="Confirmar" asp-route-id="@Model?.Id">
-        <input class="btn btn-primary" type="submit" value="Confirmar" />
-    </form>
+    @switch (Model.Estado.Nombre)
+    {
+        case "Pendiente":
+            {
+                <form asp-action="Confirmar" asp-route-id="@Model?.Id">
+                    <input class="btn btn-primary" type="submit" value="Confirmar" />
+                </form>
+            }
+            break;
+        case "Confirmado":
+            {
+                <div class="alert alert-info" style="width: fit-content;" role="alert">
+                    A la espera del envio.
+                </div>
+                if (User.IsInRole("Administrador"))
+                {
+                    <form asp-action="Enviado" asp-route-id="@Model?.Id">
+                        <input class="btn btn-primary" type="submit" value="Enviado" />
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="Anular" asp-route-id="@Model?.Id">
+                        <input class="btn btn-primary" type="submit" value="Anular" />
+                    </form>
+                }
+            }
+            break;
+        case "Enviado":
+            {
+                <div class="alert alert-info" style="width: fit-content;" role="alert">
+                    A la espera de la entrega.
+                </div>
+                if (User.IsInRole("Cliente"))
+                {
+                    <form asp-action="Entregado" asp-route-id="@Model?.Id">
+                        <input class="btn btn-primary" type="submit" value="¡Ya lo tengo!" />
+                    </form>
+                }
+            }
+            break;
+        case "Entregado":
+            {
+                <div class="alert alert-success" style="width: fit-content;" role="alert">
+                    Entregado.
+                </div>
+            }
+            break;
+    }
 </div>
 
 <div>
