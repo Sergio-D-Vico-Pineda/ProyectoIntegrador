@@ -30,10 +30,8 @@ namespace Integrador.Controllers
             }
             else
             {
-                var email = User.Identity.Name;
-
                 Cliente? cliente = await _context.Clientes
-                    .Where(c => c.Email == email)
+                    .Where(c => c.Email == User.Identity.Name)
                     .FirstOrDefaultAsync();
 
                 if (cliente == null) return NotFound();
@@ -155,7 +153,10 @@ namespace Integrador.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                if (User.IsInRole("Administrador"))
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction(nameof(Details), new { id = pedido.Id });
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
@@ -220,11 +221,6 @@ namespace Integrador.Controllers
         public async Task<IActionResult> ConfirmarPedido(int id)
         {
             var pedido = await _context.Pedidos
-                .Include(p => p.Cliente)
-                .Include(p => p.Estado)
-                .Include(p => p.DetallePedidos)
-                .ThenInclude(dp => dp.Producto)
-                .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (pedido != null)
