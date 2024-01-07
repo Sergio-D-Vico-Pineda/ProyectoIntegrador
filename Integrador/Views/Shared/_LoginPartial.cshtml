@@ -1,6 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Integrador.Data
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IntegradorContexto _context
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
@@ -8,7 +10,19 @@
         @if (User.IsInRole("Cliente") || User.IsInRole("Proveedor"))
         {
             <li class="nav-item">
-                <a class="nav-link" asp-action="Index" asp-controller="MisDatos">@User.Identity?.Name</a>
+                <a class="nav-link" asp-action="Index" asp-controller="MisDatos">
+                    Tus Datos,
+                    @if (User.IsInRole("Cliente"))
+                    {
+                        var cliente = _context.Clientes.FirstOrDefault(c => c.Email == User.Identity.Name);
+                        <span>@cliente.Nombre</span>
+                    }
+                    else if (User.IsInRole("Proveedor"))
+                    {
+                        var proveedor = _context.Proveedores.FirstOrDefault(c => c.Email == User.Identity.Name);
+                        <span>@proveedor.Nombre</span>
+                    }
+                </a>
             </li>
         }
         else if (User.IsInRole("Administrador"))
