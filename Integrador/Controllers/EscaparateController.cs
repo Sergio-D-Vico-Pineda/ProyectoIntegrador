@@ -15,6 +15,28 @@ namespace Integrador.Controllers
         // GET /Escaparate/Index
         public async Task<IActionResult> Index(int? MarcaId)
         {
+            if (User.IsInRole("Cliente"))
+            {
+                Cliente? cliente = await _context.Clientes
+                    .Where(c => c.Email == User.Identity.Name)
+                    .FirstOrDefaultAsync();
+
+                var listaPedidos = await _context.Pedidos
+                    .Where(p => p.EstadoId == 1)
+                    .Where(p => p.ClienteId == cliente.Id)
+                    .ToListAsync();
+
+                if (listaPedidos.Count > 0)
+                {
+                    var ultimo = listaPedidos
+                        .OrderByDescending(p => p.Id)
+                        .First(); // Obtener el último pedido pendiente
+
+                    if (ultimo != null)
+                        HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
+                }
+            }
+
             ViewData["ListaMarcas"] = new SelectList(_context.Marcas, "Id", "Nombre");
 
             var productos = _context.Productos
