@@ -11,12 +11,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    [Authorize(Roles = "Cliente, Administrador")]
+    
     public class DetallePedidosController(IntegradorContexto context) : Controller
     {
         private readonly IntegradorContexto _context = context;
 
         // GET: DetallePedidos
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Index()
         {
             var detallePedidos = _context.DetallePedidos
@@ -27,6 +28,7 @@ namespace Integrador.Controllers
         }
 
         // GET: DetallePedidos/Details/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +50,7 @@ namespace Integrador.Controllers
         }
 
         // GET: DetallePedidos/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Id");
@@ -74,6 +77,7 @@ namespace Integrador.Controllers
         }
 
         // GET: DetallePedidos/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -130,6 +134,7 @@ namespace Integrador.Controllers
         }
 
         // GET: DetallePedidos/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,9 +156,10 @@ namespace Integrador.Controllers
         }
 
         // POST: DetallePedidos/Delete/5
+        [Authorize(Roles = "Cliente, Administrador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int? pedidoid)
         {
             var detallePedido = await _context.DetallePedidos.FindAsync(id);
             if (detallePedido != null)
@@ -162,6 +168,12 @@ namespace Integrador.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            if (pedidoid != null)
+            {
+                return RedirectToAction(nameof(Details), "Pedidos", new { id = pedidoid });
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
