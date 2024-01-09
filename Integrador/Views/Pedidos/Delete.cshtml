@@ -24,67 +24,98 @@
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaPedido)
             </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Cliente)
-            </dt>
-            <dd class="col-sm-8">
-                @if (Model.Cliente.Email.EndsWith("-DEL."))
-                {
-                    <del>@Model.Cliente.Email</del>
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.Cliente.Email)
-                }
-            </dd>
+            @if (User.IsInRole("Administrador"))
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Cliente)
+                </dt>
+                <dd class="col-sm-8">
+                    @if (Model.Cliente.Email.EndsWith("-DEL."))
+                    {
+                        <del>@Model.Cliente.Email</del>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.Cliente.Email)
+                    }
+                </dd>
+            }
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Estado)
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Estado.Descripcion)
             </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaEsperada)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaEsperada)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaConfirmacion)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaConfirmacion)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaEnvio)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaEnvio)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaEntrega)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaEntrega)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaAnulado)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaAnulado)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.FechaDevolucion)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.FechaDevolucion)
-            </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Comentarios)
-            </dt>
-            <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.Comentarios)
-            </dd>
+            @if (Model.Comentarios != null)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Comentarios)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Comentarios)
+                </dd>
+            }
+
+            @if (Model.FechaEsperada != null)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaEsperada)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaEsperada)
+                </dd>
+            }
+
+            @if (Model.FechaConfirmacion != null)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaConfirmacion)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaConfirmacion)
+                </dd>
+            }
+
+            @if (Model.FechaEnvio != null)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaEnvio)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaEnvio)
+                </dd>
+            }
+
+            @if (Model.FechaEntrega != null)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaEntrega)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaEntrega)
+                </dd>
+            }
+
+            @if (Model.FechaAnulado != null)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaAnulado)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaAnulado)
+                </dd>
+            }
+
+            @if (Model.FechaDevolucion != null)
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.FechaDevolucion)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.FechaDevolucion)
+                </dd>
+            }
+
         </dl>
     </div>
     @if (Model.DetallePedidos.Count > 0)
@@ -108,8 +139,7 @@
                     </th>
                     <th>
                         Precio
-                    </th>
-                    <th></th>
+                    </th> 
                 </tr>
                 @foreach (var item in Model.DetallePedidos)
                 {
@@ -128,12 +158,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PrecioUnidad)
-                        </td>
-                        <td>
-                            <div class="d-print-none">
-                                <a asp-action="Delete" asp-controller="DetallePedidos"
-                                   asp-route-id="@item.Id">Eliminar</a>
-                            </div>
                         </td>
                     </tr>
                 }
