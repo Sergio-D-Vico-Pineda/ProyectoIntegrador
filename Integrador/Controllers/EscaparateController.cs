@@ -75,7 +75,18 @@ namespace Integrador.Controllers
 
             if (cantidad <= 0)
             {
-                ModelState.AddModelError("dpCantidad", "La cantidad tiene que ser un número entero positivo.");
+                ModelState.AddModelError(string.Empty, "La cantidad tiene que ser un número entero positivo.");
+
+                producto = await _context.Productos
+                .Include(p => p.Modelo)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
+
+                return View(producto);
+            } 
+            else if (cantidad > producto.Stock)
+            {
+                ModelState.AddModelError(string.Empty, "La cantidad tiene que ser menor al stock disponible.");
 
                 producto = await _context.Productos
                 .Include(p => p.Modelo)
@@ -142,7 +153,7 @@ namespace Integrador.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Carrito", "Pedidos");
         }
     }
 }

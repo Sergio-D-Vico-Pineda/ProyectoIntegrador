@@ -16,7 +16,7 @@
             @{
                 var nombreImagen = Model.Imagen ?? "default.jpeg";
             }
-            <img src="~/img/@nombreImagen" height="250" width="250"
+            <img src="~/img/@nombreImagen" height="150" width="150"
                  asp-append-version="true" alt="Sin imagen" />
         </dd>
         <dt class="col-sm-2">
@@ -52,15 +52,12 @@
     </dl>
 </div>
 <div>
+        <div asp-validation-summary="All" class="text-danger"></div>
     <form class="w-25 d-flex flex-row align-items-end gap-3" asp-action="AgregarCarrito" asp-route-id="@Model?.Id">
         <label style="width:85px;">
             Cantidad:
-            <input type="number" name="cantidad" class="form-control text-center" value="1" min="1" />
+            <input type="number" name="cantidad" class="form-control text-center" value="1" min="1" max="@Model.Stock" />
         </label>
-        @* <label style="width:60px;">
-            Descuento:
-            <input type="number" name="Descuento" class="form-control text-center" value="0" min="0" />
-        </label> *@
         <input class="btn btn-primary flex-grow-1" type="submit" value="Agregar al carrito" />
     </form>
     <hr class="w-25" />
