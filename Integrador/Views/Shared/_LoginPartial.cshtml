@@ -11,16 +11,22 @@
         {
             <li class="nav-item">
                 <a class="nav-link" asp-action="Index" asp-controller="MisDatos">
-                    Tus Datos,
+                    <span>Tus Datos</span>
                     @if (User.IsInRole("Cliente"))
                     {
                         var cliente = _context.Clientes.FirstOrDefault(c => c.Email == User.Identity.Name);
-                        <span>@cliente.Nombre</span>
+                        @if (cliente != null)
+                        {
+                            <span>, @cliente.Nombre</span>
+                        }
                     }
                     else if (User.IsInRole("Proveedor"))
                     {
                         var proveedor = _context.Proveedores.FirstOrDefault(c => c.Email == User.Identity.Name);
-                        <span>@proveedor.Nombre</span>
+                        @if (proveedor != null)
+                        {
+                            <span>, @proveedor.Nombre</span>
+                        }
                     }
                 </a>
             </li>
