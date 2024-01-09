@@ -10,7 +10,7 @@
 }
 else
 {
-<h1>Detalles del pedido</h1>
+    <h1>Detalles del pedido</h1>
 }
 
 <div class="row">
@@ -19,7 +19,8 @@ else
         <hr />
         <dl class="row">
             <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Id)
+                Núm. Pedido
+                @* @Html.DisplayNameFor(model => model.Id) *@
             </dt>
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Id)
@@ -54,28 +55,43 @@ else
             </dd>
 
             @* COMENTARIOS *@
-            <dt class="col-sm-4">
-                @if (Model.Comentarios != null && Model.EstadoId <= 3)
-                {
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">
+            @if (Model.EstadoId <= 3 && User.IsInRole("Cliente"))
+            {
+                <dt class="col-sm-4">
+                    @if (Model.Comentarios != null)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">
+                            @Html.DisplayNameFor(model => model.Comentarios)
+                        </a>
+                    }
+                    else
+                    {
                         @Html.DisplayNameFor(model => model.Comentarios)
-                    </a>
-                }
-                else
-                {
+                    }
+
+                </dt>
+                <dd class="col-sm-8">
+                    @if (Model.Comentarios == null)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">Añadir comentarios 📝</a>
+                    }
+                    else
+                    {
+                        <span>@Html.DisplayFor(model => model.Comentarios)</span>
+                    }
+                </dd>
+            }
+            else if (Model.Comentarios != null)
+            {
+
+                <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.Comentarios)
-                }
-            </dt>
-            <dd class="col-sm-8">
-                @if (Model.Comentarios == null && Model.EstadoId <= 3)
-                {
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">Añadir comentarios 📝</a>
-                }
-                else
-                {
-                    <span>@Html.DisplayFor(model => model.Comentarios)</span>
-                }
-            </dd>
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Comentarios)
+                </dd>
+
+            }
 
             @if (Model.FechaEsperada != null)
             {
@@ -227,13 +243,16 @@ else
         </div>
     }
 </div>
-
 <div class="d-print-none text-center d-flex justify-content-evenly align-items-center">
-    <a class="btn btn-primary" href="javascript:window.print()">Imprimir</a>
+    @if (Model.DetallePedidos.Count > 0)
+    {
+        <a class="btn btn-primary" href="javascript:window.print()">Imprimir</a>
+    }
     @switch (Model.Estado.Nombre)
     {
         case "Pendiente":
             {
+                @* <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a> *@
                 @if (Model.DetallePedidos.Count > 0)
                 {
                     <form asp-action="Confirmar" asp-route-id="@Model?.Id">
@@ -255,8 +274,8 @@ else
                 </div>
                 if (User.IsInRole("Administrador"))
                 {
-                    <form asp-action="Enviado" asp-route-id="@Model?.Id">
-                        <input class="btn btn-primary" type="submit" value="Enviado" />
+                    <form asp-action="Enviar" asp-route-id="@Model?.Id">
+                        <input class="btn btn-primary" type="submit" value="Enviar" />
                     </form>
                 }
                 else
@@ -285,6 +304,7 @@ else
                 <div class="alert alert-success" style="width: fit-content;" role="alert">
                     Entregado.
                 </div>
+                @* <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a> *@
                 if (User.IsInRole("Cliente"))
                 {
                     <form asp-action="Devolver" asp-route-id="@Model?.Id">
@@ -295,11 +315,18 @@ else
             break;
         case "Anulado":
             {
-
                 <div class="alert alert-danger" style="width: fit-content;" role="alert">
                     Pedido anulado.
                 </div>
-
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+            }
+            break;
+        case "Devuelto":
+            {
+                <div class="alert alert-warning" style="width: fit-content;" role="alert">
+                    Pedido devuelto.
+                </div>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
             }
             break;
     }
