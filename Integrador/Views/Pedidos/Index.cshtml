@@ -6,9 +6,13 @@
 
 <h1>Pedidos</h1>
 
-<p>
-    <a asp-action="Create">Nuevo pedido</a>
-</p>
+@if (User.IsInRole("Administrador"))
+{
+    <p>
+        <a asp-action="Create">Nuevo pedido</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
