@@ -21,6 +21,11 @@ namespace Integrador.Controllers
                     .Where(c => c.Email == User.Identity.Name)
                     .FirstOrDefaultAsync();
 
+                if (User.IsInRole("Cliente") && cliente == null)
+                {
+                    return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+                }
+
                 var listaPedidos = await _context.Pedidos
                     .Where(p => p.EstadoId == 1)
                     .Where(p => p.ClienteId == cliente.Id)
