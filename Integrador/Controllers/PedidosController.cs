@@ -34,7 +34,10 @@ namespace Integrador.Controllers
                     .Where(c => c.Email == User.Identity.Name)
                     .FirstOrDefaultAsync();
 
-                if (cliente == null) return NotFound();
+                if (cliente == null)
+                {
+                    return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+                }
 
                 return View(await pedidos
                     .Where(p => p.ClienteId == cliente.Id)
@@ -212,8 +215,33 @@ namespace Integrador.Controllers
             }
 
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+        // GET /Pedidos/Carrito
+        [Authorize(Roles = "Cliente")]
+        public async Task<IActionResult> Carrito()
+        {
+            Cliente? cliente = await _context.Clientes
+                    .Where(c => c.Email == User.Identity.Name)
+                    .FirstOrDefaultAsync();
+
+            if (User.IsInRole("Cliente") && cliente == null)
+            {
+                return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+            }
+
+            var numPed = HttpContext.Session.GetString("NumPedido");
+            if (numPed != null)
+            {
+                return RedirectToAction("Details", "Pedidos", new { id = numPed, c = true });
+            }
+
+            return View();
+        }
+
+        // PEDIDOS
 
         // POST /Pedidos/ConfirmarPedido
         [HttpPost, ActionName("Confirmar")]
