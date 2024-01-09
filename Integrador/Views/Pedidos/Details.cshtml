@@ -23,19 +23,22 @@
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.FechaPedido)
             </dd>
-            <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Cliente)
-            </dt>
-            <dd class="col-sm-8">
-                @if (Model.Cliente.Email.EndsWith("-DEL."))
-                {
-                    <del>@Model.Cliente.Email</del>
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.Cliente.Email)
-                }
-            </dd>
+            @if (User.IsInRole("Administrador"))
+            {
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Cliente)
+                </dt>
+                <dd class="col-sm-8">
+                    @if (Model.Cliente.Email.EndsWith("-DEL."))
+                    {
+                        <del>@Model.Cliente.Email</del>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.Cliente.Email)
+                    }
+                </dd>
+            }
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Estado)
             </dt>
@@ -45,7 +48,7 @@
 
             @* COMENTARIOS *@
             <dt class="col-sm-4">
-                @if (Model.Comentarios != null)
+                @if (Model.Comentarios != null && Model.EstadoId <= 3)
                 {
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">
                         @Html.DisplayNameFor(model => model.Comentarios)
@@ -57,7 +60,7 @@
                 }
             </dt>
             <dd class="col-sm-8">
-                @if (Model.Comentarios == null)
+                @if (Model.Comentarios == null && Model.EstadoId <= 3)
                 {
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">Añadir comentarios 📝</a>
                 }
@@ -66,7 +69,6 @@
                     <span>@Html.DisplayFor(model => model.Comentarios)</span>
                 }
             </dd>
-
 
             @if (Model.FechaEsperada != null)
             {
@@ -166,14 +168,14 @@
                         </td>
                         <td class="text-center">
                             <div class="d-flex flex-row align-items-baseline gap-3">
-                                @if (item.Cantidad > 1 && Model.Estado.Nombre == "Pendiente")
+                                @if (item.Cantidad > 1 && Model.EstadoId == 1)
                                 {
                                     <form asp-action="Menos" asp-route-id="@Model?.Id" class="d-print-none">
                                         <input type="hidden" name="dpid" value="@item.Id" />
                                         <input class="btn btn-primary" value="➖" type="submit" />
                                     </form>
                                 }
-                                else if (item.Cantidad == 1 && Model.Estado.Nombre == "Pendiente")
+                                else if (item.Cantidad == 1 && Model.EstadoId == 1)
                                 {
                                     <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
                                         <input type="hidden" name="pedidoid" value="@Model.Id" />
@@ -181,7 +183,7 @@
                                     </form>
                                 }
                                 <span class="flex-grow-1">@Html.DisplayFor(modelItem => item.Cantidad)</span>
-                                @if (Model.Estado.Nombre == "Pendiente")
+                                @if (Model.EstadoId == 1)
                                 {
                                     <form asp-action="Mas" asp-route-id="@Model?.Id" class="d-print-none">
                                         <input type="hidden" name="dpid" value="@item.Id" />
@@ -208,6 +210,14 @@
             </h5>
         </div>
     }
+    else
+    {
+        <div class="col-12 col-lg-6 d-grid" style="place-content: center;">
+            <div class="alert alert-danger" style="width: fit-content;" role="alert">
+                No hay productos en el pedido.
+            </div>
+        </div>
+    }
 </div>
 
 <div class="d-print-none text-center d-flex justify-content-evenly align-items-center">
@@ -216,9 +226,18 @@
     {
         case "Pendiente":
             {
-                <form asp-action="Confirmar" asp-route-id="@Model?.Id">
-                    <input class="btn btn-primary" type="submit" value="Confirmar" />
-                </form>
+                @if (Model.DetallePedidos.Count > 0)
+                {
+                    <form asp-action="Confirmar" asp-route-id="@Model?.Id">
+                        <input class="btn btn-primary" type="submit" value="Confirmar" />
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="Confirmar" asp-route-id="@Model?.Id">
+                        <input class="btn btn-primary" type="submit" value="Confirmar" disabled />
+                    </form>
+                }
             }
             break;
         case "Confirmado":
@@ -258,6 +277,21 @@
                 <div class="alert alert-success" style="width: fit-content;" role="alert">
                     Entregado.
                 </div>
+                if (User.IsInRole("Cliente"))
+                {
+                    <form asp-action="Devolver" asp-route-id="@Model?.Id">
+                        <input class="btn btn-primary" type="submit" value="Devolver" />
+                    </form>
+                }
+            }
+            break;
+        case "Anulado":
+            {
+
+                <div class="alert alert-danger" style="width: fit-content;" role="alert">
+                    Pedido anulado.
+                </div>
+
             }
             break;
     }
@@ -268,5 +302,5 @@
     {
         <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> <span>|</span>
     }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a> | <a asp-action="Index" asp-controller="Escaparate">Seguir comprando</a>
 </div>
