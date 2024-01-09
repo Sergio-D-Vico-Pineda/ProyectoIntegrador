@@ -46,7 +46,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Pedidos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, bool? c)
         {
             if (id == null)
             {
@@ -65,6 +65,8 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.carrito = c ?? false;
 
             return View(pedido);
         }
@@ -283,7 +285,7 @@ namespace Integrador.Controllers
         }
 
         // POST /Pedidos/Enviado
-        [HttpPost, ActionName("Enviado")]
+        [HttpPost, ActionName("Enviar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Enviado(int id)
         {
