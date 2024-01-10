@@ -35,9 +35,6 @@ namespace Integrador.Models
             }
         }
 
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? Descuento { get; set; }
-
         public virtual Producto? Producto { get; set; }
         public virtual Pedido? Pedido { get; set; }
     }

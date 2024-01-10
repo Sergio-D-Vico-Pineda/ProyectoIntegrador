@@ -69,7 +69,7 @@ namespace Integrador.Controllers
         // POST /Escaparate/AgregarCarrito
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AgregarCarrito(int id, int? descuento, int cantidad = 1)
+        public async Task<IActionResult> AgregarCarrito(int id, int cantidad = 1)
         {
             var producto = await _context.Productos.FindAsync(id);
 
@@ -144,7 +144,6 @@ namespace Integrador.Controllers
                     Cantidad = cantidad,
                     ProductoId = producto.Id,
                     PrecioUnidad = producto.Precio,
-                    Descuento = descuento ?? 0
                 };
                 if (ModelState.IsValid)
                 {
