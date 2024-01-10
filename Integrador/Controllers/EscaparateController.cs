@@ -83,7 +83,7 @@ namespace Integrador.Controllers
                 .FirstOrDefaultAsync();
 
                 return View(producto);
-            } 
+            }
             else if (cantidad > producto.Stock)
             {
                 ModelState.AddModelError(string.Empty, "La cantidad tiene que ser menor al stock disponible.");
