@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
 using Microsoft.AspNetCore.Authorization;
+using Integrador.Views.Pedidos;
 
 namespace Integrador.Controllers
 {
@@ -89,7 +90,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FechaPedido,FechaEsperada,FechaConfirmacion,FechaEnvio,FechaEntrega,FechaAnulado,FechaDevolucion,Comentarios,ClienteId,EstadoId")] Pedido pedido)
+        public async Task<IActionResult> Create([Bind("Id,FechaPedido,FechaEsperada,FechaConfirmacion,FechaEnvio,FechaEntrega,FechaAnulado,FechaDevolucion,Comentarios,Descuento,ClienteId,EstadoId")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
@@ -133,12 +134,9 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FechaPedido,FechaEsperada,FechaConfirmacion,FechaEnvio,FechaEntrega,FechaAnulado,FechaDevolucion,Comentarios,ClienteId,EstadoId")] Pedido pedido)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FechaPedido,FechaEsperada,FechaConfirmacion,FechaEnvio,FechaEntrega,FechaAnulado,FechaDevolucion,Comentarios,Descuento,ClienteId,EstadoId")] Pedido pedido)
         {
-            if (id != pedido.Id)
-            {
-                return NotFound();
-            }
+            if (id != pedido.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -163,8 +161,10 @@ namespace Integrador.Controllers
                 else
                     return RedirectToAction(nameof(Details), new { id = pedido.Id });
             }
+
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
+
             return View(pedido);
         }
 
@@ -241,6 +241,104 @@ namespace Integrador.Controllers
             }
 
             return View();
+        }
+
+        // GET /Pedidos/Descuentos
+        public async Task<IActionResult> Descuentos(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var pedido = await _context.Pedidos.FindAsync(id);
+
+            if (pedido == null) return RedirectToAction(nameof(Index));
+
+            if (User.IsInRole("Cliente"))
+            {
+                Cliente? cliente = await _context.Clientes
+                    .Where(c => c.Email == User.Identity.Name)
+                    .FirstOrDefaultAsync();
+
+                if (pedido.ClienteId != cliente.Id) return RedirectToAction(nameof(Index));
+
+            }
+
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
+            ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
+
+            return View();
+        }
+
+        // POST /Pedidos/Descuentos
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Descuentos(int id, [Bind("Descuento")] Descuentos.ModelDescuentos desc)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.DetallePedidos)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (pedido == null) return NotFound();
+
+            decimal? total = 0;
+
+            foreach (var dp in pedido.DetallePedidos)
+            {
+                total += dp.Cantidad * dp.PrecioUnidad;
+            }
+
+            switch (desc.Codigo)
+            {
+                case "SCARPY":
+                    {
+                        // 90% of total
+                        pedido.Descuento = total * 0.9m;
+                    }
+                    break;
+                case "DWES":
+                    {
+                        // 10%
+                        pedido.Descuento = total * 0.1m;
+                    }
+                    break;
+                case "DAW":
+                    {
+                        // 80% of total
+                        pedido.Descuento = total * 0.8m;
+                    }
+                    break;
+                case "RRBOX":
+                    {
+                        // 20%
+                        pedido.Descuento = total * 0.2m;
+                    }
+                    break;
+                default:
+                    {
+                        return RedirectToAction(nameof(Carrito));
+                    }
+                    break;
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(pedido);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PedidoExists(pedido.Id))
+                        return NotFound();
+                    else
+                        throw;
+                }
+            }
+
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
+            ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
+
+            return RedirectToAction(nameof(Carrito));
         }
 
         // PEDIDOS

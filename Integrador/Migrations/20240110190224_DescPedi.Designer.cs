@@ -4,6 +4,7 @@ using Integrador.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Integrador.Migrations
 {
     [DbContext(typeof(IntegradorContexto))]
-    partial class IntegradorContextoModelSnapshot : ModelSnapshot
+    [Migration("20240110190224_DescPedi")]
+    partial class DescPedi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,14 +165,13 @@ namespace Integrador.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CodDescuento")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comentarios")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Descuento")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("EstadoId")
                         .HasColumnType("int");

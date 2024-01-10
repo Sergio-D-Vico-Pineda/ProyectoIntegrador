@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Integrador.Models
 {
@@ -13,7 +14,7 @@ namespace Integrador.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Fecha estimada")]
-        public DateTime? FechaEsperada { get; set; } = DateTime.Now.AddDays(3); // Fecha actual por defecto más 3 días
+        public DateTime? FechaEsperada { get; set; } 
 
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de confirmación")]
@@ -36,6 +37,13 @@ namespace Integrador.Models
         public DateTime? FechaDevolucion { get; set; }
 
         public string? Comentarios { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? Descuento { get; set; }
+
+        [StringLength(6)]
+        [Display(Name = "Código de descuento")]
+        public string? CodDescuento { get; set; }
 
         [Display(Name = "Cliente")]
         [Required(ErrorMessage = "El cliente es obligatorio.")]
