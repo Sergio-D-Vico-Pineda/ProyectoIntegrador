@@ -407,7 +407,7 @@ namespace Integrador.Controllers
                     if (producto == null) continue;
 
                     // Comprobar que hay stock en el producto
-                    if (producto.Stock >= dp.Cantidad)
+                    if (producto.Stock >= dp.Cantidad && dp.Cantidad > 0)
                     {
                         producto.Stock -= dp.Cantidad;
                         _context.Update(producto);
