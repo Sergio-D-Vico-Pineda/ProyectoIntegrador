@@ -53,6 +53,27 @@ else
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Estado.Descripcion)
             </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.CodDescuento)
+            </dt>
+            <dd class="col-sm-8">
+                @if (Model.Descuento == 0 || Model.Descuento == null)
+                {
+                    @if (Model.EstadoId == 1)
+                    {
+                        <a asp-action="Descuento" asp-controller="Pedidos" asp-route-id="@Model?.Id">
+                            <span>Sin descuento.</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <span>Sin descuento.</span>
+
+                        @Html.DisplayFor(model => model.Descuento)
+                    }
+                }
+                @Html.DisplayFor(model => model.CodDescuento)
+            </dd>
 
             @* COMENTARIOS *@
             @if (Model.EstadoId <= 3 && User.IsInRole("Cliente"))
@@ -221,16 +242,22 @@ else
                     </tr>
                 }
             </table>
-            @{
-                decimal? total = 0;
-                foreach (var item in Model.DetallePedidos)
-                {
-                    total += item.PrecioUnidad * item.Cantidad;
+            <div>
+                @{
+                    decimal? total = 0;
+                    foreach (var item in Model.DetallePedidos)
+                    {
+                        total += item.PrecioUnidad * item.Cantidad;
+                    }
                 }
-            }
-            <h5>
-                Total: @total.ToString() €
-            </h5>
+                <h5>
+                    Total: @total.ToString() €
+                </h5>
+                @if (Model.Descuento == 0)
+                {
+                    <h5>Descuento: @Model.Descuento</h5>
+                }
+            </div>
         </div>
     }
     else
@@ -335,11 +362,15 @@ else
 <div>
     @if (User.IsInRole("Administrador"))
     {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a><span>|</span>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+
+        <span>|</span>
     }
     @if (!ViewBag.carrito)
     {
-        <a asp-action="Index">Back to List</a><span>|</span>
+        <a asp-action="Index">Back to List</a>
+
+        <span>|</span>
     }
     <a asp-action="Index" asp-controller="Escaparate">Seguir comprando</a>
 </div>

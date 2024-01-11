@@ -109,7 +109,7 @@ namespace Integrador.Controllers
                     ClienteId = cliente.Id,
                     EstadoId = 1,
                     FechaPedido = DateTime.Now,
-                    FechaEsperada = null
+                    Descuento = 0
                 };
 
                 if (ModelState.IsValid)
