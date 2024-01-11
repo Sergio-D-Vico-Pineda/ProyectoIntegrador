@@ -42,7 +42,7 @@ namespace Integrador.Models
 
         public string? Imagen { get; set; } = "default.jpeg";
 
-        private int stock; 
+        private int stock;
         [Range(0, int.MaxValue, ErrorMessage = "El valor debe ser un número entero positivo.")]
         [Required(ErrorMessage = "El stock es requerido.")]
         public int Stock // 0 por defecto
