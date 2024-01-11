@@ -54,6 +54,8 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
+            Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+
             Pedido? pedido = await _context.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Estado)
@@ -62,7 +64,7 @@ namespace Integrador.Controllers
                 .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (pedido == null)
+            if (pedido == null || pedido.ClienteId != cliente.Id)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -184,6 +186,18 @@ namespace Integrador.Controllers
                 .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            if (User.IsInRole("Cliente"))
+            {
+                Cliente? cliente = await _context.Clientes
+                    .Where(c => c.Email == User.Identity.Name)
+                    .FirstOrDefaultAsync();
+
+                if (pedido.ClienteId != cliente.Id)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
             if (pedido == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -225,9 +239,7 @@ namespace Integrador.Controllers
         [Authorize(Roles = "Cliente")]
         public async Task<IActionResult> Carrito()
         {
-            Cliente? cliente = await _context.Clientes
-                    .Where(c => c.Email == User.Identity.Name)
-                    .FirstOrDefaultAsync();
+            Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
 
             if (User.IsInRole("Cliente") && cliente == null)
             {
@@ -259,6 +271,7 @@ namespace Integrador.Controllers
         }
 
         // GET /Pedidos/Descuentos
+        [Authorize(Roles = "Cliente")]
         public async Task<IActionResult> Descuentos(int? id)
         {
             if (id == null) return NotFound();
@@ -267,26 +280,20 @@ namespace Integrador.Controllers
 
             if (pedido == null) return RedirectToAction(nameof(Index));
 
-            if (User.IsInRole("Cliente"))
-            {
-                Cliente? cliente = await _context.Clientes
-                    .Where(c => c.Email == User.Identity.Name)
-                    .FirstOrDefaultAsync();
+            Cliente? cliente = await _context.Clientes
+                .Where(c => c.Email == User.Identity.Name)
+                .FirstOrDefaultAsync();
 
-                if (pedido.ClienteId != cliente.Id) return RedirectToAction(nameof(Index));
+            if (pedido.ClienteId != cliente.Id) return RedirectToAction(nameof(Index));
 
-            }
-
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
-            ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
-
+            ViewBag.id = id;
             return View();
         }
 
         // POST /Pedidos/Descuentos
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Descuentos(int id, [Bind("Descuento")] Descuentos.ModelDescuentos desc)
+        public async Task<IActionResult> Descuentos(int id, [Bind("Codigo")] Descuentos desc)
         {
             var pedido = await _context.Pedidos
                 .Include(p => p.DetallePedidos)
@@ -301,35 +308,44 @@ namespace Integrador.Controllers
                 total += dp.Cantidad * dp.PrecioUnidad;
             }
 
-            switch (desc.Codigo)
+            string codigo = desc.Codigo ?? "";
+
+            switch (codigo.ToUpper())
             {
                 case "SCARPY":
                     {
-                        // 90% of total
+                        pedido.CodDescuento = "SCARPY";
                         pedido.Descuento = total * 0.9m;
                     }
                     break;
                 case "DWES":
                     {
-                        // 10%
+                        pedido.CodDescuento = "DWES";
                         pedido.Descuento = total * 0.1m;
                     }
                     break;
                 case "DAW":
                     {
-                        // 80% of total
+                        pedido.CodDescuento = "DAW";
                         pedido.Descuento = total * 0.8m;
                     }
                     break;
                 case "RRBOX":
                     {
-                        // 20%
+                        pedido.CodDescuento = "RRBOX";
                         pedido.Descuento = total * 0.2m;
+                    }
+                    break;
+                case "SEXO":
+                    {
+                        pedido.CodDescuento = "SEXO";
+                        pedido.Descuento = total * 0.5m;
                     }
                     break;
                 default:
                     {
-                        return RedirectToAction(nameof(Carrito));
+                        pedido.CodDescuento = null;
+                        pedido.Descuento = 0;
                     }
                     break;
             }
@@ -464,7 +480,7 @@ namespace Integrador.Controllers
             _context.Update(dp);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Details), "Pedidos", new { id });
+            return RedirectToAction("Carrito", "Pedidos", new { id });
         }
 
         // POST /Pedidos/Menos
@@ -480,7 +496,7 @@ namespace Integrador.Controllers
             _context.Update(dp);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Details), "Pedidos", new { id });
+            return RedirectToAction("Carrito", "Pedidos", new { id });
         }
 
         private bool PedidoExists(int id)

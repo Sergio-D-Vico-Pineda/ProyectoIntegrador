@@ -98,12 +98,10 @@ namespace Integrador.Controllers
 
             if (producto == null) return NotFound();
 
+            Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+
             if (HttpContext.Session.GetString("NumPedido") == null)
             {
-                Cliente? cliente = await _context.Clientes
-                .Where(c => c.Email == User.Identity.Name)
-                .FirstOrDefaultAsync();
-
                 Pedido pedido = new()
                 {
                     ClienteId = cliente.Id,
@@ -119,6 +117,32 @@ namespace Integrador.Controllers
                 }
 
                 HttpContext.Session.SetString("NumPedido", pedido.Id.ToString());
+            }
+            else
+            {
+                // El pedido ya existe
+                Pedido? pedido1 = await _context.Pedidos
+                    .Where(p => p.Id == Convert.ToInt32(HttpContext.Session.GetString("NumPedido")))
+                    .FirstOrDefaultAsync();
+
+                if (pedido1.ClienteId != cliente.Id)
+                {
+                    Pedido pedido = new()
+                    {
+                        ClienteId = cliente.Id,
+                        EstadoId = 1,
+                        FechaPedido = DateTime.Now,
+                        Descuento = 0
+                    };
+
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(pedido);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    HttpContext.Session.SetString("NumPedido", pedido.Id.ToString());
+                }
             }
 
             DetallePedido? dpd = await _context.DetallePedidos
