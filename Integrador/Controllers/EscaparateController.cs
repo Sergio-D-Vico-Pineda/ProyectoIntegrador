@@ -15,33 +15,6 @@ namespace Integrador.Controllers
         // GET /Escaparate/Index
         public async Task<IActionResult> Index(int? MarcaId)
         {
-            if (User.IsInRole("Cliente"))
-            {
-                Cliente? cliente = await _context.Clientes
-                    .Where(c => c.Email == User.Identity.Name)
-                    .FirstOrDefaultAsync();
-
-                if (User.IsInRole("Cliente") && cliente == null)
-                {
-                    return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
-                }
-
-                var listaPedidos = await _context.Pedidos
-                    .Where(p => p.EstadoId == 1)
-                    .Where(p => p.ClienteId == cliente.Id)
-                    .ToListAsync();
-
-                if (listaPedidos.Count > 0)
-                {
-                    var ultimo = listaPedidos
-                        .OrderByDescending(p => p.Id)
-                        .First(); // Obtener el último pedido pendiente
-
-                    if (ultimo != null)
-                        HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
-                }
-            }
-
             ViewData["ListaMarcas"] = new SelectList(_context.Marcas, "Id", "Nombre");
 
             var productos = _context.Productos
@@ -56,6 +29,27 @@ namespace Integrador.Controllers
         [Authorize(Roles = "Cliente")]
         public async Task<IActionResult> AgregarCarrito(int? id)
         {
+            Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+
+            if (cliente == null)
+            {
+                return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+            }
+
+            var listaPedidos = await _context.Pedidos
+                .Where(p => p.EstadoId == 1)
+                .Where(p => p.ClienteId == cliente.Id)
+                .ToListAsync();
+
+            if (listaPedidos.Count > 0)
+            {
+                var ultimo = listaPedidos
+                    .OrderByDescending(p => p.Id)
+                    .First(); // Obtener el último pedido pendiente
+
+                if (ultimo != null)
+                    HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
+            }
             if (id == 0) return RedirectToAction(nameof(Index), "Escaparate");
 
             var producto = await _context.Productos
