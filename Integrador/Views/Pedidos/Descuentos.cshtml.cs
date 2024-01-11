@@ -10,12 +10,8 @@ namespace Integrador.Views.Pedidos
         }
 
         [BindProperty]
-        public ModelDescuentos Descuento { get; set; }
+        [StringLength(6)]
+        public string? Codigo { get; set; }
 
-        public class ModelDescuentos
-        {
-            [StringLength(6)]
-            public string? Codigo { get; set; }
-        }
     }
 }

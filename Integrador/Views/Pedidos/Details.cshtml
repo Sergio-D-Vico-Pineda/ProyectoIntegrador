@@ -1,7 +1,9 @@
-﻿@model Integrador.Models.Pedido
+﻿@using Integrador.Views.Pedidos
+@model Integrador.Models.Pedido
 
 @{
     ViewData["Title"] = "Detalles del pedido";
+    decimal? total = 0;
 }
 
 @if (ViewBag.carrito == true)
@@ -57,22 +59,38 @@ else
                 @Html.DisplayNameFor(model => model.CodDescuento)
             </dt>
             <dd class="col-sm-8">
-                @if (Model.Descuento == 0 || Model.Descuento == null)
+                @if (Model.CodDescuento == null)
                 {
                     @if (Model.EstadoId == 1)
                     {
-                        <a asp-action="Descuento" asp-controller="Pedidos" asp-route-id="@Model?.Id">
+                        <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-id="@Model?.Id">
                             <span>Sin descuento.</span>
                         </a>
                     }
                     else
                     {
                         <span>Sin descuento.</span>
-
-                        @Html.DisplayFor(model => model.Descuento)
                     }
                 }
-                @Html.DisplayFor(model => model.CodDescuento)
+                else
+                {
+                    @if (Model.EstadoId == 1)
+                    {
+                        <div class="d-flex flex-row ">
+                            <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-id="@Model?.Id">
+                                @Html.DisplayFor(model => model.CodDescuento)
+                            </a>
+                            <form asp-action="Descuentos" asp-route-id="@Model?.Id" class="d-print-none">
+                                <input name="Codigo" class="form-control" value="" hidden />
+                                <input type="submit" value="🗑" class="btn btn-link text-decoration-none p-0 ms-3" />
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.CodDescuento)
+                    }
+                }
             </dd>
 
             @* COMENTARIOS *@
@@ -94,7 +112,7 @@ else
                 <dd class="col-sm-8">
                     @if (Model.Comentarios == null)
                     {
-                        <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">Añadir comentarios 📝</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none text-decoration-none"><span class="text-decoration-underline">Añadir comentarios</span> 📝</a>
                     }
                     else
                     {
@@ -222,7 +240,7 @@ else
                                 else if (item.Cantidad == 1 && Model.EstadoId == 1)
                                 {
                                     <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
-                                        <input type="hidden" name="pedidoid" value="@Model.Id" />
+                                        <input type="hidden" name="pedidoid" value="@Model.Id" hidden />
                                         <input class="btn btn-danger" value="🗑" type="submit" />
                                     </form>
                                 }
@@ -240,22 +258,22 @@ else
                             <span class="text-nowrap">@Html.DisplayFor(modelItem => item.PrecioUnidad) €</span>
                         </td>
                     </tr>
+                    total += item.PrecioUnidad * item.Cantidad;
                 }
             </table>
-            <div>
-                @{
-                    decimal? total = 0;
-                    foreach (var item in Model.DetallePedidos)
-                    {
-                        total += item.PrecioUnidad * item.Cantidad;
-                    }
-                }
-                <h5>
-                    Total: @total.ToString() €
-                </h5>
-                @if (Model.Descuento == 0)
+            <div class="text-end">
+                @if (Model.CodDescuento != null)
                 {
-                    <h5>Descuento: @Model.Descuento</h5>
+                    <h5>Subtotal: @total €</h5>
+                    <h5>Descuento: <span class="text-danger">- @Model.Descuento €</span></h5>
+                    total -= Model.Descuento;
+                    <h5>Total: @total €</h5>
+                }
+                else
+                {
+                    <h5>
+                        Total: @total.ToString() €
+                    </h5>
                 }
             </div>
         </div>
