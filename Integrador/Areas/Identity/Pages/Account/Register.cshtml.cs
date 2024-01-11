@@ -116,13 +116,27 @@ namespace Integrador.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        /*await _signInManager.SignOutAsync();*/
                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        HttpContext.Session.Remove("NumPedido");
                         return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if (error.Code == "PasswordRequiresDigit")
+                    {
+                        ModelState.AddModelError(string.Empty, "La contraseña debe tener un número.");
+                    }
+                    else if (error.Code == "DuplicateUserName")
+                    {
+                        ModelState.AddModelError(string.Empty, "El email ya está registrado.");
+                    }
+                    else
+                    {
+                        Console.WriteLine(error.Code); // Quitar comentario
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
 
