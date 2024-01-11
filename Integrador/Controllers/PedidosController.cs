@@ -56,8 +56,6 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
-            Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
-
             Pedido? pedido = await _context.Pedidos
                 .Include(p => p.Cliente)
                 .Include(p => p.Estado)
@@ -66,7 +64,16 @@ namespace Integrador.Controllers
                 .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (pedido == null || pedido.ClienteId != cliente.Id)
+            if (User.IsInRole("Cliente"))
+            {
+                Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+                if (pedido.ClienteId != cliente.Id)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            if (pedido == null)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -382,6 +389,7 @@ namespace Integrador.Controllers
         public async Task<IActionResult> ConfirmarPedido(int id)
         {
             var pedido = await _context.Pedidos
+                .Include(p => p.DetallePedidos)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (pedido != null)
@@ -390,6 +398,27 @@ namespace Integrador.Controllers
                 pedido.FechaConfirmacion = DateTime.Now;
                 pedido.FechaEsperada = DateTime.Now.AddDays(7);
                 _context.Update(pedido);
+
+                foreach (var dp in pedido.DetallePedidos)
+                {
+                    // Restar stock en los productos
+                    var producto = await _context.Productos.FindAsync(dp.ProductoId);
+
+                    if (producto == null) continue;
+
+                    // Comprobar que hay stock en el producto
+                    if (producto.Stock >= dp.Cantidad)
+                    {
+                        producto.Stock -= dp.Cantidad;
+                        _context.Update(producto);
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Details), "Pedidos", new { id });
+                    }
+
+                }
+
                 await _context.SaveChangesAsync();
 
                 HttpContext.Session.Remove("NumPedido");
@@ -404,21 +433,36 @@ namespace Integrador.Controllers
         public async Task<IActionResult> AnularPedido(int id)
         {
             var pedido = await _context.Pedidos
+                .Include(p => p.DetallePedidos)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (pedido != null)
             {
                 pedido.EstadoId = 5;
                 pedido.FechaAnulado = DateTime.Now;
                 _context.Update(pedido);
+
+                foreach (var dp in pedido.DetallePedidos)
+                {
+                    // Devolver el stock a los productos
+                    var producto = await _context.Productos.FindAsync(dp.ProductoId);
+
+                    if (producto == null) continue;
+
+                    producto.Stock += dp.Cantidad;
+                    _context.Update(producto);
+                }
+
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Details), "Pedidos", new { id });
         }
 
         // POST /Pedidos/Enviado
         [HttpPost, ActionName("Enviar")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Enviado(int id)
+        public async Task<IActionResult> EnviarPedido(int id)
         {
             var pedido = await _context.Pedidos
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -437,7 +481,7 @@ namespace Integrador.Controllers
         // POST /Pedidos/Entregado
         [HttpPost, ActionName("Entregado")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Entregado(int id)
+        public async Task<IActionResult> EntregarPedido(int id)
         {
             var pedido = await _context.Pedidos
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -455,15 +499,29 @@ namespace Integrador.Controllers
         // POST /Pedidos/Devolver
         [HttpPost, ActionName("Devolver")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Devolver(int id)
+        public async Task<IActionResult> DevolverPedido(int id)
         {
             var pedido = await _context.Pedidos
+                .Include(p => p.DetallePedidos)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (pedido != null)
             {
                 pedido.EstadoId = 6;
                 pedido.FechaDevolucion = DateTime.Now;
                 _context.Update(pedido);
+
+                foreach (var dp in pedido.DetallePedidos)
+                {
+                    // Devolver el stock a los productos
+                    var producto = await _context.Productos.FindAsync(dp.ProductoId);
+
+                    if (producto == null) continue;
+
+                    producto.Stock += dp.Cantidad;
+                    _context.Update(producto);
+                }
+
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Details), "Pedidos", new { id });
