@@ -234,6 +234,21 @@ namespace Integrador.Controllers
                 return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
             }
 
+            var listaPedidos = await _context.Pedidos
+                    .Where(p => p.EstadoId == 1)
+                    .Where(p => p.ClienteId == cliente.Id)
+                    .ToListAsync();
+
+            if (listaPedidos.Count > 0)
+            {
+                var ultimo = listaPedidos
+                    .OrderByDescending(p => p.Id)
+                    .First(); // Obtener el último pedido pendiente
+
+                if (ultimo != null)
+                    HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
+            }
+
             var numPed = HttpContext.Session.GetString("NumPedido");
             if (numPed != null)
             {
