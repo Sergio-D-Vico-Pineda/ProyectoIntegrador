@@ -82,16 +82,8 @@ namespace Integrador.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Intento de inicio de sesión inválido.");
-                    return Page();
-                }
+
+                ModelState.AddModelError(string.Empty, "Intento de inicio de sesión inválido.");
             }
 
             // If we got this far, something failed, redisplay form
