@@ -24,6 +24,7 @@ namespace Integrador.Controllers
                     .Include(p => p.Cliente)
                     .Include(p => p.Estado)
                     .Include(p => p.DetallePedidos);
+
             if (User.IsInRole("Administrador"))
             {
                 return View(await pedidos
@@ -42,6 +43,7 @@ namespace Integrador.Controllers
 
                 return View(await pedidos
                     .Where(p => p.ClienteId == cliente.Id)
+                    .OrderByDescending(p => p.Id)
                     .ToListAsync());
             }
         }
