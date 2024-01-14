@@ -39,7 +39,7 @@
             {
                 <div class="card" style="max-width:280px;">
                     @{
-                        var nombreImagen = item.Imagen ?? "default.jpeg";
+                        var nombreImagen = item.Imagen ?? "default.png";
                     }
                     <img src="~/img/@nombreImagen" class="card-img-top object-fit-contain mt-3" height="80" width="80"
                          asp-append-version="true" alt="Sin imagen" />

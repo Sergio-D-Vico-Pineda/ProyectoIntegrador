@@ -47,7 +47,7 @@
             <div>
                 @Html.HiddenFor(model => model.Imagen)
                 @{
-                    var nombreImagen = Model.Imagen ?? "default.jpeg";
+                    var nombreImagen = Model.Imagen ?? "default.png";
                 }
                 <img src="~/img/@nombreImagen" height="225" width="225"
                      asp-append-version="true" alt="Sin imagen" />

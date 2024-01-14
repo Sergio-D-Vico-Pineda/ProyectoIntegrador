@@ -54,7 +54,7 @@
         <dd class="col-sm-10">
             @* @Html.DisplayFor(model => model.Imagen) *@
             @{
-                var nombreImagen = Model.Imagen ?? "default.jpeg";
+                var nombreImagen = Model.Imagen ?? "default.png";
             }
             <img src="~/img/@nombreImagen" height="250" width="250"
                  asp-append-version="true" alt="Sin imagen" />

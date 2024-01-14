@@ -40,7 +40,7 @@ namespace Integrador.Models
         [Required(ErrorMessage = "El campo Escaparate es requerido.")]
         public bool Escaparate { get; set; } // True por defecto
 
-        public string? Imagen { get; set; } = "default.jpeg";
+        public string? Imagen { get; set; } = "default.png";
 
         private int stock;
         [Range(0, int.MaxValue, ErrorMessage = "El valor debe ser un número entero positivo.")]

@@ -14,7 +14,7 @@
         <dt class="col-sm-2"></dt>
         <dd class="col-sm-10">
             @{
-                var nombreImagen = Model.Imagen ?? "default.jpeg";
+                var nombreImagen = Model.Imagen ?? "default.png";
             }
             <img src="~/img/@nombreImagen" height="150" width="150"
                  asp-append-version="true" alt="Sin imagen" />
