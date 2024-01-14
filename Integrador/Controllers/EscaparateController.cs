@@ -13,14 +13,22 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET /Escaparate/Index
-        public async Task<IActionResult> Index(int? MarcaId)
+        public async Task<IActionResult> Index(int? id)
         {
             ViewData["ListaMarcas"] = new SelectList(_context.Marcas, "Id", "Nombre");
 
             var productos = _context.Productos
                 .Include(p => p.Modelo)
                 .Where(p => p.Escaparate);
-            /*.Where(p => p.Escaparate && p.MarcaId == MarcaId);*/
+
+            if (id != null)
+            {
+                var marca = await _context.Marcas.FirstOrDefaultAsync(m => m.Id == id);
+                if (marca != null)
+                {
+                    productos = productos.Where(p => p.Modelo.MarcaId == id);
+                }
+            }
 
             return View(await productos.ToListAsync());
         }
