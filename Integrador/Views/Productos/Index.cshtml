@@ -12,14 +12,17 @@
 <table class="table">
     <thead>
         <tr>
+            @if (User.IsInRole("Administrador"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+            }
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Modelo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modelo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Descripcion)
@@ -27,9 +30,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Precio)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.PrecioCadena)
-            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Escaparate)
             </th>
@@ -46,14 +46,17 @@
         @foreach (var item in Model)
         {
             <tr>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                }
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @Html.DisplayFor(modelItem => item.Modelo.Nombre)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Modelo.Nombre)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Descripcion)
@@ -61,14 +64,17 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Precio)
                 </td>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.PrecioCadena)
-            </td> *@
                 <td>
-                    @Html.DisplayFor(modelItem => item.Escaparate)
+                    @if (item.Escaparate)
+                    {
+                        <span>Sí</span>
+                    }
+                    else
+                    {
+                        <span>No</span>
+                    }
                 </td>
                 <td>
-                    @* @Html.DisplayFor(modelItem => item.Imagen) *@
                     @{
                         var nombreImagen = "default.png";
                         if (item.Imagen != null)

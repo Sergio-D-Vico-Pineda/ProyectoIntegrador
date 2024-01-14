@@ -45,7 +45,14 @@
             @Html.DisplayNameFor(model => model.Escaparate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Escaparate)
+            @if (Model.Escaparate)
+            {
+                <span>Sí</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Imagen)
