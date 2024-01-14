@@ -533,12 +533,16 @@ namespace Integrador.Controllers
         public async Task<IActionResult> MasPedido(int id, int dpid)
         {
             DetallePedido? dp = await _context.DetallePedidos
+                .Include(dp => dp.Producto)
                 .Where(dp => dp.PedidoId == id)
                 .FirstOrDefaultAsync(dp => dp.Id == dpid);
 
-            dp.Cantidad++;
-            _context.Update(dp);
-            await _context.SaveChangesAsync();
+            if (dp.Cantidad < dp.Producto.Stock)
+            {
+                dp.Cantidad++;
+                _context.Update(dp);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction("Carrito", "Pedidos", new { id });
         }
@@ -552,9 +556,12 @@ namespace Integrador.Controllers
                 .Where(dp => dp.PedidoId == id)
                 .FirstOrDefaultAsync(dp => dp.Id == dpid);
 
-            dp.Cantidad--;
-            _context.Update(dp);
-            await _context.SaveChangesAsync();
+            if (dp.Cantidad > 1)
+            {
+                dp.Cantidad--;
+                _context.Update(dp);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction("Carrito", "Pedidos", new { id });
         }
