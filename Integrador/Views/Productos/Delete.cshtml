@@ -63,7 +63,7 @@
                 var nombreImagen = Model.Imagen ?? "default.png";
             }
             <img src="~/img/@nombreImagen" height="70" width="70"
-                 asp-append-version="true" alt="Sin imagen" />
+                 asp-append-version="true" alt="Sin imagen" draggable="false" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Stock)

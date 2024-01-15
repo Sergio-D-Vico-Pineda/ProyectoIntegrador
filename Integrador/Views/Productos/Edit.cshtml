@@ -45,7 +45,7 @@
                     var nombreImagen = Model.Imagen ?? "default.png";
                 }
                 <img src="~/img/@nombreImagen" height="225" width="225"
-                     asp-append-version="true" alt="Sin imagen" />
+                     asp-append-version="true" alt="Sin imagen" draggable="false" />
             </div>
             <div class="form-group">
                 <label asp-for="Imagen" class="control-label"></label>

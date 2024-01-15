@@ -17,7 +17,7 @@
                 var nombreImagen = Model.Imagen ?? "default.png";
             }
             <img src="~/img/@nombreImagen" height="150" width="150"
-                 asp-append-version="true" alt="Sin imagen" />
+                 asp-append-version="true" alt="Sin imagen" draggable="false" />
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nombre)
@@ -52,7 +52,7 @@
     </dl>
 </div>
 <div>
-        <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="All" class="text-danger"></div>
     <form class="w-25 d-flex flex-row align-items-end gap-3" asp-action="AgregarCarrito" asp-route-id="@Model?.Id">
         <label style="width:85px;">
             Cantidad:
