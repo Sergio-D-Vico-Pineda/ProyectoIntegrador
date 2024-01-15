@@ -310,14 +310,43 @@ namespace Integrador.Controllers
 
             if (pedido == null) return NotFound();
 
+            string codigo = desc.Codigo ?? "";
+
+            await CalcDescuentos(id, codigo);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(pedido);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PedidoExists(pedido.Id))
+                        return NotFound();
+                    else
+                        throw;
+                }
+            }
+
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
+            ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
+
+            return RedirectToAction(nameof(Carrito));
+        }
+
+        private async Task CalcDescuentos(int pid, string codigo)
+        {
             decimal? total = 0;
+            var pedido = await _context.Pedidos
+                .Include(p => p.DetallePedidos)
+                .FirstOrDefaultAsync(m => m.Id == pid);
 
             foreach (var dp in pedido.DetallePedidos)
             {
                 total += dp.Cantidad * dp.PrecioUnidad;
             }
-
-            string codigo = desc.Codigo ?? "";
 
             switch (codigo.ToUpper())
             {
@@ -358,27 +387,6 @@ namespace Integrador.Controllers
                     }
                     break;
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(pedido);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PedidoExists(pedido.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
-            }
-
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
-            ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
-
-            return RedirectToAction(nameof(Carrito));
         }
 
         // PEDIDOS
@@ -537,10 +545,13 @@ namespace Integrador.Controllers
                 .Where(dp => dp.PedidoId == id)
                 .FirstOrDefaultAsync(dp => dp.Id == dpid);
 
+            Pedido? pedido = await _context.Pedidos.FirstOrDefaultAsync(p => p.Id == id);
+
             if (dp.Cantidad < dp.Producto.Stock)
             {
                 dp.Cantidad++;
                 _context.Update(dp);
+                await CalcDescuentos(id, pedido.CodDescuento);
                 await _context.SaveChangesAsync();
             }
 
@@ -555,11 +566,13 @@ namespace Integrador.Controllers
             DetallePedido? dp = await _context.DetallePedidos
                 .Where(dp => dp.PedidoId == id)
                 .FirstOrDefaultAsync(dp => dp.Id == dpid);
+            Pedido? pedido = await _context.Pedidos.FirstOrDefaultAsync(p => p.Id == id);
 
             if (dp.Cantidad > 1)
             {
                 dp.Cantidad--;
                 _context.Update(dp);
+                await CalcDescuentos(id, pedido.CodDescuento);
                 await _context.SaveChangesAsync();
             }
 
