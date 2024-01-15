@@ -23,7 +23,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Productos
-        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Index()
         {
             var productos = _context.Productos

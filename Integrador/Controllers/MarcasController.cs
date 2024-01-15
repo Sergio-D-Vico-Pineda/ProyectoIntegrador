@@ -21,7 +21,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Marcas
-        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Index()
         {
             var marcas = _context.Marcas
@@ -31,7 +31,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Marcas/Details/5
-        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

@@ -16,7 +16,7 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET: Modelos
-        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Index()
         {
             var modelos = _context.Modelos
@@ -26,7 +26,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Details/5
-        [Authorize(Roles = "Proveedor, Cliente, Administrador")]
+        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
