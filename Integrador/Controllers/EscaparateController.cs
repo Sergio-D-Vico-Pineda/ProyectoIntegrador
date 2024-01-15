@@ -87,6 +87,8 @@ namespace Integrador.Controllers
         {
             var producto = await _context.Productos.FindAsync(id);
 
+            if (producto == null) return NotFound();
+
             if (cantidad <= 0)
             {
                 ModelState.AddModelError(string.Empty, "La cantidad tiene que ser un número entero positivo.");
@@ -109,8 +111,6 @@ namespace Integrador.Controllers
 
                 return View(producto);
             }
-
-            if (producto == null) return NotFound();
 
             Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
 
