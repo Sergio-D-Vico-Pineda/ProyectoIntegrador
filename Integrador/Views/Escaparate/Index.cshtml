@@ -21,9 +21,12 @@
 
 <div class="row gx-3">
     <aside class="col-12 col-md-2">
-        <div class="text-center mb-1 p-2">
-            <a asp-action="Index" asp-route-id="" class="p-2 rounded-2 btn btn-outline-primary">Escaparate</a>
-        </div>
+        @if (ViewBag.marca != null)
+        {
+            <div class="text-center mb-1 p-2">
+                <a asp-action="Index" asp-route-id="" class="p-2 rounded-2 btn btn-primary">Volver al escaparate</a>
+            </div>
+        }
         @foreach (var marca in (IEnumerable<Marca>)ViewData["ListaMarcas"])
         {
             @if (marca.Modelos.Any())
