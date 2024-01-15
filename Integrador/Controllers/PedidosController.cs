@@ -77,6 +77,7 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+            await CalcDescuentos((int)id, pedido.CodDescuento);
 
             ViewBag.carrito = c ?? false;
 
@@ -310,9 +311,7 @@ namespace Integrador.Controllers
 
             if (pedido == null) return NotFound();
 
-            string codigo = desc.Codigo ?? "";
-
-            await CalcDescuentos(id, codigo);
+            await CalcDescuentos(id, desc.Codigo);
 
             if (ModelState.IsValid)
             {
@@ -336,7 +335,7 @@ namespace Integrador.Controllers
             return RedirectToAction(nameof(Carrito));
         }
 
-        private async Task CalcDescuentos(int pid, string codigo)
+        public async Task CalcDescuentos(int pid, string codigo)
         {
             decimal? total = 0;
             var pedido = await _context.Pedidos
@@ -347,6 +346,7 @@ namespace Integrador.Controllers
             {
                 total += dp.Cantidad * dp.PrecioUnidad;
             }
+            codigo ??= "";
 
             switch (codigo.ToUpper())
             {
@@ -387,6 +387,9 @@ namespace Integrador.Controllers
                     }
                     break;
             }
+            pedido.Descuento = Math.Round((decimal)pedido.Descuento, 2);
+            _context.Update(pedido);
+            await _context.SaveChangesAsync();
         }
 
         // PEDIDOS
@@ -551,7 +554,6 @@ namespace Integrador.Controllers
             {
                 dp.Cantidad++;
                 _context.Update(dp);
-                await CalcDescuentos(id, pedido.CodDescuento);
                 await _context.SaveChangesAsync();
             }
 
@@ -572,7 +574,6 @@ namespace Integrador.Controllers
             {
                 dp.Cantidad--;
                 _context.Update(dp);
-                await CalcDescuentos(id, pedido.CodDescuento);
                 await _context.SaveChangesAsync();
             }
 
