@@ -4,37 +4,50 @@
     ViewData["Title"] = "Escaparate";
 }
 
-<h1 class="text-center">Escaparate</h1>
+<h1 class="text-center">
+    @if (ViewBag.marca == null)
+    {
+        <span>Escaparate</span>
+    }
+    else
+    {
+        <span>@ViewBag.marca</span>
+        @if (ViewBag.modelo != null)
+        {
+            <span>- @ViewBag.modelo</span>
+        }
+    }
+</h1>
 
 <div class="row gx-3">
-    <aside class="col-12 col-md-3">
-        <h2>Buscador</h2>
-        <form>
-            <div class="mb-3">
-                <label for="buscador" class="form-label">Buscador</label>
-                <input type="text" class="form-control" id="buscador">
-            </div>
-        </form>
-        <h2>Filtros</h2>
-        <form>
-            <div class="mb-3">
-                <label for="marcas" class="form-label">Marcas</label>
-                <select class="form-select" id="marcas">
-                    <option value="0">Sin marca</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="modelos" class="form-label">Modelos</label>
-                <select class="form-select" id="modelos">
-                    <option value="0">Sin modelo</option>
-                </select>
-            </div>
-        </form>
-        <button type="submit" class="btn btn-primary">Buscar</button>
-        <button type="reset" class="btn btn-secondary">Borrar filtros</button>
+    <aside class="col-12 col-md-2">
+        <div class="text-center mb-1 p-2">
+            <a asp-action="Index" asp-route-id="" class="p-2 rounded-2 btn btn-outline-primary">Todas las marcas</a>
+        </div>
+        @foreach (var marca in (IEnumerable<Marca>)ViewData["ListaMarcas"])
+        {
+            @if (marca.Modelos.Any())
+            {
+                <details name="marcas">
+                    <summary><a asp-action="Index" asp-route-id="@marca.Id">@marca.Nombre</a></summary>
+                    @foreach (var modelo in marca.Modelos)
+                    {
+                        @if (modelo.Productos.Any())
+                        {
+                            <span>
+                                <a asp-action="Index" asp-route-id="@marca.Id" asp-route-mid="@modelo.Id">@modelo.Nombre</a>
+                            </span>
+                            @* <p>↑↑ - Hay @modelo.Productos.Count() productos</p> *@
+                        }
+                        @* else No hay productos de ese modelo *@
+                    }
+                </details>
+            }
+            @* else No hay modelos de esa marca *@
+        }
     </aside>
-    <div class="col-12 col-md-9 overflow-y-auto overflow-x-hidden pt-2" style="height:74vh;">
-        <div class="row d-flex ps-3 justify-content-evenly gap-3">
+    <div class="col-12 col-md-10 overflow-y-auto overflow-x-hidden pt-2" style="height:71vh;">
+        <div class="row d-flex ps-3 justify-content-evenly gap-3 mb-2">
             @foreach (var item in Model)
             {
                 <div class="card" style="max-width:280px;">
@@ -42,7 +55,7 @@
                         var nombreImagen = item.Imagen ?? "default.png";
                     }
                     <img src="~/img/@nombreImagen" class="card-img-top object-fit-contain mt-3" height="80" width="80"
-                         asp-append-version="true" alt="Sin imagen" />
+                         asp-append-version="true" alt="Sin imagen" draggable="false" />
 
                     <div class="card-body">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>

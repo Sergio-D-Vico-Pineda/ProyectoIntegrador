@@ -13,9 +13,12 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET /Escaparate/Index
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, int? mid)
         {
-            ViewData["ListaMarcas"] = new SelectList(_context.Marcas, "Id", "Nombre");
+            ViewData["ListaMarcas"] = _context.Marcas
+                .Include(m => m.Modelos)
+                .ThenInclude(m => m.Productos)
+                .ToList();
 
             var productos = _context.Productos
                 .Include(p => p.Modelo)
@@ -24,9 +27,18 @@ namespace Integrador.Controllers
             if (id != null)
             {
                 var marca = await _context.Marcas.FirstOrDefaultAsync(m => m.Id == id);
+                ViewBag.marca = marca.Nombre;
                 if (marca != null)
                 {
                     productos = productos.Where(p => p.Modelo.MarcaId == id);
+
+                    var modelo = await _context.Modelos.FirstOrDefaultAsync(m => m.Id == mid);
+
+                    if (modelo != null)
+                    {
+                        ViewBag.modelo = modelo.Nombre;
+                        productos = productos.Where(p => p.ModeloId == mid);
+                    }
                 }
             }
 
