@@ -6,105 +6,131 @@
 
 <h1>Detalles del producto</h1>
 
-<div>
-    <h4>Producto</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Modelo)
-        </dt>
-        <dd class="col-sm-10">
-            <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.ModeloId">
-                @Html.DisplayFor(model => model.Modelo.Nombre)
-            </a>
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        @* <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.PrecioCadena)
-        </dt>
-        <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.PrecioCadena)
-        </dd> *@
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Escaparate)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Escaparate)
+<div class="row">
+    <div class="col-12 col-lg">
+        <h4>Producto</h4>
+        <hr />
+        <dl class="row">
+            @if (User.IsInRole("Administrador"))
             {
-                <span>Sí</span>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+
             }
-            else
+            <dt class="col-sm-2">
+            </dt>
+            <dd class="col-sm-10">
+                @* @Html.DisplayFor(model => model.Imagen) *@
+                @{
+                    var nombreImagen = Model.Imagen ?? "default.png";
+                }
+                <img src="~/img/@nombreImagen" height="250" width="250"
+                     asp-append-version="true" alt="Sin imagen" draggable="false" />
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Modelo)
+            </dt>
+            <dd class="col-sm-10">
+                @if (User.IsInRole("Administrador"))
+                {
+                    <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.ModeloId">
+                        @Html.DisplayFor(model => model.Modelo.Nombre)
+                    </a>
+                }
+                else if (User.IsInRole("Cliente"))
+                {
+                    @Html.DisplayFor(model => model.Modelo.Nombre)
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Descripcion)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Precio)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Precio)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Stock)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Stock)
+            </dd>
+            @if (User.IsInRole("Administrador"))
             {
-                <span>No</span>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Escaparate)
+                </dt>
+                <dd class="col-sm-10">
+                    @if (Model.Escaparate)
+                    {
+                        <span>Sí</span>
+                    }
+                    else
+                    {
+                        <span>No</span>
+                    }
+                </dd>
+                <dt class="col-sm-2">
+                    Veces pedido
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.DetallePedidos.Count
+                </dd>
             }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Imagen)
-        </dt>
-        <dd class="col-sm-10">
-            @* @Html.DisplayFor(model => model.Imagen) *@
-            @{
-                var nombreImagen = Model.Imagen ?? "default.png";
-            }
-            <img src="~/img/@nombreImagen" height="250" width="250"
-                 asp-append-version="true" alt="Sin imagen" />
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Stock)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Stock)
-        </dd>
-        <dt class="col-sm-2">
-            Veces pedido
-        </dt>
-        <dd class="col-sm-10">
-            @Model.DetallePedidos.Count
-        </dd>
-    </dl>
+        </dl>
+    </div>
+    @if (Model.DetallePedidos.Count > 0 && User.IsInRole("Administrador"))
+    {
+        <div class="col-12 col-lg-2">
+            <h4>Núm. pedidos</h4>
+            <hr />
+            <table class="table border-bottom">
+                <tr>
+                    <th>
+                        Id. Pedido
+                    </th>
+                </tr>
+                @foreach (var pedido in Model.DetallePedidos)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-controller="Pedidos" asp-route-id="@pedido.PedidoId">
+
+                                @pedido.PedidoId
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
 </div>
 
-@if (Model.DetallePedidos.Count > 0)
-{
-    <div>
-        <h4>Detalle</h4>
-        <hr />
-        <table class="table border-bottom">
-            <tr>
-                <th>
-                    Id. Pedido
-                </th>
-            </tr>
-            @foreach (var pedido in Model.DetallePedidos)
-            {
-                <tr>
-                    <td>
-                        @pedido.PedidoId
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-}
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <span>|</span>
+        <a asp-action="Index">Back to List</a>
+    }
+    else if (User.IsInRole("Cliente"))
+    {
+        <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a>
+    }
 </div>
