@@ -4,9 +4,8 @@
     ViewData["Title"] = "Crear suministro";
 }
 
-<h1>Crear suministro</h1>
+<h2>Nuevo suministro</h2>
 
-<h4>Suministro</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,7 +15,7 @@
                     <span class="text-nowrap">
                         Fecha del suministro:
                     </span>
-                        <input asp-for="FechaSuministro" class="form-control-plaintext text-center" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                    <input asp-for="FechaSuministro" class="form-control-plaintext text-center" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
                 </label>
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
