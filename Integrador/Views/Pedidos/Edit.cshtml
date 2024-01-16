@@ -152,11 +152,11 @@
 <div>
     @if (User.IsInRole("Administrador"))
     {
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Volver a la lista</a>
     }
     else
     {
-        <a asp-action="Details" asp-route-id="@Model?.Id">Back to List</a>
+        <a asp-action="Details" asp-route-id="@Model?.Id">Volver a la lista</a>
     }
 </div>
 
