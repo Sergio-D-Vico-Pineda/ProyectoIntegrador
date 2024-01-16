@@ -11,6 +11,14 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            <div>
+                <label class="d-flex align-items-center">
+                    <span class="text-nowrap">
+                        Fecha del suministro:
+                    </span>
+                        <input asp-for="FechaSuministro" class="form-control-plaintext text-center" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                </label>
+            </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (!User.IsInRole("Proveedor"))
             {
@@ -38,12 +46,7 @@
                 <span asp-validation-for="Unidades" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FechaSuministro" class="control-label"></label>
-                <input asp-for="FechaSuministro" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
-                <span asp-validation-for="FechaSuministro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input id="btnCr" type="submit" value="Create" class="btn btn-primary" />
+                <input id="btnCr" type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
     </div>

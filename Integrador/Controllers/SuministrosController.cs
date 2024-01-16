@@ -17,7 +17,6 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET: Suministros
-        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Index()
         {
             var suministros = _context.Suministros;
@@ -50,7 +49,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Details/5
-        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -73,7 +71,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Create
-        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Create(int? id)
         {
             if (User.IsInRole("Administrador"))
@@ -82,7 +79,7 @@ namespace Integrador.Controllers
                     .Where(p => !p.Email.Contains("-DEL."))
                     .ToListAsync();
 
-                ViewData["ProveedorId"] = new SelectList(listaProveedores, "Id", "Nombre");
+                ViewData["ProveedorId"] = new SelectList(listaProveedores, "Id", "Email");
             }
 
             if (id != null)
@@ -91,10 +88,12 @@ namespace Integrador.Controllers
                     .Where(p => p.Email == User.Identity.Name)
                     .FirstOrDefault();
                 if (proveedor != null)
-                    ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", proveedor.Id);
-                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", id);
+                    ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Email", proveedor.Id);
+                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Email", id);
             }
-            ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
+
+            ViewData["Modelos"] = new SelectList(_context.Modelos.OrderBy(m => m.Nombre), "Id", "Nombre");
+
             return View();
         }
 
@@ -133,7 +132,7 @@ namespace Integrador.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Email", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
             ViewData["Modelos"] = new SelectList(_context.Modelos, "Id", "Nombre");
 
@@ -141,7 +140,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Edit/5
-        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Edit(int? id)
         {
             var suministro = await _context.Suministros.FindAsync(id);
@@ -236,13 +234,12 @@ namespace Integrador.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Nombre", suministro.ProveedorId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Email", suministro.ProveedorId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", suministro.ProductoId);
             return View(suministro);
         }
 
         // GET: Suministros/Delete/5
-        /*[Authorize(Roles = "Proveedor, Administrador")]*/
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
