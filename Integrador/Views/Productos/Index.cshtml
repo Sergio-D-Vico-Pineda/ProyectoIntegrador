@@ -15,9 +15,12 @@
             @if (User.IsInRole("Administrador"))
             {
                 <th>
-                    @Html.DisplayNameFor(model => model.Id)
+                    Id. Prod.
                 </th>
             }
+            <th>
+                @Html.DisplayNameFor(model => model.Imagen)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Modelo)
             </th>
@@ -31,14 +34,14 @@
                 @Html.DisplayNameFor(model => model.Precio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Escaparate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Imagen)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Stock)
             </th>
+            @if (User.IsInRole("Administrador"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Escaparate)
+                </th>
+            }
             <th></th>
         </tr>
     </thead>
@@ -53,28 +56,6 @@
                     </td>
                 }
                 <td>
-                    @Html.DisplayFor(modelItem => item.Modelo.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Precio)
-                </td>
-                <td>
-                    @if (item.Escaparate)
-                    {
-                        <span>Sí</span>
-                    }
-                    else
-                    {
-                        <span>No</span>
-                    }
-                </td>
-                <td>
                     @{
                         var nombreImagen = "default.png";
                         if (item.Imagen != null)
@@ -86,13 +67,48 @@
                          asp-append-version="true" alt="Sin imagen" draggable="false" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Stock)
+                    @Html.DisplayFor(modelItem => item.Modelo.Nombre)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stock)
+                </td>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <td>
+                        @if (item.Escaparate)
+                        {
+                            <span>Sí</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
+                    </td>
+                }
+                <td>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
+                        <a asp-action="Create" asp-controller="Suministros" asp-route-id="@item.Id">Añadir stock</a>
+                    }
+                </td>
+
             </tr>
         }
     </tbody>
