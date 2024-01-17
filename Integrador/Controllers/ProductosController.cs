@@ -179,7 +179,7 @@ namespace Integrador.Controllers
 
         // GET: Productos/Delete/5
         [Authorize(Roles = "Administrador")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? volver)
         {
             if (id == null)
             {
@@ -196,13 +196,14 @@ namespace Integrador.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewBag.volver = volver;
             return View(producto);
         }
 
         // POST: Productos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int? volver)
         {
             var producto = await _context.Productos.FindAsync(id);
 
@@ -220,7 +221,10 @@ namespace Integrador.Controllers
                 System.IO.File.Delete(strRuta);
             }
 
-            return RedirectToAction(nameof(Index));
+            if (volver == null)
+                return RedirectToAction(nameof(Index));
+            else
+                return RedirectToAction(nameof(Delete), "Modelos", new { id = volver });
         }
 
         private bool ProductoExists(int id)
