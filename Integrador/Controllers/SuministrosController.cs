@@ -89,7 +89,7 @@ namespace Integrador.Controllers
                     .FirstOrDefault();
                 if (proveedor != null)
                     ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "Id", "Email", proveedor.Id);
-                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Email", id);
+                ViewData["ProductoId"] = new SelectList(_context.Productos, "Id", "Nombre", id);
             }
 
             ViewData["Modelos"] = new SelectList(_context.Modelos.OrderBy(m => m.Nombre), "Id", "Nombre");
