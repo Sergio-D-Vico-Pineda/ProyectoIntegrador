@@ -6,110 +6,115 @@
 
 <h1>Productos</h1>
 
-<p>
-    <a asp-action="Create">Nuevo producto</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            @if (User.IsInRole("Administrador"))
-            {
-                <th>
-                    Id. Prod.
-                </th>
-            }
-            <th>
-                @Html.DisplayNameFor(model => model.Imagen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modelo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Precio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stock)
-            </th>
-            @if (User.IsInRole("Administrador"))
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model.Escaparate)
-                </th>
-            }
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+@if (User.IsInRole("Administrador"))
+{
+    <p>
+        <a asp-action="Create">Nuevo producto</a>
+    </p>
+}
+<div style="height:68vh; overflow: auto;">
+    <table class="table">
+        <thead style="position: sticky; top: 0;">
             <tr>
                 @if (User.IsInRole("Administrador"))
                 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
+                    <th>
+                        Id. Prod.
+                    </th>
                 }
-                <td>
-                    @{
-                        var nombreImagen = "default.png";
-                        if (item.Imagen != null)
-                        {
-                            nombreImagen = item.Imagen;
-                        }
-                    }
-                    <img src="~/img/@nombreImagen" height="80" width="80"
-                         asp-append-version="true" alt="Sin imagen" draggable="false" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Modelo.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Precio)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stock)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Imagen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Modelo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Precio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Stock)
+                </th>
                 @if (User.IsInRole("Administrador"))
                 {
+                    <th>
+                        @Html.DisplayNameFor(model => model.Escaparate)
+                    </th>
+                }
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                    }
                     <td>
-                        @if (item.Escaparate)
+                        @{
+                            var nombreImagen = "default.png";
+                            if (item.Imagen != null)
+                            {
+                                nombreImagen = item.Imagen;
+                            }
+                        }
+                        <img src="~/img/@nombreImagen" height="80" width="80"
+                             asp-append-version="true" alt="Sin imagen" draggable="false" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Modelo.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Precio)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stock)
+                    </td>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <td>
+                            @if (item.Escaparate)
+                            {
+                                <span>Sí</span>
+                            }
+                            else
+                            {
+                                <span>No</span>
+                            }
+                        </td>
+                    }
+                    <td>
+                        @if (User.IsInRole("Administrador"))
                         {
-                            <span>Sí</span>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                         }
                         else
                         {
-                            <span>No</span>
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
+                            <a asp-action="Create" asp-controller="Suministros" asp-route-id="@item.Id">Añadir stock</a>
                         }
                     </td>
-                }
-                <td>
-                    @if (User.IsInRole("Administrador"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
-                        <a asp-action="Create" asp-controller="Suministros" asp-route-id="@item.Id">Añadir stock</a>
-                    }
-                </td>
 
-            </tr>
-        }
-    </tbody>
-</table>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -11,16 +11,10 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    public class ProductosController : Controller
+    public class ProductosController(IntegradorContexto context, IWebHostEnvironment webHostEnvironment) : Controller
     {
-        private readonly IntegradorContexto _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public ProductosController(IntegradorContexto context, IWebHostEnvironment webHostEnvironment)
-        {
-            _context = context;
-            _webHostEnvironment = webHostEnvironment;
-        }
+        private readonly IntegradorContexto _context = context;
+        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
         // GET: Productos
         [Authorize(Roles = "Proveedor, Administrador")]
