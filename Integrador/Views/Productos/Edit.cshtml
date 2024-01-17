@@ -34,9 +34,11 @@
             </div>
             <div class="my-3 d-flex flex-column gap-2">
                 <span>¿Está en el escaparate?</span>
-                <label>
-                    <input class="form-check-input" asp-for="Escaparate" /> @Html.DisplayNameFor(model => model.Escaparate)
-                </label>
+                <div class="form-check form-switch">
+                    <label>
+                        <input class="form-check-input" role="switch" asp-for="Escaparate" /> @Html.DisplayNameFor(model => model.Escaparate)
+                    </label>
+                </div>
             </div>
             <div>
                 @Html.HiddenFor(model => model.Imagen)
