@@ -6,10 +6,10 @@
 
 
 <h2>¿Estás seguro que quieres borrar esto?</h2>
-<h4>Borrar producto</h4>
-<hr />
 <div class="row">
     <div class="col-12 col-lg">
+        <h4>Producto</h4>
+        <hr />
         <dl class="row">
             <dt class="col-sm-2">
             </dt>
@@ -90,7 +90,7 @@
     @if (Model.DetallePedidos.Count > 0)
     {
         <div class="col-12 col-lg-4">
-            <h4>Detalle</h4>
+            <h4>Pedidos</h4>
             <hr />
             <table class="table border-bottom">
                 <tr>
@@ -123,7 +123,15 @@
         <input type="hidden" asp-for="Id" />
         @if (Model.DetallePedidos.Count == 0)
         {
-            <a asp-action="Index">Volver a la lista</a>
+            @if (ViewBag.volver != null)
+            {
+                <input type="hidden" name="volver" value="@ViewBag.volver" />
+                <a asp-action="Delete" asp-controller="Modelos" asp-route-id="@ViewBag.volver">Volver</a>
+            }
+            else
+            {
+                <a asp-action="Index">Volver a la lista</a>
+            }
             <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" />
         }
@@ -132,7 +140,15 @@
             <div class="alert alert-danger" style="width: fit-content;" role="alert">
                 No se puede borrar un producto que ha sido pedido.
             </div>
-            <a asp-action="Index">Volver a la lista</a>
+            @if (ViewBag.volver != null)
+            {
+                <input type="hidden" name="volver" value="@ViewBag.volver" />
+                <a asp-action="Delete" asp-controller="Modelos" asp-route-id="@ViewBag.volver">Volver</a>
+            }
+            else
+            {
+                <a asp-action="Index">Volver a la lista</a>
+            }
             <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" disabled />
         }
