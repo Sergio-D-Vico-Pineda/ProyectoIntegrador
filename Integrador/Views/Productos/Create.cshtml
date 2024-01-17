@@ -1,15 +1,14 @@
 ﻿@model Integrador.Models.Producto
 
 @{
-    ViewData["Title"] = "Crear producto";
+    ViewData["Title"] = "Nuevo producto";
 }
 
-<h1>Crear producto</h1>
+<h2>@ViewData["Title"]</h2>
 
-<h4>Producto</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6 col-lg-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -26,21 +25,18 @@
                 <input asp-for="Descripcion" class="form-control" />
                 <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-            <label asp-for="Precio" class="control-label"></label>
-            <input asp-for="Precio" class="form-control" />
-            <span asp-validation-for="Precio" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="PrecioCadena" class="control-label"></label>
                 <input asp-for="PrecioCadena" class="form-control" />
                 <span asp-validation-for="PrecioCadena" class="text-danger"></span>
             </div>
-            <span>¿Está en el escaparate?</span>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Escaparate" checked /> @Html.DisplayNameFor(model => model.Escaparate)
-                </label>
+            <div class="my-3 d-flex flex-column gap-2">
+                <span>¿Está en el escaparate?</span>
+                <div class="form-check form-switch">
+                    <label>
+                        <input class="form-check-input" role="switch" checked asp-for="Escaparate" /> @Html.DisplayNameFor(model => model.Escaparate)
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Imagen" class="control-label">Imagen</label>
@@ -48,18 +44,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Stock" class="control-label"></label>
-                <input asp-for="Stock" class="form-control" value="0" disabled />
+                <input asp-for="Stock" class="form-control" value="0" min="0" step="1" />
                 <span asp-validation-for="Stock" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
+                <a asp-action="Index">Volver a la lista</a> |
                 <input type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Volver a la lista</a>
 </div>
 
 @section Scripts {
