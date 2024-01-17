@@ -30,7 +30,6 @@
             <div class="form-group">
                 <label asp-for="Producto.Modelo" for="modeloSelect" class="control-label"></label>
                 <select id="modeloSelect" asp-for="Producto.Modelo" name="IntModelo" class="form-control" asp-items="ViewBag.Modelos">
-                    @* <option value="">Todas</option> *@
                 </select>
                 <span asp-validation-for="Producto.Modelo" class="text-danger"></span>
             </div>
