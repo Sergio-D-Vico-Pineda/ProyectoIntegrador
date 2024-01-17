@@ -4,30 +4,31 @@
     ViewData["Title"] = "Borrar modelo";
 }
 
-<h1>Borrar modelo</h1>
+<h2>¿Estás seguro que quieres borrar esto?</h2>
+<div class="row">
+    <div class="col-12 col-lg">
+        <h4>Modelo</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Marca)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Marca.Nombre)
+            </dd>
+        </dl>
 
-<h3>¿Estás seguro que quieres borrar esto?</h3>
-<div>
-    <h4>Modelo</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Marca)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Marca.Nombre)
-        </dd>
-    </dl>
+    </div>
 
     @if (Model.Productos.Count > 0)
     {
-        <div>
+        <div class="col-12 col-lg-6">
             <h4>@Html.DisplayNameFor(model => model.Productos)</h4>
             <hr />
             <table class="table border-bottom">
@@ -45,8 +46,7 @@
                             @Html.DisplayFor(model => item.Nombre)
                         </td>
                         <td class="d-print-none">
-                            <a asp-action="Delete" asp-controller="Productos"
-                               asp-route-id="@item.Id">Eliminar</a>
+                            <a asp-action="Delete" asp-controller="Productos" asp-route-id="@item.Id" asp-route-volver="@Model.Id">Eliminar</a>
                         </td>
                     </tr>
                 }
@@ -54,20 +54,24 @@
         </div>
     }
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        @if (Model.Productos.Count == 0)
-        {
-            <input type="submit" value="Borrar" class="btn btn-danger" />
-        }
-        else
-        {
-            <div class="alert alert-danger" style="width: fit-content;" role="alert">
-                No se puede borrar un modelo con productos.
-            </div>
-            <input type="submit" value="Borrar" class="btn btn-danger" disabled />
-        }
-        |
-        <a asp-action="Index">Volver a la lista</a>
-    </form>
 </div>
+
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    @if (Model.Productos.Count == 0)
+    {
+        <a asp-action="Index">Volver a la lista</a>
+        <span>|</span>
+        <input type="submit" value="Borrar" class="btn btn-danger" />
+    }
+    else
+    {
+        <div class="alert alert-danger" style="width: fit-content;" role="alert">
+            No se puede borrar un modelo con productos.
+        </div>
+        <a asp-action="Index">Volver a la lista</a>
+        <span>|</span>
+        <input type="submit" value="Borrar" class="btn btn-danger" disabled />
+    }
+</form>

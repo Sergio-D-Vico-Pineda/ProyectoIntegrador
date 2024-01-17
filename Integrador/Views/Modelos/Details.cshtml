@@ -4,63 +4,71 @@
     ViewData["Title"] = "Detalles del modelo";
 }
 
-<h1>Detalles del modelo</h1>
+<h2>Detalles del modelo</h2>
+<hr />
 
-<div>
-    <h4>Modelo</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Marca)
-        </dt>
-        <dd class="col-sm-10">
-            <a asp-action="Details" asp-controller="Marcas" asp-route-id="@Model.MarcaId">
-                @Html.DisplayFor(model => model.Marca.Nombre)
-            </a>
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-12 col-md">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Marca)
+            </dt>
+            <dd class="col-sm-9">
+                <a asp-action="Details" asp-controller="Marcas" asp-route-id="@Model.MarcaId">
+                    @Html.DisplayFor(model => model.Marca.Nombre)
+                </a>
+            </dd>
+            <dt class="col-sm-3">
+                Núm. productos
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Productos.Count
+            </dd>
+        </dl>
+    </div>
+    @if (Model.Productos.Count > 0)
+    {
+        <div class="col-12 col-md-6">
+            <h5>@Html.DisplayNameFor(model => model.Productos)</h5>
+            <hr />
+            <table class="table border-bottom">
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th class="d-print-none">
+                        Acciones
+                    </th>
+                </tr>
+                @foreach (var item in Model.Productos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.Nombre)
+                        </td>
+                        <td class="d-print-none">
+                            <a asp-action="Edit" asp-controller="Productos"
+                               asp-route-id="@item.Id">Editar</a> |
+                            <a asp-action="Details" asp-controller="Productos" asp-route-id="@item.Id">
+                                Detalles
+                            </a> |
+                            <a asp-action="Delete" asp-controller="Productos"
+                               asp-route-id="@item.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
 </div>
 
-@if (Model.Productos.Count > 0)
-{
-    <div>
-        <h4>@Html.DisplayNameFor(model => model.Productos)</h4>
-        <hr />
-        <table class="table border-bottom">
-            <tr>
-                <th>
-                    Nombre
-                </th>
-                <th class="d-print-none">
-                    Acciones
-                </th>
-            </tr>
-            @foreach (var item in Model.Productos)
-            {
-                <tr>
-                    <td>
-                        <a asp-action="Details" asp-controller="Productos" asp-route-id="@item.Id">
-                            @Html.DisplayFor(model => item.Nombre)
-                        </a>
-                    </td>
-                    <td class="d-print-none">
-                        <a asp-action="Edit" asp-controller="Productos"
-                           asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Delete" asp-controller="Productos"
-                           asp-route-id="@item.Id">Eliminar</a>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-}
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
-    <a asp-action="Index">Volver a la lista</a>
+    <a asp-action="Index">Volver a la lista</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
 </div>

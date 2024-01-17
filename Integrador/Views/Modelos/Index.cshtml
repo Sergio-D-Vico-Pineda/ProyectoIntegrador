@@ -9,49 +9,50 @@
 <p>
     <a asp-action="Create">Nuevo modelo</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Marca)
-            </th>
-            <th>
-                Modelo
-                @* @Html.DisplayNameFor(model => model.Nombre) *@
-            </th>
-            <th>
-                Núm. Productos
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div style="height:68vh; overflow: auto;">
+    <table class="table">
+        <thead style="position: sticky; top: 0;">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-controller="Marcas" asp-route-id="@item.MarcaId">
-                        @Html.DisplayFor(modelItem => item.Marca.Nombre)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @item.Productos.Count
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Marca)
+                </th>
+                <th>
+                    Modelo
+                </th>
+                <th>
+                    Núm. Productos
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Marcas" asp-route-id="@item.MarcaId">
+                            @Html.DisplayFor(modelItem => item.Marca.Nombre)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @item.Productos.Count
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

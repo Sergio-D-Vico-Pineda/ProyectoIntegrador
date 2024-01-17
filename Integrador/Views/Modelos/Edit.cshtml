@@ -4,10 +4,9 @@
     ViewData["Title"] = "Editar modelo";
 }
 
-<h1>Editar modelo</h1>
-
-<h4>Modelo</h4>
+<h2>Editar modelo</h2>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -23,17 +22,16 @@
                 <select asp-for="MarcaId" class="form-control" asp-items="ViewBag.MarcaId"></select>
                 <span asp-validation-for="MarcaId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
+                <a asp-action="Index">Volver a la lista</a> |
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver a la lista</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
