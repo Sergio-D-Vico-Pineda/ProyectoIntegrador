@@ -181,7 +181,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Pedidos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? volver)
         {
             if (id == null)
             {
@@ -212,14 +212,14 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-
+            ViewBag.volver = volver;
             return View(pedido);
         }
 
         // POST: Pedidos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int? volver)
         {
             var pedido = await _context.Pedidos.FindAsync(id);
 
@@ -241,8 +241,10 @@ namespace Integrador.Controllers
             }
 
             await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            if (volver == null)
+                return RedirectToAction(nameof(Index));
+            else
+                return RedirectToAction(nameof(Delete), "Productos", new { id = volver });
         }
 
         // GET /Pedidos/Carrito

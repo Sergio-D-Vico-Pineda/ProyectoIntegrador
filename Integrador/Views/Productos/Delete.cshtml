@@ -4,78 +4,92 @@
     ViewData["Title"] = "Borrar producto";
 }
 
-<h1>Borrar producto</h1>
 
-<h3>¿Estás seguro que quieres borrar esto?</h3>
-<div>
-    <h4>Producto</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Modelo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Modelo.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        @* <dt class = "col-sm-2">
-        @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-        @Html.DisplayFor(model => model.Precio)
-        </dd> *@
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PrecioCadena)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PrecioCadena)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Escaparate)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Escaparate)
-            {
-                <span>Sí</span>
-            }
-            else
-            {
-                <span>No</span>
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Imagen)
-        </dt>
-        <dd class="col-sm-10">
-            @* @Html.DisplayFor(model => model.Imagen) *@
-            @{
-                var nombreImagen = Model.Imagen ?? "default.png";
-            }
-            <img src="~/img/@nombreImagen" height="70" width="70"
-                 asp-append-version="true" alt="Sin imagen" draggable="false" />
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Stock)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Stock)
-        </dd>
-    </dl>
+<h2>¿Estás seguro que quieres borrar esto?</h2>
+<h4>Borrar producto</h4>
+<hr />
+<div class="row">
+    <div class="col-12 col-lg">
+        <dl class="row">
+            <dt class="col-sm-2">
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    var nombreImagen = Model.Imagen ?? "default.png";
+                }
+                <img src="~/img/@nombreImagen" height="75" width="75"
+                     asp-append-version="true" alt="Sin imagen" draggable="false" />
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Modelo)
+            </dt>
+            <dd class="col-sm-10">
+                @if (User.IsInRole("Administrador"))
+                {
+                    <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.ModeloId">
+                        @Html.DisplayFor(model => model.Modelo.Nombre)
+                    </a>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Modelo.Nombre)
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Descripcion)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Precio)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Precio)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Stock)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Stock)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Escaparate)
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Escaparate)
+                {
+                    <span>Sí</span>
+                }
+                else
+                {
+                    <span>No</span>
+                }
+            </dd>
+            <dt class="col-sm-2">
+                Veces pedido
+            </dt>
+            <dd class="col-sm-10">
+                @Model.DetallePedidos.Count
+            </dd>
+        </dl>
+    </div>
 
     @if (Model.DetallePedidos.Count > 0)
     {
-        <div>
+        <div class="col-12 col-lg-4">
             <h4>Detalle</h4>
             <hr />
             <table class="table border-bottom">
@@ -83,6 +97,7 @@
                     <th>
                         Id. Pedidos
                     </th>
+                    <th></th>
                 </tr>
                 @foreach (var item in Model.DetallePedidos)
                 {
@@ -92,26 +107,34 @@
                                 @item.PedidoId
                             </a>
                         </td>
+                        <td>
+                            <a asp-action="Delete" asp-controller="Pedidos" asp-route-id="@item.PedidoId" asp-route-volver="@Model.Id">
+                                Eliminar
+                            </a>
+                        </td>
                     </tr>
                 }
             </table>
         </div>
     }
-
+</div>
+<div>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         @if (Model.DetallePedidos.Count == 0)
         {
+            <a asp-action="Index">Volver a la lista</a>
+            <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" />
         }
         else
         {
             <div class="alert alert-danger" style="width: fit-content;" role="alert">
-                No se puede borrar el producto que ha sido pedido.
+                No se puede borrar un producto que ha sido pedido.
             </div>
+            <a asp-action="Index">Volver a la lista</a>
+            <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" disabled />
         }
-        |
-        <a asp-action="Index">Volver a la lista</a>
     </form>
 </div>

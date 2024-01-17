@@ -8,7 +8,7 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6 col-lg-5">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -32,38 +32,36 @@
                 <input asp-for="PrecioCadena" class="form-control" />
                 <span asp-validation-for="PrecioCadena" class="text-danger"></span>
             </div>
-            <span>¿Está en el escaparate?</span>
-            <div class="form-group form-check">
-                <label class="form-check-label">
+            <div class="my-3 d-flex flex-column gap-2">
+                <span>¿Está en el escaparate?</span>
+                <label>
                     <input class="form-check-input" asp-for="Escaparate" /> @Html.DisplayNameFor(model => model.Escaparate)
                 </label>
             </div>
             <div>
                 @Html.HiddenFor(model => model.Imagen)
+                Imagen actual <br />
                 @{
                     var nombreImagen = Model.Imagen ?? "default.png";
                 }
                 <img src="~/img/@nombreImagen" height="225" width="225"
                      asp-append-version="true" alt="Sin imagen" draggable="false" />
             </div>
-            <div class="form-group">
-                <label asp-for="Imagen" class="control-label"></label>
+            <div class="form-group mt-3">
+                <label asp-for="Imagen" class="control-label">Nueva imagen</label>
                 <input type="file" accept=".jpg, .jpeg, image/png, image/gif, .webp" asp-for="Imagen" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Stock" class="control-label"></label>
-                <input asp-for="Stock" class="form-control" min="0" step="1"/>
+                <input asp-for="Stock" class="form-control" min="0" step="1" />
                 <span asp-validation-for="Stock" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
+                <a asp-action="Index">Volver a la lista</a> |
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Volver a la lista</a>
 </div>
 
 @section Scripts {

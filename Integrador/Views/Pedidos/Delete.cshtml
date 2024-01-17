@@ -139,7 +139,7 @@
                     </th>
                     <th>
                         Precio
-                    </th> 
+                    </th>
                 </tr>
                 @foreach (var item in Model.DetallePedidos)
                 {
@@ -166,12 +166,22 @@
     }
 </div>
 
-<form asp-action="Delete">
-    <div class="alert alert-danger" style="width: fit-content;" role="alert">
-        Al borrar este pedido se perderán todos sus datos.
-    </div>
-    <input type="hidden" asp-for="Id" />
-    <input type="submit" value="Borrar" class="btn btn-danger" /> |
-    <a asp-action="Index">Volver a la lista</a>
-</form>
+<div>
+    <form asp-action="Delete">
+        <div class="alert alert-danger" style="width: fit-content;" role="alert">
+            Al borrar este pedido se perderán todos sus datos.
+        </div>
+        <input type="hidden" asp-for="Id" />
+        @if (ViewBag.volver != null)
+        {
+            <input type="hidden" name="volver" value="@ViewBag.volver" />
+            <a asp-action="Delete" asp-controller="Productos" asp-route-id="@ViewBag.volver">Volver</a>
+        }
+        else
+        {
+            <a asp-action="Index">Volver a la lista</a>
+        }
+        |
+        <input type="submit" value="Borrar" class="btn btn-danger" />
+    </form>
 </div>
