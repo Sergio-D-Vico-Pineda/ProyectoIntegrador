@@ -47,6 +47,7 @@
                 <span>|</span>
                 <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
             }
+        </div>
     </div>
     @if (Model.Productos.Count > 0)
     {
@@ -59,7 +60,6 @@
                         Nombre
                     </th>
                     <th class="d-print-none">
-                        Acciones
                     </th>
                 </tr>
                 @foreach (var item in Model.Productos)
@@ -69,12 +69,21 @@
                             @Html.DisplayFor(model => item.Nombre)
                         </td>
                         <td class="d-print-none">
-                            <a asp-action="Edit" asp-controller="Productos"
-                               asp-route-id="@item.Id">Editar</a> |
-                            <a asp-action="Details" asp-controller="Productos"
-                               asp-route-id="@item.Id">Detalles</a> |
-                            <a asp-action="Delete" asp-controller="Productos"
-                               asp-route-id="@item.Id">Eliminar</a>
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <a asp-action="Edit" asp-controller="Productos"
+                                   asp-route-id="@item.Id">Editar</a> <span>|</span>
+                                <a asp-action="Details" asp-controller="Productos"
+                                   asp-route-id="@item.Id">Detalles</a> <span>|</span>
+                                <a asp-action="Delete" asp-controller="Productos"
+                                   asp-route-id="@item.Id">Eliminar</a>
+                            }
+                            else
+                            {
+                                <a asp-action="Details" asp-controller="Productos"
+                                   asp-route-id="@item.Id">Detalles</a>
+                            }
+
                         </td>
                     </tr>
                 }

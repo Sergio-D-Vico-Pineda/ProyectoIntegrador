@@ -6,9 +6,13 @@
 
 <h1>Modelos</h1>
 
-<p>
-    <a asp-action="Create">Nuevo modelo</a>
-</p>
+@if (User.IsInRole("Administrador"))
+{
+    <p>
+        <a asp-action="Create">Nuevo modelo</a>
+    </p>
+}
+
 <div style="height:68vh; overflow: auto;">
     <table class="table">
         <thead style="position: sticky; top: 0;">
@@ -41,9 +45,16 @@
                         @item.Productos.Count
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                        }
                     </td>
                 </tr>
             }
