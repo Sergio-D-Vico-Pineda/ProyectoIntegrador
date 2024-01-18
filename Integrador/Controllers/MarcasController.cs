@@ -11,14 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    public class MarcasController : Controller
+    public class MarcasController(IntegradorContexto context) : Controller
     {
-        private readonly IntegradorContexto _context;
-
-        public MarcasController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET: Marcas
         [Authorize(Roles = "Proveedor, Administrador")]
@@ -26,8 +21,8 @@ namespace Integrador.Controllers
         {
             var marcas = _context.Marcas
                 .Include(m => m.Modelos);
+
             return View(await marcas.ToListAsync());
-            /*return View(await _context.Marcas.ToListAsync());*/
         }
 
         // GET: Marcas/Details/5
@@ -71,6 +66,7 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(marca);
         }
 
@@ -89,6 +85,7 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+
             return View(marca);
         }
 
@@ -124,6 +121,7 @@ namespace Integrador.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(marca);
         }
 
@@ -154,6 +152,7 @@ namespace Integrador.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var marca = await _context.Marcas.FindAsync(id);
+
             if (marca != null)
             {
                 _context.Marcas.Remove(marca);
