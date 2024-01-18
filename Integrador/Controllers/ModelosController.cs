@@ -21,7 +21,9 @@ namespace Integrador.Controllers
         {
             var modelos = _context.Modelos
                 .Include(m => m.Marca)
-                .Include(m => m.Productos);
+                .Include(m => m.Productos)
+                .OrderBy(m => m.Marca);
+
             return View(await modelos.ToListAsync());
         }
 

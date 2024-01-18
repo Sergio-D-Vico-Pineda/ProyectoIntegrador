@@ -10,6 +10,15 @@
 <div class="row">
     <div class="col-12 col-md">
         <dl class="row">
+            @if (User.IsInRole("Administrador"))
+            {
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+            }
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.Nombre)
             </dt>
@@ -55,8 +64,8 @@
                         <td class="d-print-none">
                             <a asp-action="Edit" asp-controller="Productos"
                                asp-route-id="@item.Id">Editar</a> |
-                            <a asp-action="Details" asp-controller="Productos" 
-                                asp-route-id="@item.Id">Detalles</a> |
+                            <a asp-action="Details" asp-controller="Productos"
+                               asp-route-id="@item.Id">Detalles</a> |
                             <a asp-action="Delete" asp-controller="Productos"
                                asp-route-id="@item.Id">Eliminar</a>
                         </td>

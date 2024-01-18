@@ -14,9 +14,6 @@
         <thead style="position: sticky; top: 0;">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Marca)
                 </th>
                 <th>
@@ -32,9 +29,6 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
                     <td>
                         <a asp-action="Details" asp-controller="Marcas" asp-route-id="@item.MarcaId">
                             @Html.DisplayFor(modelItem => item.Marca.Nombre)
