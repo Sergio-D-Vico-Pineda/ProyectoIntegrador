@@ -8,7 +8,7 @@
 <hr />
 
 <div class="row">
-    <div class="col-12 col-md">
+    <div class="col-12 col-md position-relative">
         <dl class="row">
             @if (User.IsInRole("Administrador"))
             {
@@ -40,6 +40,13 @@
                 @Model.Productos.Count
             </dd>
         </dl>
+        <div class="position-absolute bottom-0 left-0">
+            <a asp-action="Index">Volver a la lista</a>
+            @if (User.IsInRole("Administrador"))
+            {
+                <span>|</span>
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+            }
     </div>
     @if (Model.Productos.Count > 0)
     {
@@ -72,11 +79,7 @@
                     </tr>
                 }
             </table>
+            <a asp-action="Index" asp-controller="Productos">Ver todos los productos</a>
         </div>
     }
-</div>
-
-<div>
-    <a asp-action="Index">Volver a la lista</a> |
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
 </div>
