@@ -3,13 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Integrador.Data
 {
-    public class IntegradorContexto : DbContext
+    public class IntegradorContexto(DbContextOptions<IntegradorContexto> options) : DbContext(options)
     {
-        public IntegradorContexto(DbContextOptions<IntegradorContexto> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Cliente>? Clientes { get; set; }
 
         public DbSet<Pedido>? Pedidos { get; set; }
@@ -28,6 +23,8 @@ namespace Integrador.Data
 
         public DbSet<Proveedor>? Proveedores { get; set; }
 
+        public DbSet<Descuento>? Descuentos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Poner el nombre de las tablas en singular
@@ -40,6 +37,7 @@ namespace Integrador.Data
             modelBuilder.Entity<Marca>().ToTable("Marca");
             modelBuilder.Entity<Suministro>().ToTable("Suministro");
             modelBuilder.Entity<Proveedor>().ToTable("Proveedor");
+            modelBuilder.Entity<Descuento>().ToTable("Descuento");
 
             // Deshabilitar la eliminación en cascada en todas las relaciones
             base.OnModelCreating(modelBuilder);
