@@ -90,6 +90,9 @@ dotnet_naming_style.pascal_case.required_suffix =
 dotnet_naming_style.pascal_case.word_separator = 
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 
+# CA1862: Use las sobrecargas del método "StringComparison" para realizar comparaciones de cadenas sin distinción de mayúsculas y minúsculas
+dotnet_diagnostic.CA1862.severity = none
+
 [*.vb]
 #### Estilos de nomenclatura ####
 
