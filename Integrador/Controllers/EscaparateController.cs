@@ -120,8 +120,7 @@ namespace Integrador.Controllers
                 {
                     ClienteId = cliente.Id,
                     EstadoId = 1,
-                    FechaPedido = DateTime.Now,
-                    Descuento = 0
+                    FechaPedido = DateTime.Now
                 };
 
                 if (ModelState.IsValid)
@@ -145,8 +144,7 @@ namespace Integrador.Controllers
                     {
                         ClienteId = cliente.Id,
                         EstadoId = 1,
-                        FechaPedido = DateTime.Now,
-                        Descuento = 0
+                        FechaPedido = DateTime.Now
                     };
 
                     if (ModelState.IsValid)

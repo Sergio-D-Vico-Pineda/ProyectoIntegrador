@@ -62,6 +62,7 @@ namespace Integrador.Controllers
                 .Include(p => p.DetallePedidos)
                 .ThenInclude(dp => dp.Producto)
                 .ThenInclude(p => p.Modelo)
+                .Include(p => p.Descuento)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (User.IsInRole("Cliente"))
@@ -77,7 +78,7 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            await CalcDescuentos((int)id, pedido.CodDescuento);
+            await CalcDescuentos((int)id);
 
             ViewBag.carrito = c ?? false;
 
@@ -313,7 +314,7 @@ namespace Integrador.Controllers
 
             if (pedido == null) return NotFound();
 
-            await CalcDescuentos(id, desc.Codigo);
+            await CalcDescuentos(id);
 
             if (ModelState.IsValid)
             {
@@ -337,59 +338,40 @@ namespace Integrador.Controllers
             return RedirectToAction(nameof(Carrito));
         }
 
-        public async Task CalcDescuentos(int pid, string codigo)
+        public async Task CalcDescuentos(int pid)
         {
-            decimal? total = 0;
             var pedido = await _context.Pedidos
                 .Include(p => p.DetallePedidos)
                 .FirstOrDefaultAsync(m => m.Id == pid);
 
-            foreach (var dp in pedido.DetallePedidos)
-            {
-                total += dp.Cantidad * dp.PrecioUnidad;
-            }
-            codigo ??= "";
+            if (pedido == null || pedido.EstadoId != 1) return;
 
-            switch (codigo.ToUpper())
+            string codigo;
+
+            if (pedido.DescuentoId == null)
             {
-                case "SCARPY":
-                    {
-                        pedido.CodDescuento = "SCARPY";
-                        pedido.Descuento = total * 0.9m;
-                    }
-                    break;
-                case "DWES":
-                    {
-                        pedido.CodDescuento = "DWES";
-                        pedido.Descuento = total * 0.1m;
-                    }
-                    break;
-                case "DAW":
-                    {
-                        pedido.CodDescuento = "DAW";
-                        pedido.Descuento = total * 0.8m;
-                    }
-                    break;
-                case "RRBOX":
-                    {
-                        pedido.CodDescuento = "RRBOX";
-                        pedido.Descuento = total * 0.2m;
-                    }
-                    break;
-                case "SEXO":
-                    {
-                        pedido.CodDescuento = "SEXO";
-                        pedido.Descuento = total * 0.5m;
-                    }
-                    break;
-                default:
-                    {
-                        pedido.CodDescuento = null;
-                        pedido.Descuento = 0;
-                    }
-                    break;
+                codigo = "";
             }
-            pedido.Descuento = Math.Round((decimal)pedido.Descuento, 2);
+            else
+            {
+                codigo = pedido.Descuento.Codigo;
+            }
+
+            var desc = _context.Descuentos
+                .Where(d => d.Codigo == codigo.ToUpper())
+                .FirstOrDefault();
+
+            if (desc != null)
+            {
+                pedido.DescuentoId = desc.Id;
+                pedido.Descuento = desc;
+            }
+            else
+            {
+                pedido.DescuentoId = null;
+                pedido.Descuento = null;
+            }
+
             _context.Update(pedido);
             await _context.SaveChangesAsync();
         }

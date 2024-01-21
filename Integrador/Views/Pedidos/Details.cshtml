@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Detalles del pedido";
     decimal? total = 0;
+    decimal? descuento = 0;
 }
 
 @if (ViewBag.carrito == true)
@@ -55,12 +56,12 @@ else
                 @Html.DisplayFor(model => model.Estado.Descripcion)
             </dd>
             <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.CodDescuento)
+                @Html.DisplayNameFor(model => model.Descuento)
             </dt>
-            
+
             @* DESCUENTOS *@
             <dd class="col-sm-8">
-                @if (Model.CodDescuento == null)
+                @if (Model.DescuentoId == null)
                 {
                     @if (Model.EstadoId == 1)
                     {
@@ -79,7 +80,7 @@ else
                     {
                         <div class="d-flex flex-row ">
                             <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-id="@Model?.Id">
-                                @Html.DisplayFor(model => model.CodDescuento)
+                                @Html.DisplayFor(model => model.Descuento.Codigo)
                             </a>
                             <form asp-action="Descuentos" asp-route-id="@Model?.Id" class="d-print-none">
                                 <input name="Codigo" class="form-control" value="" hidden />
@@ -89,7 +90,7 @@ else
                     }
                     else
                     {
-                        @Html.DisplayFor(model => model.CodDescuento)
+                        @Html.DisplayFor(model => model.Descuento.Codigo)
                     }
                 }
             </dd>
@@ -261,7 +262,8 @@ else
                                         }
                                     </div>
                                 }
-                                <div class="d-flex flex-grow-1"> @* CHECK CANTIDAD *@
+                                <div class="d-flex flex-grow-1">
+                                    @* CHECK CANTIDAD *@
                                     <span class="flex-grow-1">@Html.DisplayFor(modelItem => item.Cantidad)</span>
                                     @if (item.Cantidad > item.Producto.Stock && Model.EstadoId == 1)
                                     {
@@ -294,11 +296,12 @@ else
                 }
             </table>
             <div class="text-end">
-                @if (Model.CodDescuento != null)
+                @if (Model.DescuentoId != null)
                 {
                     <h5>Subtotal: @total €</h5>
-                    <h5>Descuento: <span class="text-danger">- @Model.Descuento €</span></h5>
-                    total -= Model.Descuento;
+                    descuento = Math.Round((decimal)(total * Model.Descuento.porcentaje / 100), 2);
+                    <h5>Descuento: <span class="text-danger">- @descuento €</span></h5>
+                    total -= descuento;
                     <h5>Total: @total €</h5>
                 }
                 else

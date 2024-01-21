@@ -14,7 +14,7 @@ namespace Integrador.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Fecha estimada")]
-        public DateTime? FechaEsperada { get; set; } 
+        public DateTime? FechaEsperada { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de confirmación")]
@@ -38,12 +38,8 @@ namespace Integrador.Models
 
         public string? Comentarios { get; set; }
 
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? Descuento { get; set; }
-
-        [StringLength(6)]
         [Display(Name = "Código de descuento")]
-        public string? CodDescuento { get; set; }
+        public int? DescuentoId { get; set; }
 
         [Display(Name = "Cliente")]
         [Required(ErrorMessage = "El cliente es obligatorio.")]
@@ -55,6 +51,7 @@ namespace Integrador.Models
 
         public Cliente? Cliente { get; set; }
         public Estado? Estado { get; set; }
+        public Descuento? Descuento { get; set; }
 
         public ICollection<DetallePedido>? DetallePedidos { get; set; }
     }
