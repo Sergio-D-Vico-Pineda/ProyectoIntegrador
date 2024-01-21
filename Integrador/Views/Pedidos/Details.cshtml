@@ -57,6 +57,8 @@ else
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.CodDescuento)
             </dt>
+            
+            @* DESCUENTOS *@
             <dd class="col-sm-8">
                 @if (Model.CodDescuento == null)
                 {
@@ -259,9 +261,9 @@ else
                                         }
                                     </div>
                                 }
-                                <div class="d-flex flex-grow-1">
+                                <div class="d-flex flex-grow-1"> @* CHECK CANTIDAD *@
                                     <span class="flex-grow-1">@Html.DisplayFor(modelItem => item.Cantidad)</span>
-                                    @if (item.Cantidad > item.Producto.Stock)
+                                    @if (item.Cantidad > item.Producto.Stock && Model.EstadoId == 1)
                                     {
                                         <span class="text-danger">*</span>
                                     }
