@@ -1,14 +1,13 @@
 ﻿@model Integrador.Models.DetallePedido
 
 @{
-    ViewData["Title"] = "Borrar detalle del pedido";
+    ViewData["Title"] = "Borrar producto del pedido";
 }
 
-<h1>Borrar detalles de un pedido</h1>
+<h2>¿Estás seguro que quieres borrar esto?</h2>
 
-<h3>¿Estás seguro que quieres borrar esto?</h3>
 <div>
-    <h4>DetallePedido</h4>
+    <h4>Producto de un pedido</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -57,7 +56,7 @@
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Borrar" class="btn btn-danger" /> |
-        <a asp-action="Index">Volver a la lista</a>
+        <a asp-action="Index">Volver a la lista</a> |
+        <input type="submit" value="Borrar" class="btn btn-danger" />
     </form>
 </div>

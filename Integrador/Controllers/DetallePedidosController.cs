@@ -145,6 +145,7 @@ namespace Integrador.Controllers
             var detallePedido = await _context.DetallePedidos
                 .Include(d => d.Pedido)
                 .Include(d => d.Producto)
+                .ThenInclude(p => p.Modelo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (detallePedido == null)

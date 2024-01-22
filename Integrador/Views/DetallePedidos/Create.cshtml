@@ -1,13 +1,12 @@
 ﻿@model Integrador.Models.DetallePedido
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Añadir producto";
 }
 
-<h1>Create</h1>
-
-<h4>DetallePedido</h4>
+<h2>@ViewData["Title"] a un pedido</h2>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -30,15 +29,12 @@
                 <input asp-for="PrecioUnidad" class="form-control" />
                 <span asp-validation-for="PrecioUnidad" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
+                <a asp-action="Index">Volver a la lista</a> |
                 <input type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Volver a la lista</a>
 </div>
 
 @section Scripts {

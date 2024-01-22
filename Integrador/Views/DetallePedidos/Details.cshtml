@@ -1,14 +1,13 @@
 ﻿@model Integrador.Models.DetallePedido
 
 @{
-    ViewData["Title"] = "Info Detalles del pedido";
+    ViewData["Title"] = "Info producto pedido";
 }
 
-<h1>Detalles del pedido</h1>
+<h2>Detalles de producto en un pedido</h2>
+<hr />
 
 <div>
-    <h4>DetallePedido</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Pedido.Cliente)
@@ -55,6 +54,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
-    <a asp-action="Index">Volver a la lista</a>
+    <a asp-action="Index">Volver a la lista</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
 </div>
