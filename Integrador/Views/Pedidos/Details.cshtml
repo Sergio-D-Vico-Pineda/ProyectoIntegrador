@@ -1,5 +1,4 @@
-﻿@using Integrador.Views.Pedidos
-@model Integrador.Models.Pedido
+﻿@model Integrador.Models.Pedido
 
 @{
     ViewData["Title"] = "Detalles del pedido";
@@ -65,7 +64,7 @@ else
                 {
                     @if (Model.EstadoId == 1)
                     {
-                        <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-id="@Model?.Id">
+                        <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-pid="@Model?.Id">
                             <span>Sin descuento.</span>
                         </a>
                     }
@@ -79,10 +78,10 @@ else
                     @if (Model.EstadoId == 1)
                     {
                         <div class="d-flex flex-row ">
-                            <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-id="@Model?.Id">
+                            <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-pid="@Model?.Id">
                                 @Html.DisplayFor(model => model.Descuento.Codigo)
                             </a>
-                            <form asp-action="Descuentos" asp-route-id="@Model?.Id" class="d-print-none">
+                            <form asp-action="Descuentos" asp-route-pid="@Model?.Id" class="d-print-none">
                                 <input name="Codigo" class="form-control" value="" hidden />
                                 <input type="submit" value="🗑" class="btn btn-link text-decoration-none p-0 ms-3" />
                             </form>

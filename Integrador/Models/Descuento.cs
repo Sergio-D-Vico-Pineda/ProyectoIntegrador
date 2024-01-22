@@ -15,7 +15,7 @@ namespace Integrador.Models
         public required string Codigo
         {
             get => codigo;
-            set => codigo = value.ToUpper();
+            set => codigo = value == null ? "" : value.ToUpper();
         }
 
         public decimal? porcentaje;

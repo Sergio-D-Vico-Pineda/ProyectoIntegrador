@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
 using Microsoft.AspNetCore.Authorization;
-using Integrador.Views.Pedidos;
 
 namespace Integrador.Controllers
 {
@@ -78,7 +77,7 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            await CalcDescuentos((int)id);
+            /*await CalcDescuentos((int)id);*/
 
             ViewBag.carrito = c ?? false;
 
@@ -285,11 +284,11 @@ namespace Integrador.Controllers
 
         // GET /Pedidos/Descuentos
         [Authorize(Roles = "Cliente")]
-        public async Task<IActionResult> Descuentos(int? id)
+        public async Task<IActionResult> Descuentos(int? pid)
         {
-            if (id == null) return NotFound();
+            if (pid == null) return NotFound();
 
-            var pedido = await _context.Pedidos.FindAsync(id);
+            var pedido = await _context.Pedidos.FindAsync(pid);
 
             if (pedido == null) return RedirectToAction(nameof(Index));
 
@@ -299,81 +298,52 @@ namespace Integrador.Controllers
 
             if (pedido.ClienteId != cliente.Id) return RedirectToAction(nameof(Index));
 
-            ViewBag.id = id;
+            ViewBag.pid = pid;
             return View();
         }
 
         // POST /Pedidos/Descuentos
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Descuentos(int id, [Bind("Codigo")] Descuentos desc)
+        public async Task<IActionResult> Descuentos(int pid, [Bind("Codigo")] Descuento desc)
         {
-            var pedido = await _context.Pedidos
+            Pedido? pedido = await _context.Pedidos
                 .Include(p => p.DetallePedidos)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == pid);
 
             if (pedido == null) return NotFound();
 
-            await CalcDescuentos(id);
+            Descuento? descuento = await _context.Descuentos
+                .Where(d => d.Codigo == desc.Codigo)
+                .FirstOrDefaultAsync();
 
-            if (ModelState.IsValid)
+            if (descuento == null)
             {
-                try
-                {
-                    _context.Update(pedido);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PedidoExists(pedido.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
+                pedido.DescuentoId = null;
             }
+            else
+            {
+                pedido.DescuentoId = descuento.Id;
+            }
+
+            try
+            {
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PedidoExists(pedido.Id))
+                    return NotFound();
+                else
+                    throw;
+            }
+
 
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
 
             return RedirectToAction(nameof(Carrito));
-        }
-
-        public async Task CalcDescuentos(int pid)
-        {
-            var pedido = await _context.Pedidos
-                .Include(p => p.DetallePedidos)
-                .FirstOrDefaultAsync(m => m.Id == pid);
-
-            if (pedido == null || pedido.EstadoId != 1) return;
-
-            string codigo;
-
-            if (pedido.DescuentoId == null)
-            {
-                codigo = "";
-            }
-            else
-            {
-                codigo = pedido.Descuento.Codigo;
-            }
-
-            var desc = _context.Descuentos
-                .Where(d => d.Codigo == codigo.ToUpper())
-                .FirstOrDefault();
-
-            if (desc != null)
-            {
-                pedido.DescuentoId = desc.Id;
-                pedido.Descuento = desc;
-            }
-            else
-            {
-                pedido.DescuentoId = null;
-                pedido.Descuento = null;
-            }
-
-            _context.Update(pedido);
-            await _context.SaveChangesAsync();
         }
 
         // PEDIDOS
