@@ -343,7 +343,10 @@ namespace Integrador.Controllers
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
 
-            return RedirectToAction(nameof(Carrito));
+            if (User.IsInRole("Administrador"))
+                return RedirectToAction(nameof(Details), "Pedidos", new { id = pid });
+            else
+                return RedirectToAction(nameof(Carrito));
         }
 
         // PEDIDOS
