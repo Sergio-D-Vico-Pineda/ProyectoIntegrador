@@ -4,54 +4,56 @@
     ViewData["Title"] = "Borrar proveedor";
 }
 
-<h1>Borrar proveedor</h1>
+<h2>¿Estás seguro que quieres borrar esto?</h2>
 
-<h3>¿Estás seguro que quieres borrar esto?</h3>
-<div>
-    <h4>Proveedor</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Email.EndsWith("-DEL."))
-            {
-                <del>@Model.Email</del>
-            }
-            else
-            {
-                @Html.DisplayFor(model => model.Email)
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nif)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nif)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefono)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Telefono)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Direccion)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Direccion)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-12 col-lg">
+        <h4>Proveedor</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Email.EndsWith("-DEL."))
+                {
+                    <del>@Model.Email</del>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.Email)
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nif)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nif)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Telefono)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Telefono)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Direccion)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Direccion)
+            </dd>
+        </dl>
+    </div>
+
     @if (Model.Suministros.Count > 0)
     {
-        <div>
+        <div class="col-12 col-lg-6">
             <h4>Suministros</h4>
             <hr />
             <table class="table border-bottom">
@@ -75,7 +77,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.FechaSuministro)
+                            Fecha
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
@@ -88,8 +90,6 @@
                         </td>
                         <td>
                             <div class="d-print-none">
-                                <a asp-action="Edit" asp-controller="Suministros"
-                                   asp-route-id="@item.Id">Editar</a> |
                                 <a asp-action="Delete" asp-controller="Suministros"
                                    asp-route-id="@item.Id">Eliminar</a>
                             </div>
@@ -99,15 +99,21 @@
             </table>
         </div>
     }
-
+</div>
+<div>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
+        @if (ViewBag.admin && User.IsInRole("Administrador"))
+        {
+            <a asp-action="Index" asp-controller="Usuarios">Volver</a>
+        }
         @if (Model.Suministros.Count == 0)
         {
             if (ViewBag.admin && User.IsInRole("Administrador"))
             {
                 <input type="hidden" name="admin" value="true" />
             }
+            <a asp-action="Index">Volver a la lista</a> <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" />
         }
         else
@@ -115,16 +121,8 @@
             <div class="alert alert-danger" style="width: fit-content;" role="alert">
                 No se puede borrar el proveedor porque tiene suministros.
             </div>
+            <a asp-action="Index">Volver a la lista</a> <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" disabled />
-        }
-        |
-        @if (ViewBag.admin && User.IsInRole("Administrador"))
-        {
-            <a asp-action="Index" asp-controller="Usuarios">Volver a la lista</a>
-        }
-        else
-        {
-            <a asp-action="Index">Volver a la lista</a>
         }
     </form>
 </div>
