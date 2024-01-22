@@ -13,16 +13,10 @@ using Microsoft.AspNetCore.Identity;
 namespace Integrador.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    public class ClientesController : Controller
+    public class ClientesController(IntegradorContexto context, UserManager<IdentityUser> userManager) : Controller
     {
-        private readonly IntegradorContexto _context;
-        private readonly UserManager<IdentityUser> _userManager;
-
-        public ClientesController(IntegradorContexto context, UserManager<IdentityUser> userManager)
-        {
-            _context = context;
-            _userManager = userManager;
-        }
+        private readonly IntegradorContexto _context = context;
+        private readonly UserManager<IdentityUser> _userManager = userManager;
 
         // GET: Clientes
         public async Task<IActionResult> Index()
