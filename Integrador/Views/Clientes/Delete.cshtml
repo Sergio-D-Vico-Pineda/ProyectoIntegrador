@@ -11,22 +11,22 @@
         <h4>Cliente</h4>
         <hr />
         <dl class="row">
-            <dt class="col-sm-3">
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Id)
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Id)
             </dd>
-            <dt class="col-sm-3">
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Nombre)
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Nombre)
             </dd>
-            <dt class="col-sm-3">
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Email)
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-8">
                 @if (Model.Email.EndsWith("-DEL."))
                 {
                     <del>@Model.Email</del>
@@ -36,22 +36,22 @@
                     @Html.DisplayFor(model => model.Email)
                 }
             </dd>
-            <dt class="col-sm-3">
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Nif)
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Nif)
             </dd>
-            <dt class="col-sm-3">
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Telefono)
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Telefono)
             </dd>
-            <dt class="col-sm-3">
+            <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.Direccion)
             </dt>
-            <dd class="col-sm-9">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Direccion)
             </dd>
         </dl>
