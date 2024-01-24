@@ -31,6 +31,7 @@ namespace Integrador.Controllers
             }
 
             var descuento = await _context.Descuentos
+                .Include(d => d.Pedidos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (descuento == null)
             {
@@ -137,6 +138,7 @@ namespace Integrador.Controllers
             }
 
             var descuento = await _context.Descuentos
+                .Include(d => d.Pedidos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (descuento == null)
             {

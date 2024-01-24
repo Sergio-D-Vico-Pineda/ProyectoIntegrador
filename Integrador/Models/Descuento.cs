@@ -28,5 +28,7 @@ namespace Integrador.Models
             get => $"{porcentaje:0.00}".Replace(',', '.');
             set => porcentaje = decimal.TryParse(value.Replace('.', ','), out var result) ? result : 0;
         }
+
+        public ICollection<Pedido>? Pedidos { get; set; }
     }
 }
