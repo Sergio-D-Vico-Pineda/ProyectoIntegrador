@@ -1,20 +1,27 @@
 ﻿@model Integrador.Models.Pedido
 
-@{
+
+@if (User.IsInRole("Administrador"))
+{
     ViewData["Title"] = "Editar pedido";
 }
-
-<h1>Editar pedido</h1>
-
-<h4>Pedido</h4>
+else if (Model.Comentarios == null)
+{
+    ViewData["Title"] = "Añadir comentarios";
+}
+else
+{
+    ViewData["Title"] = "Editar comentarios";
+}
+<h2>@ViewData["Title"]</h2>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6 col-lg-4">
         <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (User.IsInRole("Administrador"))
             {
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @* <input type="text" disabled asp-for="Id" /> *@
                 <div class="form-group">
                     <label asp-for="Id" class="control-label"></label>
                     <input asp-for="Id" class="form-control" disabled />
@@ -74,14 +81,9 @@
                     <input asp-for="FechaDevolucion" class="form-control" />
                     <span asp-validation-for="FechaDevolucion" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Guardar" class="btn btn-primary" />
-                </div>
             }
             else
             {
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @* <input type="text" disabled asp-for="Id" /> *@
                 <div class="form-group hidden" hidden>
                     <label asp-for="Id" class="control-label"></label>
                     <input asp-for="Id" class="form-control" hidden disabled />
@@ -141,24 +143,23 @@
                     <input asp-for="FechaDevolucion" class="form-control" hidden />
                     <span asp-validation-for="FechaDevolucion" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Guardar" class="btn btn-primary" />
-                </div>
             }
+            <div class="form-group mt-3">
+                @if (User.IsInRole("Administrador"))
+                {
+                    <a asp-action="Index">Volver a la lista</a>
+                }
+                else
+                {
+                    <a asp-action="Details" asp-route-id="@Model?.Id">Volver al pedido</a>
+                }
+                | <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
 
-<div>
-    @if (User.IsInRole("Administrador"))
-    {
-        <a asp-action="Index">Volver a la lista</a>
-    }
-    else
-    {
-        <a asp-action="Details" asp-route-id="@Model?.Id">Volver a la lista</a>
-    }
-</div>
+
 
 @section Scripts {
     @{
