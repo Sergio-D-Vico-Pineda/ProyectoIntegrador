@@ -22,7 +22,9 @@ namespace Integrador.Models
 
         [Display(Name = "Precio Unitario")]
         [Range(0.1, double.MaxValue, ErrorMessage = "El precio no puede ser negativo.")]
-        [RegularExpression(@"^[-0123456789]+[0-9.,]*$",
+        /*[RegularExpression(@"^[-0123456789]+[0-9.,]*$",
+            ErrorMessage = "El valor introducido debe ser de tipo monetario.")]*/
+        [RegularExpression(@"^[-0123456789]+[0-9,]*[.,]?[0-9]*$",
             ErrorMessage = "El valor introducido debe ser de tipo monetario.")]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? PrecioUnidad // Mayor que 0
