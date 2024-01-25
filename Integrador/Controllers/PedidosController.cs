@@ -186,6 +186,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Pedidos/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id, int? volver)
         {
             if (id == null)
