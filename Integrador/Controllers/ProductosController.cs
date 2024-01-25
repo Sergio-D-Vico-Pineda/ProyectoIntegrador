@@ -63,6 +63,11 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,PrecioCadena,Escaparate,Imagen,Stock,ModeloId")] Producto producto, IFormFile? Imagen)
         {
+            if (producto.Precio <= 0)
+            {
+                ModelState.AddModelError("PrecioCadena", "El precio no puede ser 0 o negativo.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(producto);
