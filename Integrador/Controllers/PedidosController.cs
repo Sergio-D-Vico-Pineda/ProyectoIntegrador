@@ -134,6 +134,11 @@ namespace Integrador.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
+
+                if (pedido.EstadoId > 3)
+                {
+                    return RedirectToAction(nameof(Details), new { id });
+                }
             }
 
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
