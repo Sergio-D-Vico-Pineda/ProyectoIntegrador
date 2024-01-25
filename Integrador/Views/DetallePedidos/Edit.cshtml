@@ -28,9 +28,14 @@
                 <span asp-validation-for="Cantidad" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrecioUnidad" class="control-label"></label>
-                <input asp-for="PrecioUnidad" class="form-control" />
-                <span asp-validation-for="PrecioUnidad" class="text-danger"></span>
+                <label asp-for="PrecioUnidad" hidden class="control-label"></label>
+                <input asp-for="PrecioUnidad" hidden class="form-control" />
+                <span asp-validation-for="PrecioUnidad" hidden class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrecioUnidadCadena" class="control-label"></label>
+                <input asp-for="PrecioUnidadCadena" class="form-control" />
+                <span asp-validation-for="PrecioUnidadCadena" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
                 <a asp-action="Index">Volver a la lista</a> |

@@ -63,7 +63,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PedidoId,ProductoId,Cantidad,PrecioUnidad,PrecioTotal,Descuento")] DetallePedido detallePedido)
+        public async Task<IActionResult> Create([Bind("Id,PedidoId,ProductoId,Cantidad,PrecioUnidad,PrecioUnidadCadena,Descuento")] DetallePedido detallePedido)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PedidoId,ProductoId,Cantidad,PrecioUnidad,PrecioTotal,Descuento")] DetallePedido detallePedido)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PedidoId,ProductoId,Cantidad,PrecioUnidad,PrecioUnidadCadena,Descuento")] DetallePedido detallePedido)
         {
             if (id != detallePedido.Id)
             {

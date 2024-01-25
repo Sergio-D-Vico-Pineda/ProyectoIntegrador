@@ -18,22 +18,28 @@ namespace Integrador.Models
         [Range(1, double.MaxValue, ErrorMessage = "La cantidad tiene que ser mayor que 0.")]
         public required int Cantidad { get; set; }
 
-        private decimal? precioUnidad;
+        [Display(Name = "Precio")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal PrecioUnidad { get; set; }
 
         [Display(Name = "Precio Unitario")]
-        [Range(0.1, double.MaxValue, ErrorMessage = "El precio no puede ser negativo.")]
-        /*[RegularExpression(@"^[-0123456789]+[0-9.,]*$",
-            ErrorMessage = "El valor introducido debe ser de tipo monetario.")]*/
-        [RegularExpression(@"^[-0123456789]+[0-9,]*[.,]?[0-9]*$",
+        [RegularExpression(@"^[-0123456789]+[0-9.,]*$",
             ErrorMessage = "El valor introducido debe ser de tipo monetario.")]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? PrecioUnidad // Mayor que 0
+        [Required(ErrorMessage = "El precio es requerido.")]
+        public string? PrecioUnidadCadena
         {
-            get => precioUnidad;
+            get
+            {
+                return Convert.ToString(PrecioUnidad).Replace(',', '.');
+            }
             set
             {
-                if (value > 0)
-                    precioUnidad = value;
+                string a = value.ToString();
+                if ( a == "")
+                {
+                    a = "0";
+                }
+                PrecioUnidad = Convert.ToDecimal(a.Replace('.', ','));
             }
         }
 
