@@ -56,12 +56,12 @@ namespace Integrador.Controllers
         {
             if (_context.Descuentos.Any(x => x.Codigo == descuento.Codigo))
             {
-                ModelState.AddModelError("Codigo", "Ya existe un descuento con ese código");
+                ModelState.AddModelError("Codigo", "Ya existe un descuento con ese código.");
             }
 
             if (descuento.porcentaje <= 0 || descuento.porcentaje >= 100)
             {
-                ModelState.AddModelError("Porcentaje", "El porcentaje debe estar entre 0 y 100");
+                ModelState.AddModelError("Porcentaje", "El porcentaje debe estar entre 0 y 100.");
             }
 
             if (ModelState.IsValid)
