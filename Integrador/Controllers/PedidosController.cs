@@ -251,6 +251,8 @@ namespace Integrador.Controllers
         [Authorize(Roles = "Cliente")]
         public async Task<IActionResult> Carrito()
         {
+            if (User.IsInRole("Administrador")) return RedirectToAction(nameof(Index));
+
             Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
 
             if (User.IsInRole("Cliente") && cliente == null)
