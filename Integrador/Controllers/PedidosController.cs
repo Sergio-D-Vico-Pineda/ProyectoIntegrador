@@ -296,7 +296,10 @@ namespace Integrador.Controllers
         {
             if (pid == null) return NotFound();
 
-            var pedido = await _context.Pedidos.FindAsync(pid);
+            var pedido = await _context.Pedidos
+                .Include(p => p.Descuento)
+                .Where(p => p.Id == pid)
+                .FirstOrDefaultAsync();
 
             if (pedido == null) return RedirectToAction(nameof(Index));
 
@@ -307,7 +310,7 @@ namespace Integrador.Controllers
             if (pedido.ClienteId != cliente.Id) return RedirectToAction(nameof(Index));
 
             ViewBag.pid = pid;
-            return View();
+            return View(pedido.Descuento);
         }
 
         // POST /Pedidos/Descuentos

@@ -1,27 +1,26 @@
 ﻿@model Integrador.Models.Descuento
 
 @{
-    ViewData["Title"] = "Descuentos";
+    ViewData["Title"] = "Aplicar descuento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Descuentos</h1>
-
-<h4>Pedido</h4>
+<h2>@ViewData["Title"]</h2>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Descuentos">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" name="pid" value="@ViewBag.pid" hidden/>
+            <input type="hidden" name="pid" value="@ViewBag.pid" hidden />
             <div class="form-group">
                 <label asp-for="Codigo" class="control-label"></label>
                 <input asp-for="Codigo" class="form-control" />
                 <span asp-validation-for="Codigo" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
-                <a asp-action="Details" asp-route-id="@ViewBag.pid">Volver a la lista</a> <span>|</span>
+                <a asp-action="Details" asp-route-id="@ViewBag.pid">Volver al pedido</a> <span>|</span>
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
