@@ -412,7 +412,6 @@ else
                 <div class="alert alert-success" style="width: fit-content;" role="alert">
                     Entregado.
                 </div>
-                @* <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a> *@
                 if (User.IsInRole("Cliente"))
                 {
                     <form asp-action="Devolver" asp-route-id="@Model?.Id">
@@ -426,7 +425,10 @@ else
                 <div class="alert alert-danger" style="width: fit-content;" role="alert">
                     Pedido anulado.
                 </div>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                }
             }
             break;
         case "Devuelto":
@@ -434,24 +436,26 @@ else
                 <div class="alert alert-warning" style="width: fit-content;" role="alert">
                     Pedido devuelto.
                 </div>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                }
             }
             break;
     }
 </div>
 
-<div>
-    @if (User.IsInRole("Administrador"))
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
-        <span>|</span>
-    }
+<div class="pb-4">
     @if (!ViewBag.carrito)
     {
         <a asp-action="Index">Volver a la lista</a>
         <span>|</span>
     }
-    @if (User.IsInRole("Cliente"))
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+    }
+    else if (User.IsInRole("Cliente"))
     {
         <a asp-action="Index" asp-controller="Escaparate">Seguir comprando</a>
     }
