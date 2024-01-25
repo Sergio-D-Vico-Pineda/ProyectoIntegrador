@@ -143,6 +143,11 @@ namespace Integrador.Controllers
                 return NotFound();
             }
 
+            if (producto.Precio <= 0)
+            {
+                ModelState.AddModelError("PrecioCadena", "El precio no puede ser 0 o negativo.");
+            }
+
             if (ModelState.IsValid)
             {
 
