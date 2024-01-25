@@ -4,7 +4,12 @@
     ViewData["Title"] = "Pedidos";
 }
 
-<h1>Pedidos</h1>
+@if (User.IsInRole("Cliente"))
+{
+    ViewData["Title"] = "Mis Pedidos";
+}
+
+<h1>@ViewData["Title"]</h1>
 
 @if (User.IsInRole("Administrador"))
 {

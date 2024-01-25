@@ -10,15 +10,23 @@
 {
     <h1>Carrito</h1>
 }
+else if (Model.DetallePedidos.Count == 0)
+{
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+}
 else
 {
-    <h5 class="invisible">@@ViewData["Title"]</h5>
+    <h5 class="invisible">@ViewData["Title"]</h5>
 }
 
 <div class="row">
     <div class="col-12 col-lg">
-        <h4>@ViewData["Title"]</h4>
-        <hr />
+        @if (Model.DetallePedidos.Count > 0)
+        {
+            <h4>@ViewData["Title"]</h4>
+            <hr />
+        }
         <dl class="row">
             <dt class="col-sm-4">
                 Núm. Pedido
