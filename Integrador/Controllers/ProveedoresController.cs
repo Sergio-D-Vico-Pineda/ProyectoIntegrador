@@ -59,6 +59,16 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Nif,Email,Telefono,Direccion")] Proveedor proveedor)
         {
+            if (ProveedorExistsNIF(proveedor.Nif))
+            {
+                ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
+            }
+
+            if (UserExists(proveedor.Email) || ProveedorExistsEmail(proveedor.Email))
+            {
+                ModelState.AddModelError("Email", "Ese email ya está registrado.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(proveedor);
@@ -95,6 +105,11 @@ namespace Integrador.Controllers
             if (id != proveedor.Id)
             {
                 return NotFound();
+            }
+
+            if (ProveedorExistsNIF(proveedor.Nif))
+            {
+                ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
             }
 
             if (ModelState.IsValid)
@@ -178,6 +193,22 @@ namespace Integrador.Controllers
         private bool ProveedorExists(int id)
         {
             return _context.Proveedores.Any(e => e.Id == id);
+        }
+
+        private bool ProveedorExistsEmail(string email)
+        {
+            return _context.Proveedores.Any(e => e.Email == email);
+        }
+
+        private bool ProveedorExistsNIF(string nif)
+        {
+            return _context.Proveedores.Any(e => e.Nif == nif);
+        }
+
+        private bool UserExists(string email)
+        {
+            var user = _userManager.FindByEmailAsync(email);
+            return user.Result != null;
         }
     }
 }

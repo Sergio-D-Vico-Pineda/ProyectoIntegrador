@@ -131,5 +131,10 @@ namespace Integrador.Controllers
 
             return RedirectToAction("Index");
         }
+
+        private bool IdentityUserExists(string email)
+        {
+            return _context.Users.Any(e => e.Email == email);
+        }
     }
 }
