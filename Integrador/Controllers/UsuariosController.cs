@@ -39,7 +39,7 @@ namespace Integrador.Controllers
         //POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Email,Password")]
+        public async Task<IActionResult> Create([Bind("Email,Password,ConfirmPassword")]
                                                 RegisterModel.InputModel model)
         {
             var user = new IdentityUser();
