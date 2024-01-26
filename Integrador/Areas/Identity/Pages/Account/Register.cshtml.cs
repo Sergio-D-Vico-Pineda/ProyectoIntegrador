@@ -68,7 +68,7 @@ namespace Integrador.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Rol")]
-            [RegularExpression("^(Cliente|Proveedor|Administrador)$", ErrorMessage = "El rol solo puede ser 'Cliente' o 'Proveedor'")]
+            [RegularExpression("^(Cliente|Proveedor)$", ErrorMessage = "El rol solo puede ser 'Cliente' o 'Proveedor'")]
             public string Role { get; set; } = "Cliente";
         }
 
