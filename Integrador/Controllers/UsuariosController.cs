@@ -39,19 +39,36 @@ namespace Integrador.Controllers
         //POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Email,Password")]
+        public async Task<IActionResult> Create([Bind("Email,Password,ConfirmPassword")]
                                                 RegisterModel.InputModel model)
         {
             var user = new IdentityUser();
             user.Email = user.UserName = model.Email;
-            string password = model.Password;
 
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Administrador");
                 return RedirectToAction(nameof(Index));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                if (error.Code == "PasswordRequiresDigit")
+                {
+                    ModelState.AddModelError("Password", "La contraseña debe tener un número.");
+                }
+                else if (error.Code == "DuplicateUserName")
+                {
+                    ModelState.AddModelError("Email", "El email ya está registrado.");
+                }
+                else
+                {
+                    Console.WriteLine(error.Code); // Quitar comentario
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
             }
 
             return View(model);

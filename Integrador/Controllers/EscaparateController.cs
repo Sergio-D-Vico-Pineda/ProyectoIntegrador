@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Integrador.Controllers
 {
@@ -27,18 +28,18 @@ namespace Integrador.Controllers
             if (id != null)
             {
                 var marca = await _context.Marcas.FirstOrDefaultAsync(m => m.Id == id);
+
+                if (marca == null) return RedirectToAction(nameof(Index), new { id = "" });
+
                 ViewBag.marca = marca.Nombre;
-                if (marca != null)
+                productos = productos.Where(p => p.Modelo.MarcaId == id);
+
+                var modelo = await _context.Modelos.FirstOrDefaultAsync(m => m.Id == mid);
+
+                if (modelo != null)
                 {
-                    productos = productos.Where(p => p.Modelo.MarcaId == id);
-
-                    var modelo = await _context.Modelos.FirstOrDefaultAsync(m => m.Id == mid);
-
-                    if (modelo != null)
-                    {
-                        ViewBag.modelo = modelo.Nombre;
-                        productos = productos.Where(p => p.ModeloId == mid);
-                    }
+                    ViewBag.modelo = modelo.Nombre;
+                    productos = productos.Where(p => p.ModeloId == mid);
                 }
             }
 
@@ -53,7 +54,7 @@ namespace Integrador.Controllers
 
             if (cliente == null)
             {
-                return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+                return RedirectToAction(nameof(Create), "MisDatos", new { role = "Cliente" });
             }
 
             var listaPedidos = await _context.Pedidos
