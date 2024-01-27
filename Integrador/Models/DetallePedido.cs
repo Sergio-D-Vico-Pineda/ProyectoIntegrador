@@ -20,6 +20,7 @@ namespace Integrador.Models
 
         [Display(Name = "Precio")]
         [Column(TypeName = "decimal(18,2)")]
+        [DataType(DataType.Currency)]
         public decimal PrecioUnidad { get; set; }
 
         [Display(Name = "Precio Unitario")]

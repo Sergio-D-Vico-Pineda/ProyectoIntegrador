@@ -65,6 +65,11 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,PedidoId,ProductoId,Cantidad,PrecioUnidad,PrecioUnidadCadena,Descuento")] DetallePedido detallePedido)
         {
+            if (detallePedido.PrecioUnidad < 0)
+            {
+                ModelState.AddModelError("PrecioUnidadCadena", "El precio no puede ser negativo.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(detallePedido);
@@ -106,6 +111,11 @@ namespace Integrador.Controllers
             if (id != detallePedido.Id)
             {
                 return NotFound();
+            }
+
+            if (detallePedido.PrecioUnidad < 0)
+            {
+                ModelState.AddModelError("PrecioUnidadCadena", "El precio no puede ser negativo.");
             }
 
             if (ModelState.IsValid)
