@@ -212,10 +212,25 @@ namespace Integrador.Controllers
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, input.OldPassword, input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, "La contraseña es incorrecta.");
-
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    if (error.Code == "PasswordRequiresDigit")
+                    {
+                        ModelState.AddModelError(string.Empty, "La contraseña debe tener un número.");
+                    }
+                    else if (error.Code == "PasswordMismatch")
+                    {
+                        ModelState.AddModelError(string.Empty, "La contraseña es incorrecta.");
+                    }
+                    else
+                    {
+                        Console.WriteLine(error.Code); // Quitar comentario
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
                 return View();
             }
+
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
