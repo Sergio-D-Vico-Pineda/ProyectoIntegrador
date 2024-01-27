@@ -8,11 +8,11 @@
 <hr />
 
 <div class="row">
-    <div class="col-12 col-lg">
+    <div class="col-12 col-md col-lg">
         <dl class="row">
-            <dt class="col-sm-2">
+            <dt class="col-sm-4 col-md-3 col-lg-2">
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8 col-md-9 col-lg-10">
                 @{
                     var nombreImagen = Model.Imagen ?? "default.png";
                 }
@@ -21,23 +21,23 @@
             </dd>
             @if (User.IsInRole("Administrador"))
             {
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Id)
+                <dt class="col-sm-4 col-md-3 col-lg-2">
+                    Id
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-8 col-md-9 col-lg-10">
                     @Html.DisplayFor(model => model.Id)
                 </dd>
             }
-            <dt class="col-sm-2">
+            <dt class="col-sm-4 col-md-3 col-lg-2">
                 @Html.DisplayNameFor(model => model.Nombre)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8 col-md-9 col-lg-10">
                 @Html.DisplayFor(model => model.Nombre)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-4 col-md-3 col-lg-2">
                 @Html.DisplayNameFor(model => model.Modelo)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8 col-md-9 col-lg-10">
                 @if (User.IsInRole("Administrador"))
                 {
                     <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.ModeloId">
@@ -49,30 +49,30 @@
                     @Html.DisplayFor(model => model.Modelo.Nombre)
                 }
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-4 col-md-3 col-lg-2">
                 @Html.DisplayNameFor(model => model.Descripcion)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8 col-md-9 col-lg-10">
                 @Html.DisplayFor(model => model.Descripcion)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-4 col-md-3 col-lg-2">
                 @Html.DisplayNameFor(model => model.Precio)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8 col-md-9 col-lg-10">
                 @Html.DisplayFor(model => model.Precio)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-4 col-md-3 col-lg-2">
                 @Html.DisplayNameFor(model => model.Stock)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8 col-md-9 col-lg-10">
                 @Html.DisplayFor(model => model.Stock)
             </dd>
             @if (User.IsInRole("Administrador"))
             {
-                <dt class="col-sm-2">
+                <dt class="col-sm-4 col-md-3 col-lg-2">
                     @Html.DisplayNameFor(model => model.Escaparate)
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-8 col-md-9 col-lg-10">
                     @if (Model.Escaparate)
                     {
                         <span>Sí</span>
@@ -82,10 +82,10 @@
                         <span>No</span>
                     }
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-4 col-md-3 col-lg-2">
                     Veces pedido
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-8 col-md-9 col-lg-10">
                     @Model.DetallePedidos.Count
                 </dd>
             }
@@ -93,8 +93,8 @@
     </div>
     @if (Model.DetallePedidos.Count > 0 && User.IsInRole("Administrador"))
     {
-        <div class="col-12 col-lg-2">
-            <h4>Núm. pedidos</h4>
+        <div class="col-12 col-md-3 col-lg-2 mb-3">
+            <h4>Id. Pedidos</h4>
             <hr />
             <div class="d-flex gap-3 flex-wrap justify-content-between overflow-x-hidden overflow-y-auto">
                 @foreach (var pedido in Model.DetallePedidos)
@@ -108,8 +108,7 @@
     }
 </div>
 
-
-<div>
+<div class="pb-3 pt-1">
     @if (User.IsInRole("Administrador"))
     {
         <a asp-action="Index">Volver a la lista</a>

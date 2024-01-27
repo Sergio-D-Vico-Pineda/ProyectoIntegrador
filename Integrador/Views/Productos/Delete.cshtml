@@ -11,31 +11,31 @@
         <h4>Producto</h4>
         <hr />
         <dl class="row">
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @{
                     var nombreImagen = Model.Imagen ?? "default.png";
                 }
                 <img src="~/img/@nombreImagen" height="75" width="75"
                      asp-append-version="true" alt="Sin imagen" draggable="false" />
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Id)
+            <dt class="col-sm-3 col-xl-2">
+                Id
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @Html.DisplayFor(model => model.Id)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
                 @Html.DisplayNameFor(model => model.Nombre)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @Html.DisplayFor(model => model.Nombre)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
                 @Html.DisplayNameFor(model => model.Modelo)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @if (User.IsInRole("Administrador"))
                 {
                     <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.ModeloId">
@@ -47,28 +47,28 @@
                     @Html.DisplayFor(model => model.Modelo.Nombre)
                 }
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
                 @Html.DisplayNameFor(model => model.Descripcion)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @Html.DisplayFor(model => model.Descripcion)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
                 @Html.DisplayNameFor(model => model.Precio)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @Html.DisplayFor(model => model.Precio)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
                 @Html.DisplayNameFor(model => model.Stock)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @Html.DisplayFor(model => model.Stock)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
                 @Html.DisplayNameFor(model => model.Escaparate)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @if (Model.Escaparate)
                 {
                     <span>Sí</span>
@@ -78,10 +78,10 @@
                     <span>No</span>
                 }
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-3 col-xl-2">
                 Veces pedido
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-9 col-xl-10">
                 @Model.DetallePedidos.Count
             </dd>
         </dl>
@@ -92,7 +92,7 @@
         <div class="col-12 col-lg-4">
             <h4>Pedidos</h4>
             <hr />
-            <div style="max-height:50vh; overflow: auto;">
+            <div style="max-height:50vh; overflow: auto;" class="mb-3">
                 <table class="table">
                     <thead style="position: sticky; top: 0;">
                         <tr>
@@ -122,7 +122,7 @@
         </div>
     }
 </div>
-<div>
+<div class="pb-3">
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         @if (Model.DetallePedidos.Count == 0)
