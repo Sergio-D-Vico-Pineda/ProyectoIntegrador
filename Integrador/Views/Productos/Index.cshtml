@@ -42,7 +42,7 @@
                 </th>
                 @if (User.IsInRole("Administrador"))
                 {
-                    <th class="d-none d-md-table-cell">
+                    <th class="d-none d-lg-table-cell">
                         @Html.DisplayNameFor(model => model.Escaparate)
                     </th>
                 }
@@ -87,7 +87,7 @@
                     </td>
                     @if (User.IsInRole("Administrador"))
                     {
-                        <td class="d-none d-md-table-cell">
+                        <td class="d-none d-lg-table-cell">
                             @if (item.Escaparate)
                             {
                                 <span>Sí</span>
