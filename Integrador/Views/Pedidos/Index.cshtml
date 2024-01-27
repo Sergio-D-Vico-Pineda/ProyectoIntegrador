@@ -38,7 +38,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Estado)
                 </th>
-                <th>
+                <th class="d-none d-md-table-cell">
                     Núm. Productos
                 </th>
                 <th></th>
@@ -70,7 +70,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Estado.Nombre)
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                         @Html.DisplayFor(modelItem => item.DetallePedidos.Count)
                     </td>
                     <td>
