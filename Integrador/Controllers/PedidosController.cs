@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Integrador.Data;
 using Integrador.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
 
 namespace Integrador.Controllers
 {
@@ -472,7 +473,7 @@ namespace Integrador.Controllers
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Details), new { id });
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
         }
 
         // POST /Pedidos/Devolver
@@ -525,7 +526,10 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Carrito", "Pedidos", new { id });
+            if (User.IsInRole("Administrador"))
+                return RedirectToAction(nameof(Details), "Pedidos", new { id });
+            else
+                return RedirectToAction(nameof(Carrito));
         }
 
         // POST /Pedidos/Menos
@@ -545,7 +549,10 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Carrito", "Pedidos", new { id });
+            if (User.IsInRole("Administrador"))
+                return RedirectToAction(nameof(Details), "Pedidos", new { id });
+            else
+                return RedirectToAction(nameof(Carrito));
         }
 
         private bool PedidoExists(int id)
