@@ -1,6 +1,82 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Política de Privacidad";
 }
-<h1>@ViewData["Title"]</h1>
+<style>
+    #priv p {
+        text-indent: 2em;
+    }
 
-<p>Use this page to detail your site's privacy policy.</p>
+    #priv ul {
+        padding-left: 4em;
+    }
+</style>
+<header class="text-center">
+    <h1>@ViewData["Title"]</h1>
+</header>
+<div style="max-height:70vh; overflow: auto; width:fit-content; max-width:950px;" class="mx-auto p-4" id="priv">
+    <section>
+        <h3>1. Información recopilada</h3>
+        <p>En El Hogar de las Fundas, recopilamos la siguiente información:</p>
+        <ul>
+            <li>
+                Información personal como nombre, dirección y dirección de correo electrónico al realizar una compra.
+            </li>
+            <li>Información de pago al procesar transacciones.</li>
+            <li>
+                Información demográfica y preferencias proporcionadas voluntariamente a través de encuestas o
+                formularios de contacto.
+            </li>
+            <li>Información automáticamente recopilada, como direcciones IP y datos de navegación.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>2. Uso de la información</h3>
+        <p>Usamos la información recopilada para:</p>
+        <ul>
+            <li>Procesar y completar transacciones.</li>
+            <li>Personalizar la experiencia del usuario.</li>
+            <li>
+                Enviar correos electrónicos promocionales y boletines informativos, si el usuario ha optado por
+                recibirlos.
+            </li>
+            <li>Mejorar nuestros productos y servicios.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>3. Seguridad</h3>
+        <p>
+            Nos comprometemos a proteger la seguridad de la información personal. Implementamos medidas de seguridad para
+            prevenir accesos no autorizados o divulgación de información.
+        </p>
+    </section>
+
+    <section>
+        <h3>4. Compartir información</h3>
+        <p>
+            No compartimos información personal con terceros sin el consentimiento del usuario, excepto cuando sea
+            necesario para procesar transacciones o cumplir con la ley.
+        </p>
+    </section>
+
+    <section>
+        <h3>5. Cookies</h3>
+        <p>
+            Utilizamos cookies para mejorar la experiencia del usuario. Al continuar utilizando nuestro sitio, aceptas el
+            uso de cookies de acuerdo con nuestra política de cookies.
+        </p>
+    </section>
+
+    <section>
+        <h3>6. Cambios en la política de privacidad</h3>
+        <p>
+            Nos reservamos el derecho de actualizar nuestra política de privacidad en cualquier momento. Los cambios se
+            publicarán en esta página.
+        </p>
+    </section>
+    <p style="text-indent:0;" class="text-end pe-3">Última actualización: 27/01/2024</p>
+</div>
+<footer class="pt-3 pb-2 text-center">
+    <strong>Nada de lo que pone aquí es cierto, esto es solo un ejemplo.</strong>
+</footer>
