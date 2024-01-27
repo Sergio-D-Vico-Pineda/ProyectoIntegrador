@@ -31,7 +31,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Nombre)
                 </th>
-                <th>
+                <th class="d-none d-md-table-cell">
                     @Html.DisplayNameFor(model => model.Descripcion)
                 </th>
                 <th>
@@ -42,7 +42,7 @@
                 </th>
                 @if (User.IsInRole("Administrador"))
                 {
-                    <th>
+                    <th class="d-none d-md-table-cell">
                         @Html.DisplayNameFor(model => model.Escaparate)
                     </th>
                 }
@@ -76,7 +76,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Nombre)
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                         @Html.DisplayFor(modelItem => item.Descripcion)
                     </td>
                     <td>
@@ -87,7 +87,7 @@
                     </td>
                     @if (User.IsInRole("Administrador"))
                     {
-                        <td>
+                        <td class="d-none d-md-table-cell">
                             @if (item.Escaparate)
                             {
                                 <span>Sí</span>
