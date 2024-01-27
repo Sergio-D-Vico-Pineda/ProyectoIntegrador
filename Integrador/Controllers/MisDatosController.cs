@@ -251,6 +251,7 @@ namespace Integrador.Controllers
             if (await _userManager.HasPasswordAsync(user) && !await _userManager.CheckPasswordAsync(user, input.Password))
             {
                 ModelState.AddModelError(string.Empty, "La contraseña es incorrecta.");
+                ViewBag.Require = true;
                 return View();
             }
 
