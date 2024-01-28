@@ -1,8 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4 fw-semibold">El Hogar de las Fundas</h1>
+    <p>
+        <span class="fs-5">
+            La página indicada para comprar las mejores fundas para tus móviles.
+        </span><br />
+        Hecha por <a target="_blank" class="fst-italic text-secondary" href="https://github.com/Sergio-D-Vico-Pineda/ProyectoIntegrador">Sergio David Vico Pineda</a> para el proyecto de DWES.
+    </p>
+    <a asp-controller="Escaparate" asp-action="Index">
+        Encuentra tu nueva funda favorita
+    </a>
+    <br />
+    <a asp-controller="Escaparate" asp-action="Index">
+        <picture>
+            <img class="mt-2" alt="Big Logo" height="450" src="~/img/logo/22.png" />
+        </picture>
+    </a>
 </div>
