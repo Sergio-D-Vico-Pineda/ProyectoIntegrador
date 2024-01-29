@@ -71,6 +71,7 @@ namespace Integrador.Controllers
                 if (ultimo != null)
                     HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
             }
+
             if (id == 0) return RedirectToAction(nameof(Index), "Escaparate");
 
             var producto = await _context.Productos
