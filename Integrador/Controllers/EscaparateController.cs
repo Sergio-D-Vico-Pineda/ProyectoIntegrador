@@ -85,13 +85,13 @@ namespace Integrador.Controllers
         // POST /Escaparate/AgregarCarrito
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AgregarCarrito(int id, int cantidad = 1)
+        public async Task<IActionResult> AgregarCarrito(int id, int? cantidad = 1)
         {
             var producto = await _context.Productos.FindAsync(id);
 
             if (producto == null) return NotFound();
 
-            if (cantidad <= 0)
+            if (cantidad <= 0 || cantidad == null)
             {
                 ModelState.AddModelError(string.Empty, "La cantidad tiene que ser un número entero positivo.");
 
@@ -166,7 +166,7 @@ namespace Integrador.Controllers
 
             if (dpd != null)
             {
-                dpd.Cantidad += cantidad;
+                dpd.Cantidad += (int)cantidad;
                 if (ModelState.IsValid)
                 {
                     _context.Update(dpd);
@@ -179,7 +179,7 @@ namespace Integrador.Controllers
                 {
                     // Convert.ToInt32(producto.PedidoId),
                     PedidoId = Convert.ToInt32(HttpContext.Session.GetString("NumPedido")),
-                    Cantidad = cantidad,
+                    Cantidad = (int)cantidad,
                     ProductoId = producto.Id,
                     PrecioUnidad = producto.Precio,
                 };
