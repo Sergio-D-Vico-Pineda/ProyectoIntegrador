@@ -35,11 +35,8 @@
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Iniciar sesión</button>
                 </div>
                 <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">¿Olvidaste la contraseña?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrarse</a>
+                    <p class="text-center mt-1">
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Crea tu cuenta aquí</a>
                     </p>
                 </div>
             </form>
