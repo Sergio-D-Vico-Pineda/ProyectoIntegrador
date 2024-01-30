@@ -65,6 +65,11 @@ namespace Integrador.Controllers
                 .Include(p => p.Descuento)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            if (pedido == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             if (User.IsInRole("Cliente"))
             {
                 Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
@@ -73,12 +78,6 @@ namespace Integrador.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-
-            if (pedido == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            /*await CalcDescuentos((int)id);*/
 
             ViewBag.carrito = c ?? false;
 
@@ -283,7 +282,7 @@ namespace Integrador.Controllers
             }
 
             var numPed = HttpContext.Session.GetString("NumPedido");
-            if (numPed != null)
+            if (numPed != null && numPed != "0")
             {
                 return RedirectToAction("Details", "Pedidos", new { id = numPed, c = true });
             }
