@@ -426,6 +426,10 @@ else
                         <input class="btn btn-secondary" type="submit" value="Devolver" />
                     </form>
                 }
+                else if (User.IsInRole("Administrador"))
+                {
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                }
             }
             break;
         case "Anulado":

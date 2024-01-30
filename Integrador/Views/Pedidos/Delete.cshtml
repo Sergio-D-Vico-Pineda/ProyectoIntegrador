@@ -168,7 +168,14 @@
 <div>
     <form asp-action="Delete">
         <div class="alert alert-danger" style="width: fit-content;" role="alert">
-            Al borrar este pedido se perderán todos sus datos.
+            @if (Model.EstadoId >= 4)
+            {
+                <span>Al borrar este pedido se perderán todos sus datos.</span>
+            }
+            else
+            {
+                <span>No se puede borrar un pedido que no esté entregado, anulado o devuelto.</span>
+            }
         </div>
         <input type="hidden" asp-for="Id" />
         @if (ViewBag.volver != null)
@@ -181,6 +188,13 @@
             <a asp-action="Index">Volver a la lista</a>
         }
         |
-        <input type="submit" value="Borrar" class="btn btn-danger" />
+        @if (Model.EstadoId >= 4)
+        {
+            <input type="submit" value="Borrar" class="btn btn-danger" />
+        }
+        else
+        {
+            <input type="submit" value="Borrar" class="btn btn-danger" disabled />
+        }
     </form>
 </div>
