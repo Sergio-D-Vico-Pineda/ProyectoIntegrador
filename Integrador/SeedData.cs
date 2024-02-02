@@ -2,7 +2,7 @@
 
 namespace Integrador
 {
-    public class SeedData
+    public static class SeedData
     {
         public static async Task InitializeAsync(IServiceProvider services)
         {
