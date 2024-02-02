@@ -11,14 +11,26 @@
 
 <h1>@ViewData["Title"]</h1>
 
+
 @if (User.IsInRole("Administrador"))
 {
-    <p>
-        <a asp-action="Create">Nuevo pedido</a>
-    </p>
+    <div class="row mb-2 justify-content-between">
+        <div class="col-12 col-sm-6">
+            <p>
+                <a asp-action="Create">Nuevo pedido</a>
+            </p>
+        </div>
+        <form class="col-12 col-sm-6" style="width:fit-content;">
+            <select class="form-select" name="email" asp-items="ViewBag.Emails"
+                    onchange="this.form.submit()">
+                <option value="">Todos los pedidos</option>
+                <option value="" disabled>-----------------------</option>
+            </select>
+        </form>
+    </div>
 }
 
-<div style="max-height:68vh; overflow: auto;">
+<div style="max-height:55vh; overflow: auto;">
     <table class="table">
         <thead style="position: sticky; top: 0;">
             <tr>

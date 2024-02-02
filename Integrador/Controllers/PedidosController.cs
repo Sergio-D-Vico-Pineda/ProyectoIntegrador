@@ -18,17 +18,38 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET: Pedidos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? email)
         {
+            ViewData["Emails"] = new SelectList(_context.Clientes, "Email", "Email");
+
             var pedidos = _context.Pedidos
                     .Include(p => p.Cliente)
                     .Include(p => p.Estado)
-                    .Include(p => p.DetallePedidos);
+                    .Include(p => p.DetallePedidos)
+                    .OrderByDescending(p => p.Id);
 
             if (User.IsInRole("Administrador"))
             {
-                return View(await pedidos
-                    .ToListAsync());
+                if (email == null)
+                {
+                    ViewData["Emails"] = new SelectList(_context.Clientes, "Email", "Email", "");
+
+                    return View(await pedidos.ToListAsync());
+                }
+                else
+                {
+                    Cliente? cliente = await _context.Clientes
+                        .Where(c => c.Email == email)
+                        .FirstOrDefaultAsync();
+
+                    if (cliente == null) return View(await pedidos.ToListAsync());
+
+                    ViewData["Emails"] = new SelectList(_context.Clientes, "Email", "Email", cliente.Email);
+
+                    return View(await pedidos
+                        .Where(p => p.ClienteId == cliente.Id)
+                        .ToListAsync());
+                }
             }
             else
             {
@@ -43,7 +64,6 @@ namespace Integrador.Controllers
 
                 return View(await pedidos
                     .Where(p => p.ClienteId == cliente.Id)
-                    .OrderByDescending(p => p.Id)
                     .ToListAsync());
             }
         }
