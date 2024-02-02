@@ -34,7 +34,9 @@
             @Html.DisplayNameFor(model => model.Descripcion)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
+            <div style="max-width: 350px;">
+                @Html.DisplayFor(model => model.Descripcion)
+            </div>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Precio)

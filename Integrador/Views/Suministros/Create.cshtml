@@ -43,23 +43,22 @@
                 <input asp-for="Unidades" class="form-control" value="1" min="1" />
                 <span asp-validation-for="Unidades" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group my-3">
+                @if (ViewData["ProductoId"] == null)
+                {
+                    <a asp-action="Index">Volver a la lista</a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a>
+                }
+                |
                 <input id="btnCr" type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    @if (ViewData["ProductoId"] == null)
-    {
-        <a asp-action="Index">Volver a la lista</a>
-    }
-    else
-    {
-        <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a>
-    }
-</div>
 
 @section Scripts {
     @{
