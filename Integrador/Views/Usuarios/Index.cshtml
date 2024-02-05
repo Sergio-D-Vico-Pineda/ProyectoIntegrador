@@ -21,7 +21,9 @@
                 <th>
                     Rol
                 </th>
-                <th>Acciones</th>
+                <th>
+                    Acciones
+                </th>
             </tr>
         </thead>
         @foreach (var item in Model)
@@ -37,7 +39,16 @@
                     @* Borrar usuario*@
                     <form asp-action="Delete" asp-controller="Usuarios" method="post">
                         <input type="hidden" name="userId" value="@item.Email" />
-                        <input type="submit" value="Borrar" class="btn btn-danger" />
+                        @if (item.RolDeUsuario == "Administrador")
+                        {
+                            <abbr title="Se borrará esta cuenta de Administrador">
+                                <input type="submit" value="Borrar" class="btn btn-danger" />
+                            </abbr>
+                        }
+                        else
+                        {
+                            <input type="submit" value="Eliminar" class="btn btn-warning" />
+                        }
                     </form>
                 </td>
             </tr>
