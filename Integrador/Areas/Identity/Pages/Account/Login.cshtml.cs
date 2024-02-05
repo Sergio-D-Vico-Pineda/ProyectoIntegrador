@@ -80,6 +80,7 @@ namespace Integrador.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    HttpContext.Session.Remove("NumPedido");
                     return LocalRedirect(returnUrl);
                 }
 
