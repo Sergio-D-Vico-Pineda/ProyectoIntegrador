@@ -80,7 +80,7 @@ namespace Integrador.Controllers
             {
                 _context.Add(proveedor);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Escaparate");
             }
 
             return View();
@@ -112,7 +112,7 @@ namespace Integrador.Controllers
 
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Escaparate");
             }
 
             return View(proveedor);

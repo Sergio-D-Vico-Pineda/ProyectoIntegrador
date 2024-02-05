@@ -20,6 +20,7 @@ namespace Integrador.Controllers
         public async Task<IActionResult> Index()
         {
             var suministros = _context.Suministros;
+
             if (User.IsInRole("Administrador"))
             {
                 return View(await suministros
@@ -30,13 +31,11 @@ namespace Integrador.Controllers
             }
             else
             {
-                var email = User.Identity.Name;
-
                 Proveedor? proveedor = await _context.Proveedores
-                                .Where(p => p.Email == email)
+                                .Where(p => p.Email == User.Identity.Name)
                                 .FirstOrDefaultAsync();
 
-                if (proveedor == null) return NotFound();
+                if (proveedor == null) return RedirectToAction("Create", "MisDatos", new { role = "Proveedor" });
 
                 return View(await suministros
                         .Where(s => s.ProveedorId == proveedor.Id)
