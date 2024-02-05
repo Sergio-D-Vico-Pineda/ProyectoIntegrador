@@ -5,6 +5,8 @@
 
 function toggleDarkMode() {
     let switchToTheme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+    let $btntema = document.getElementById("tema");
+    $btntema.textContent = switchToTheme;
     setTheme(switchToTheme);
 }
 

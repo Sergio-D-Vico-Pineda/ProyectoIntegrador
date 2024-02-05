@@ -28,63 +28,63 @@
                             <a class="nav-link" asp-controller="Escaparate" asp-action="Index">Escaparate</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
-                        {
-                            @if (User.IsInRole("Administrador"))
-                            {
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Usuarios
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item nav-link" asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="Proveedores" asp-action="Index">Proveedores</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Pedidos
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item nav-link" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="DetallePedidos" asp-action="Index">Productos en pedidos</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="Estados" asp-action="Index">Estados</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="Descuentos" asp-action="Index">Descuentos</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Productos
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item nav-link" asp-controller="Productos" asp-action="Index">Productos</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="Marcas" asp-action="Index">Marcas</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="Modelos" asp-action="Index">Modelos</a></li>
-                                        <li><a class="dropdown-item nav-link" asp-controller="Suministros" asp-action="Index">Suministros</a></li>
-                                    </ul>
-                                </li>
-                            }
-                            else if (User.IsInRole("Cliente"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Pedidos" asp-action="Index">Mis Pedidos</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Pedidos" asp-action="Carrito">🛒Carrito</a>
-                                </li>
-                            }
-                            else if (User.IsInRole("Proveedor"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Suministros" asp-action="Index">Tus Suministros</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Productos" asp-action="Index">📱Productos</a>
-                                </li>
-                            }
-                        }
+                                    {
+                        @if (User.IsInRole("Administrador"))
+                                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Usuarios
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item nav-link" asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="Proveedores" asp-action="Index">Proveedores</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pedidos
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item nav-link" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="DetallePedidos" asp-action="Index">Productos en pedidos</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="Estados" asp-action="Index">Estados</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="Descuentos" asp-action="Index">Descuentos</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Productos
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item nav-link" asp-controller="Productos" asp-action="Index">Productos</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="Marcas" asp-action="Index">Marcas</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="Modelos" asp-action="Index">Modelos</a></li>
+                                <li><a class="dropdown-item nav-link" asp-controller="Suministros" asp-action="Index">Suministros</a></li>
+                            </ul>
+                        </li>
+    }
+                                    else if (User.IsInRole("Cliente"))
+                                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Pedidos" asp-action="Index">Mis Pedidos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Pedidos" asp-action="Carrito">🛒Carrito</a>
+                        </li>
+}
+                                    else if (User.IsInRole("Proveedor"))
+{
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Suministros" asp-action="Index">Tus Suministros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Productos" asp-action="Index">📱Productos</a>
+                        </li>
+}
+                                    }
                     </ul>
-                    <div class="btn btn-outline-primary d-print-none" onclick="toggleDarkMode()">Tema</div>
+                    <div id="tema" class="btn btn-outline-primary d-print-none" onclick="toggleDarkMode()"></div>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
