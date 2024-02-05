@@ -96,17 +96,19 @@
 <div>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        @if (ViewBag.admin && User.IsInRole("Administrador"))
-        {
-            <a asp-action="Index" asp-controller="Usuarios">Volver</a>
-        }
+
         @if (Model.Pedidos.Count == 0)
         {
-            if (ViewBag.admin && User.IsInRole("Administrador"))
+            if (ViewBag.admin)
             {
                 <input type="hidden" name="admin" value="true" />
+                <a asp-action="Index" asp-controller="Usuarios">Volver</a>
             }
-            <a asp-action="Index">Volver a la lista</a> <span>|</span>
+            else
+            {
+                <a asp-action="Index">Volver a la lista</a>
+            }
+            <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" />
         }
         else
@@ -114,7 +116,15 @@
             <div class="alert alert-danger" style="width: fit-content;" role="alert">
                 No se puede borrar un cliente con pedidos realizados.
             </div>
-            <a asp-action="Index">Volver a la lista</a> <span>|</span>
+            if (ViewBag.admin)
+            {
+                <a asp-action="Index" asp-controller="Usuarios">Volver</a>
+            }
+            else
+            {
+                <a asp-action="Index">Volver a la lista</a>
+            }
+            <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" disabled />
         }
     </form>
