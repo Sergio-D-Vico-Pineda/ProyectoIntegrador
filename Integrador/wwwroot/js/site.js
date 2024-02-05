@@ -3,11 +3,16 @@
 
 // Write your JavaScript code.
 
+let $btntema = document.getElementById("tema");
+
 function toggleDarkMode() {
     let switchToTheme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
-    let $btntema = document.getElementById("tema");
-    $btntema.textContent = switchToTheme;
+    cambiarTxtBtn(switchToTheme);
     setTheme(switchToTheme);
+}
+
+function cambiarTxtBtn(theme) {
+    $btntema.textContent = theme === 'light' ? '🌙' : '☀';
 }
 
 const setTheme = (theme) => {
@@ -17,3 +22,4 @@ const setTheme = (theme) => {
 
 const preferedColorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 setTheme(localStorage.getItem('theme') || preferedColorScheme);
+cambiarTxtBtn(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
