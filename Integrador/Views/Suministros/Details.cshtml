@@ -5,8 +5,8 @@
 }
 
 <h2>Detalles del suministro</h2>
-
 <hr />
+
 <div>
     <dl class="row">
         <dt class="col-sm-3">
@@ -33,7 +33,7 @@
             }
             else
             {
-                @Html.DisplayFor(model => model.Proveedor.Nombre)
+                @Html.DisplayFor(model => model.Proveedor.Email)
             }
         </dd>
         <dt class="col-sm-3">
@@ -46,17 +46,31 @@
             @Html.DisplayNameFor(model => model.Producto.Modelo)
         </dt>
         <dd class="col-sm-9">
-            <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.Producto.ModeloId">
+            @if (User.IsInRole("Administrador"))
+            {
+                <a asp-action="Details" asp-controller="Modelos" asp-route-id="@Model.Producto.ModeloId">
+                    @Html.DisplayFor(model => model.Producto.Modelo.Nombre)
+                </a>
+            }
+            else
+            {
                 @Html.DisplayFor(model => model.Producto.Modelo.Nombre)
-            </a>
+            }
         </dd>
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.ProductoId)
         </dt>
         <dd class="col-sm-9">
-            <a asp-action="Details" asp-controller="Productos" asp-route-id="@Model.ProductoId">
+            @if (User.IsInRole("Administrador"))
+            {
+                <a asp-action="Details" asp-controller="Productos" asp-route-id="@Model.ProductoId">
+                    @Html.DisplayFor(model => model.Producto.Nombre)
+                </a>
+            }
+            else
+            {
                 @Html.DisplayFor(model => model.Producto.Nombre)
-            </a>
+            }
         </dd>
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Unidades)
@@ -64,9 +78,12 @@
         <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Unidades)
         </dd>
+        <div class="text-center d-print-none">
+            <a class="btn btn-primary" href="javascript:window.print()">Imprimir</a>
+        </div>
     </dl>
 </div>
-<div>
+<div class="d-print-none">
     <a asp-action="Index">Volver a la lista</a> |
     <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
 </div>

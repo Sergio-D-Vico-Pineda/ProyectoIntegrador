@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ModelosController(IntegradorContexto context) : Controller
     {
         private readonly IntegradorContexto _context = context;
 
         // GET: Modelos
-        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Index()
         {
             var modelos = _context.Modelos
@@ -28,7 +28,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Details/5
-        [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,7 +49,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Create
-        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre");
@@ -75,7 +73,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Edit/5
-        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -130,7 +127,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Modelos/Delete/5
-        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
