@@ -76,6 +76,11 @@ namespace Integrador.Controllers
         {
             proveedor.Email = User.Identity.Name;
 
+            if (ProveedorExistsNIF(proveedor.Nif))
+            {
+                ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(proveedor);
@@ -93,6 +98,11 @@ namespace Integrador.Controllers
             [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Proveedor proveedor)
         {
             if (id != proveedor.Id) return NotFound();
+
+            if (ProveedorExistsNIF(proveedor.Nif))
+            {
+                ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -123,6 +133,11 @@ namespace Integrador.Controllers
             return (_context.Proveedores?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+        private bool ProveedorExistsNIF(string nif)
+        {
+            return _context.Proveedores.Any(e => e.Nif == nif);
+        }
+
         // CLIENTES
 
         // POST: MisDatos/CreateCli
@@ -132,6 +147,11 @@ namespace Integrador.Controllers
             [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
         {
             cliente.Email = User.Identity.Name;
+
+            if (ClienteExistsNif(cliente.Nif))
+            {
+                ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -150,6 +170,11 @@ namespace Integrador.Controllers
             [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
         {
             if (id != cliente.Id) return NotFound();
+
+            if (ClienteExistsNif(cliente.Nif))
+            {
+                ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -177,6 +202,11 @@ namespace Integrador.Controllers
         private bool ClienteExists(int id)
         {
             return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private bool ClienteExistsNif(string nif)
+        {
+            return _context.Clientes.Any(e => e.Nif == nif);
         }
 
         // GET: MisDatos/ChangePassword
