@@ -61,48 +61,52 @@
         <div class="col-12 col-lg-6">
             <h4>Suministros</h4>
             <hr />
-            <table class="table border-bottom">
-                <tr>
-                    <th>
-                        Fecha
-                    </th>
-                    <th>
-                        Modelo
-                    </th>
-                    <th>
-                        Producto
-                    </th>
-                    <th>
-                        Unidades
-                    </th>
-                    <th></th>
-                </tr>
-                @foreach (var item in Model.Suministros)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FechaSuministro)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Unidades)
-                        </td>
-                        <td>
-                            <div class="d-print-none">
-                                <a asp-action="Details" asp-controller="Suministros"
-                                   asp-route-id="@item.Id">Detalles</a> |
-                                <a asp-action="Delete" asp-controller="Suministros"
-                                   asp-route-id="@item.Id">Eliminar</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </table>
+            <div style="max-height:50vh; overflow: auto;">
+                <table class="table">
+                    <thead style="position: sticky; top: 0;">
+                        <tr>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Modelo
+                            </th>
+                            <th>
+                                Producto
+                            </th>
+                            <th>
+                                Unidades
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Suministros)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaSuministro)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Unidades)
+                            </td>
+                            <td>
+                                <div class="d-print-none">
+                                    <a asp-action="Details" asp-controller="Suministros"
+                                       asp-route-id="@item.Id">Detalles</a> |
+                                    <a asp-action="Delete" asp-controller="Suministros"
+                                       asp-route-id="@item.Id">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
     }
 </div>

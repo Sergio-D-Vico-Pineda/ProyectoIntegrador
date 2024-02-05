@@ -62,7 +62,9 @@
         <div class="col-12 col-lg-6">
             <h4>Suministros</h4>
             <hr />
-            <table class="table border-bottom">
+            <div style="max-height:50vh; overflow: auto;">
+                <table class="table">
+                    <thead style="position: sticky; top: 0;">
                 <tr>
                     <th>
                         Fecha
@@ -78,7 +80,7 @@
                     </th>
                     <th></th>
                 </tr>
-
+                </thead>
                 @foreach (var item in Model.Suministros)
                 {
                     <tr>
@@ -103,6 +105,7 @@
                     </tr>
                 }
             </table>
+            </div>
         </div>
     }
 </div>
