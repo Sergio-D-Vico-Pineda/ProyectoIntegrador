@@ -275,6 +275,7 @@ namespace Integrador.Controllers
 
         // GET /Pedidos/Carrito
         [Authorize(Roles = "Cliente")]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Carrito()
         {
             if (User.IsInRole("Administrador")) return RedirectToAction(nameof(Index));

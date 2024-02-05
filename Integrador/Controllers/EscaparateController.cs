@@ -14,6 +14,7 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET /Escaparate/Index
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Index(int? id, int? mid)
         {
             ViewData["ListaMarcas"] = _context.Marcas
