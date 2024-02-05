@@ -96,7 +96,7 @@ else
                             }
                             else
                             {
-                                <a asp-action="Descuentos" asp-controller="Pedidos" asp-route-pid="@Model?.Id">
+                                <a asp-action="Descuentos" title="Editar descuento" asp-controller="Pedidos" asp-route-pid="@Model?.Id">
                                     @Html.DisplayFor(model => model.Descuento.Codigo)
                                 </a>
                             }
@@ -119,13 +119,15 @@ else
                 <dt class="col-sm-4">
                     @if (Model.Comentarios != null)
                     {
-                        <a asp-action="Edit" asp-route-id="@Model.Id" class="d-print-none">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" title="Editar comentarios">
                             @Html.DisplayNameFor(model => model.Comentarios)
                         </a>
                     }
                     else
                     {
-                        @Html.DisplayNameFor(model => model.Comentarios)
+                        <span class="d-print-none">
+                            @Html.DisplayNameFor(model => model.Comentarios)
+                        </span>
                     }
 
                 </dt>
@@ -245,7 +247,7 @@ else
                             {
                                 <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
                                     <input type="hidden" name="pedidoid" value="@Model.Id" hidden />
-                                    <input class="btn btn-danger" value="🗑" type="submit" />
+                                    <input class="btn btn-danger p-1" value="🗑" type="submit" title="Quitar producto" />
                                 </form>
                             }
                         </td>
@@ -268,14 +270,14 @@ else
                                         {
                                             <form asp-action="Menos" asp-route-id="@Model?.Id" class="d-print-none">
                                                 <input type="hidden" name="dpid" value="@item.Id" hidden />
-                                                <input class="btn btn-primary p-1" value="➖" type="submit" />
+                                                <input class="btn btn-primary p-1" value="➖" type="submit" title="Restar cantidad" />
                                             </form>
                                         }
                                         else
                                         {
                                             <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
                                                 <input type="hidden" name="pedidoid" value="@Model.Id" hidden />
-                                                <input class="btn btn-danger p-1" value="🗑" type="submit" />
+                                                <input class="btn btn-danger p-1" value="🗑" type="submit" title="Quitar producto" />
                                             </form>
                                         }
                                     </div>
@@ -299,7 +301,7 @@ else
                                         {
                                             <form asp-action="Mas" asp-route-id="@Model?.Id" class="d-print-none">
                                                 <input type="hidden" name="dpid" value="@item.Id" />
-                                                <input class="btn btn-primary p-1" value="➕" type="submit" />
+                                                <input class="btn btn-primary p-1" value="➕" type="submit" title="Sumar cantidad" />
                                             </form>
                                         }
                                     </div>
