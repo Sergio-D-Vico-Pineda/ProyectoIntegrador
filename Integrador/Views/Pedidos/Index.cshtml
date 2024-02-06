@@ -92,7 +92,7 @@
                             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
                         }
                         <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
-                        @if (User.IsInRole("Administrador") && item.EstadoId >= 4)
+                        @if (User.IsInRole("Administrador") && (item.EstadoId >= 4 || item.EstadoId == 1))
                         {
                             <span>|</span> <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                         }

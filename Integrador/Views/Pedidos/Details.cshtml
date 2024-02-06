@@ -355,6 +355,7 @@ else
     {
         case "Pendiente":
             {
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
                 if (Model.DetallePedidos.Count > 0)
                 {
                     bool hayStock = true;
