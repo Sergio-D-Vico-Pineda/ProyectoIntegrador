@@ -15,16 +15,22 @@ namespace Integrador.Controllers
 
         // GET /Escaparate/Index
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> Index(int? id, int? mid)
+        public async Task<IActionResult> Index(int? id, int? mid, string? busq)
         {
+            ViewBag.busq = busq;
+
             ViewData["ListaMarcas"] = _context.Marcas
                 .Include(m => m.Modelos)
                 .ThenInclude(m => m.Productos)
                 .ToList();
 
-            var productos = _context.Productos
-                .Include(p => p.Modelo)
-                .Where(p => p.Escaparate);
+            var productos = _context.Productos.AsQueryable();
+
+            if (!String.IsNullOrEmpty(busq))
+            {
+                productos = productos
+                    .Where(p => p.Nombre.Contains(busq) || p.Descripcion.Contains(busq) || p.Modelo.Nombre.Contains(busq));
+            }
 
             if (id != null)
             {
@@ -45,6 +51,10 @@ namespace Integrador.Controllers
             }
 
             /*ViewBag.HayProds = await _context.Productos.AnyAsync();*/
+
+            productos = productos
+                .Include(p => p.Modelo)
+                .Where(p => p.Escaparate);
 
             return View(await productos.ToListAsync());
         }

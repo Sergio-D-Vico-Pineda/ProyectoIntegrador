@@ -23,6 +23,18 @@
 
 <div class="row gx-3">
     <aside class="col-12 col-lg-2 col-md-3 col-sm-3">
+        <form asp-action="Index">
+            <div class="form-group d-flex flex-column gap-2">
+                <div class="d-flex gap-1">
+                    <input name="busq" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
+                    <input type="submit" value="🔎" class="btn btn-outline-primary border-0 py-1 px-2 d-print-none" style="width:fit-content;" />
+                </div>
+                @if (!String.IsNullOrEmpty(ViewBag.busq))
+                {
+                    <a class="btn btn-secondary text-nowrap w-100" asp-action="Index" asp-route-busq="">Borrar filtros</a>
+                }
+            </div>
+        </form>
         @if (ViewBag.marca != null)
         {
             <div class="text-center mb-1 p-2">
@@ -54,11 +66,12 @@
             }
             @* else No hay modelos de esa marca *@
         }
+
         @* @if (ViewBag.HayProds)
         {
-            <div class="text-center mb-1 p-2">
-                <a asp-action="Index" asp-controller="Productos" class="p-2 rounded-2 btn btn-primary">Ver todos los productos</a>
-            </div>
+        <div class="text-center mb-1 p-2">
+        <a asp-action="Index" asp-controller="Productos" class="p-2 rounded-2 btn btn-primary">Ver todos los productos</a>
+        </div>
         } *@
     </aside>
     <script>
