@@ -99,7 +99,9 @@ namespace Integrador.Controllers
         {
             if (id != proveedor.Id) return NotFound();
 
-            if (ProveedorExistsNIF(proveedor.Nif))
+            Proveedor? actual = await _context.Proveedores.FirstOrDefaultAsync(p => p.Email == User.Identity.Name);
+
+            if (ProveedorExistsNIF(proveedor.Nif) && proveedor.Nif != actual.Nif)
             {
                 ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
             }
@@ -167,13 +169,18 @@ namespace Integrador.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCli(int id,
-            [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
+            [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente, string nif2)
         {
             if (id != cliente.Id) return NotFound();
 
-            if (ClienteExistsNif(cliente.Nif))
+            if (cliente.Nif != nif2)
             {
-                ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+                if (ClienteExistsNif(nif2))
+                {
+                    ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+                    ViewBag.nif2 = nif2;
+                }
+                else cliente.Nif = nif2;
             }
 
             if (ModelState.IsValid)

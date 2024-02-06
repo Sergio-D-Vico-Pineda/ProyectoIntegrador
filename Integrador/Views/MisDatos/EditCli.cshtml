@@ -25,7 +25,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Nif" class="control-label"></label>
-                <input asp-for="Nif" class="form-control" />
+                <input asp-for="Nif" class="form-control" hidden />
+                @{
+                    var nif = ViewBag.nif2 ?? Model.Nif;
+                }
+                <input name="nif2" value="@nif" class="form-control" />
                 <span asp-validation-for="Nif" class="text-danger"></span>
             </div>
             <div class="form-group">
