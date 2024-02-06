@@ -94,16 +94,19 @@ namespace Integrador.Controllers
         // POST: MisDatos/EditPro
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPro(int id,
+        public async Task<IActionResult> EditPro(int id, string nif2,
             [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Proveedor proveedor)
         {
             if (id != proveedor.Id) return NotFound();
 
-            Proveedor? actual = await _context.Proveedores.FirstOrDefaultAsync(p => p.Email == User.Identity.Name);
-
-            if (ProveedorExistsNIF(proveedor.Nif) && proveedor.Nif != actual.Nif)
+            if (proveedor.Nif != nif2)
             {
-                ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
+                if (ProveedorExistsNIF(nif2))
+                {
+                    ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
+                    ViewBag.nif2 = nif2;
+                }
+                else proveedor.Nif = nif2;
             }
 
             if (ModelState.IsValid)
@@ -168,8 +171,8 @@ namespace Integrador.Controllers
         // POST: MisDatos/EditCli
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCli(int id,
-            [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente, string nif2)
+        public async Task<IActionResult> EditCli(int id, string nif2,
+            [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
         {
             if (id != cliente.Id) return NotFound();
 
