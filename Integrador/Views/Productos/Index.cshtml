@@ -12,6 +12,15 @@
         <a asp-action="Create">Nuevo producto</a>
     </p>
 }
+
+<form asp-action="Index">
+    <div class="form-group d-flex">
+        <input name="busq" value="@ViewBag.busq" class="form-control" placeholder="Buscar..."  />
+        <input type="submit" value="Buscar" class="btn btn-primary" />
+    </div>
+</form>
+<a class="btn btn-secondary" asp-action="Index" asp-route-busq="">Mostrar todos</a>
+
 <div style="max-height:68vh; overflow: auto;">
     <table class="table">
         <thead style="position: sticky; top: 0;">

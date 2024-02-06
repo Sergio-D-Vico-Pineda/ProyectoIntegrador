@@ -18,11 +18,22 @@ namespace Integrador.Controllers
 
         // GET: Productos
         [Authorize(Roles = "Proveedor, Administrador")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? busq)
         {
-            var productos = _context.Productos
+            ViewBag.busq = busq;
+
+            var productos = _context.Productos.AsQueryable();
+
+            if (!String.IsNullOrEmpty(busq))
+            {
+                productos = productos
+                    .Where(p => p.Nombre.Contains(busq) || p.Descripcion.Contains(busq) || p.Modelo.Nombre.Contains(busq));
+            }
+
+            productos = productos
                 .Include(p => p.Modelo)
                 .Include(p => p.DetallePedidos);
+
             return View(await productos.ToListAsync());
         }
 
