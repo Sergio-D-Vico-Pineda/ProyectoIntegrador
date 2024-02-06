@@ -114,13 +114,16 @@
                             <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
                             <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                         }
-                        else
+                        else if (User.IsInRole("Proveedor"))
                         {
                             <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> <span>|</span>
                             <a asp-action="Create" asp-controller="Suministros" asp-route-id="@item.Id">Añadir stock</a>
                         }
+                        @* else
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                        } *@
                     </td>
-
                 </tr>
             }
         </tbody>

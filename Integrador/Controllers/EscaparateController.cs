@@ -44,6 +44,8 @@ namespace Integrador.Controllers
                 }
             }
 
+            /*ViewBag.HayProds = await _context.Productos.AnyAsync();*/
+
             return View(await productos.ToListAsync());
         }
 

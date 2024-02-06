@@ -17,6 +17,7 @@ namespace Integrador.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
         // GET: Productos
+        /*[Authorize(Roles = "Proveedor, Cliente, Administrador")]*/
         [Authorize(Roles = "Proveedor, Administrador")]
         public async Task<IActionResult> Index(string? busq)
         {
