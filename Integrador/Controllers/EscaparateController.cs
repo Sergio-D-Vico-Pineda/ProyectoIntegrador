@@ -50,8 +50,6 @@ namespace Integrador.Controllers
                 }
             }
 
-            /*ViewBag.HayProds = await _context.Productos.AnyAsync();*/
-
             productos = productos
                 .Include(p => p.Modelo)
                 .Where(p => p.Escaparate);
