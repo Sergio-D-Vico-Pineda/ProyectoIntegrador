@@ -14,12 +14,12 @@
 }
 
 <form asp-action="Index">
-    <div class="form-group d-flex">
-        <input name="busq" value="@ViewBag.busq" class="form-control" placeholder="Buscar..."  />
+    <div class="form-group d-flex align-items-center gap-4 mb-1">
+        <input name="busq" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
         <input type="submit" value="Buscar" class="btn btn-primary" />
+        <a class="btn btn-secondary text-nowrap" asp-action="Index" asp-route-busq="">Borrar filtros</a>
     </div>
 </form>
-<a class="btn btn-secondary" asp-action="Index" asp-route-busq="">Mostrar todos</a>
 
 <div style="max-height:68vh; overflow: auto;">
     <table class="table">
@@ -70,11 +70,7 @@
                     }
                     <td>
                         @{
-                            var nombreImagen = "default.png";
-                            if (item.Imagen != null)
-                            {
-                                nombreImagen = item.Imagen;
-                            }
+                            var nombreImagen = item.Imagen ?? "default.png";
                         }
                         <img src="~/img/@nombreImagen" height="80" width="80"
                              asp-append-version="true" alt="Sin imagen" draggable="false" />
@@ -88,7 +84,7 @@
                     <td class="d-none d-md-table-cell" style="max-width:350px;">
                         @Html.DisplayFor(modelItem => item.Descripcion)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.Precio)
                     </td>
                     <td>
