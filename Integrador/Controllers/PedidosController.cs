@@ -18,54 +18,41 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET: Pedidos
-        public async Task<IActionResult> Index(string? email)
+        public async Task<IActionResult> Index(string? busq)
         {
-            ViewData["Emails"] = new SelectList(_context.Clientes, "Email", "Email");
+            ViewBag.busq = busq;
 
-            var pedidos = _context.Pedidos
-                    .Include(p => p.Cliente)
+            var pedidos = _context.Pedidos.AsQueryable();
+
+            if (User.IsInRole("Cliente"))
+            {
+                // Obtener el cliente actual
+                Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+
+                // Si el cliente no existe, redirigir a la vista de creación de cuenta
+                if (cliente == null) return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+
+                // Filtrar los pedidos del cliente
+                pedidos = pedidos.Where(p => p.ClienteId == cliente.Id);
+            }
+            else if (User.IsInRole("Administrador"))
+            {
+                ViewData["Clientes"] = await _context.Clientes.ToListAsync();
+
+                if (!String.IsNullOrEmpty(busq))
+                {
+                    pedidos = pedidos
+                        .Where(p => p.Cliente.Nombre.Contains(busq) || p.Cliente.Email.Contains(busq) || p.Estado.Nombre.Contains(busq));
+                }
+            }
+
+            pedidos = pedidos
+                .Include(p => p.Cliente)
                     .Include(p => p.Estado)
                     .Include(p => p.DetallePedidos)
                     .OrderByDescending(p => p.Id);
 
-            if (User.IsInRole("Administrador"))
-            {
-                if (email == null)
-                {
-                    ViewData["Emails"] = new SelectList(_context.Clientes, "Email", "Email", "");
-
-                    return View(await pedidos.ToListAsync());
-                }
-                else
-                {
-                    Cliente? cliente = await _context.Clientes
-                        .Where(c => c.Email == email)
-                        .FirstOrDefaultAsync();
-
-                    if (cliente == null) return View(await pedidos.ToListAsync());
-
-                    ViewData["Emails"] = new SelectList(_context.Clientes, "Email", "Email", cliente.Email);
-
-                    return View(await pedidos
-                        .Where(p => p.ClienteId == cliente.Id)
-                        .ToListAsync());
-                }
-            }
-            else
-            {
-                Cliente? cliente = await _context.Clientes
-                    .Where(c => c.Email == User.Identity.Name)
-                    .FirstOrDefaultAsync();
-
-                if (cliente == null)
-                {
-                    return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
-                }
-
-                return View(await pedidos
-                    .Where(p => p.ClienteId == cliente.Id)
-                    .ToListAsync());
-            }
+            return View(await pedidos.ToListAsync());
         }
 
         // GET: Pedidos/Details/5
