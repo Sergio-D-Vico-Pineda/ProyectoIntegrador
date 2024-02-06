@@ -99,16 +99,21 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, string nif2, [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
         {
             if (id != cliente.Id)
             {
                 return NotFound();
             }
 
-            if (ClienteExistsNif(cliente.Nif))
+            if (cliente.Nif != nif2)
             {
-                ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+                if (ClienteExistsNif(nif2))
+                {
+                    ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+                    ViewBag.nif2 = nif2;
+                }
+                else cliente.Nif = nif2;
             }
 
             if (ModelState.IsValid)
