@@ -48,7 +48,7 @@ else
                 </div>
                 <div class="form-group">
                     <label asp-for="Comentarios" class="control-label"></label>
-                    <input asp-for="Comentarios" class="form-control" />
+                    <textarea asp-for="Comentarios" class="form-control" rows="3" style="max-height:350px;"></textarea>
                     <span asp-validation-for="Comentarios" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -119,7 +119,7 @@ else
                 </div>
                 <div class="form-group">
                     <label asp-for="Comentarios" class="control-label"></label>
-                    <input asp-for="Comentarios" class="form-control" />
+                    <textarea asp-for="Comentarios" class="form-control" rows="5" style="max-height:400px;"></textarea>
                     <span asp-validation-for="Comentarios" class="text-danger"></span>
                 </div>
                 <div class="form-group hidden" hidden>
@@ -156,12 +156,9 @@ else
             <div class="form-group my-3">
                 @if (User.IsInRole("Administrador"))
                 {
-                    <a asp-action="Index">Volver a la lista</a>
+                    <a asp-action="Index">Volver a la lista</a> <span>|</span>
                 }
-                else
-                {
-                    <a asp-action="Details" asp-route-id="@Model?.Id">Volver al pedido</a>
-                }
+                <a asp-action="Details" asp-route-id="@Model?.Id">Volver al pedido</a>
                 | <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
