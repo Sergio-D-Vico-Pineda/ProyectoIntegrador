@@ -299,7 +299,6 @@ namespace Integrador.Controllers
         }
 
         // GET /Pedidos/Descuentos
-        [Authorize(Roles = "Cliente")]
         public async Task<IActionResult> Descuentos(int? pid)
         {
             if (pid == null) return NotFound();
@@ -311,11 +310,14 @@ namespace Integrador.Controllers
 
             if (pedido == null) return RedirectToAction(nameof(Index));
 
-            Cliente? cliente = await _context.Clientes
-                .Where(c => c.Email == User.Identity.Name)
-                .FirstOrDefaultAsync();
+            if (User.IsInRole("Cliente"))
+            {
+                Cliente? cliente = await _context.Clientes
+                    .Where(c => c.Email == User.Identity.Name)
+                    .FirstOrDefaultAsync();
 
-            if (pedido.ClienteId != cliente.Id) return RedirectToAction(nameof(Index));
+                if (pedido.ClienteId != cliente.Id) return RedirectToAction(nameof(Index));
+            }
 
             ViewBag.pid = pid;
             return View(pedido.Descuento);

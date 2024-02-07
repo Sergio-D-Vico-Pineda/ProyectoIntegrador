@@ -90,12 +90,6 @@ else
                     @if (Model.EstadoId == 1)
                     {
                         <div class="d-flex flex-row ">
-                            @if (User.IsInRole("Administrador"))
-                            {
-                                @Html.DisplayFor(model => model.Descuento.Codigo)
-                            }
-                            else
-                            {
                                 <a asp-action="Descuentos" title="Editar descuento" asp-controller="Pedidos" asp-route-pid="@Model?.Id">
                                     @Html.DisplayFor(model => model.Descuento.Codigo)
                                 </a>
