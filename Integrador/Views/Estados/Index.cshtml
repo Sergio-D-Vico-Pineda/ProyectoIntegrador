@@ -15,6 +15,9 @@
         <thead style="position: sticky; top: 0;">
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Nombre)
                 </th>
                 <th>
@@ -28,6 +31,9 @@
             {
                 <tr>
                     <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Nombre)
                     </td>
                     <td>
@@ -35,7 +41,6 @@
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                     </td>
                 </tr>

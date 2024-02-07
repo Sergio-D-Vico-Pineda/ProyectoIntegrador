@@ -12,38 +12,14 @@ using Microsoft.AspNetCore.Authorization;
 namespace Integrador.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    public class EstadosController : Controller
+    public class EstadosController(IntegradorContexto context) : Controller
     {
-        private readonly IntegradorContexto _context;
-
-        public EstadosController(IntegradorContexto context)
-        {
-            _context = context;
-        }
+        private readonly IntegradorContexto _context = context;
 
         // GET: Estados
         public async Task<IActionResult> Index()
         {
             return View(await _context.Estados.ToListAsync());
-        }
-
-        // GET: Estados/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var estado = await _context.Estados
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (estado == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(estado);
         }
 
         // GET: Estados/Create
