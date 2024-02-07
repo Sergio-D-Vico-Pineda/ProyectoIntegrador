@@ -8,6 +8,7 @@ namespace Integrador.Models
         public int Id { get; set; }
 
         [Display(Name = "Proveedor")]
+        [Required(ErrorMessage = "El proveedor es un campo obligatorio.")]
         public int ProveedorId { get; set; }
 
         [Display(Name = "Producto")]

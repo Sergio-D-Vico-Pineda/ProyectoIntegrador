@@ -17,7 +17,6 @@ namespace Integrador.Models
         public required string Descripcion { get; set; }
 
         [DataType(DataType.Currency)]
-        /*[DisplayFormat(DataFormatString = "{0:n2")] Da error*/
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Precio { get; set; }
 
