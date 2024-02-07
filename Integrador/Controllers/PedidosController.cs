@@ -193,7 +193,6 @@ namespace Integrador.Controllers
         }
 
         // GET: Pedidos/Delete/5
-        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id, int? volver)
         {
             if (id == null)
@@ -215,7 +214,7 @@ namespace Integrador.Controllers
                     .Where(c => c.Email == User.Identity.Name)
                     .FirstOrDefaultAsync();
 
-                if (pedido.ClienteId != cliente.Id)
+                if (pedido.ClienteId != cliente.Id || pedido.EstadoId != 1)
                 {
                     return RedirectToAction(nameof(Index));
                 }

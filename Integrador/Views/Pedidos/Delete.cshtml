@@ -168,7 +168,7 @@
 <div>
     <form asp-action="Delete">
         <div class="alert alert-danger" style="width: fit-content;" role="alert">
-            @if (Model.EstadoId >= 4)
+            @if (Model.EstadoId >= 4 || Model.EstadoId == 1)
             {
                 <span>Al borrar este pedido se perderán todos sus datos.</span>
             }
@@ -185,10 +185,11 @@
         }
         else
         {
-            <a asp-action="Index">Volver a la lista</a>
+            <a asp-action="Index">Volver a la lista</a> <span>|</span>
+            <a asp-action="Details" asp-route-id="@Model.Id">Volver al pedido</a>
         }
         |
-        @if (Model.EstadoId >= 4)
+        @if (Model.EstadoId >= 4 || Model.EstadoId == 1)
         {
             <input type="submit" value="Borrar" class="btn btn-danger" />
         }

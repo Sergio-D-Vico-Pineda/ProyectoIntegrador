@@ -352,7 +352,7 @@ else
     {
         case "Pendiente":
             {
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Eliminar</a>
                 if (Model.DetallePedidos.Count > 0)
                 {
                     bool hayStock = true;
@@ -428,7 +428,7 @@ else
                 }
                 else if (User.IsInRole("Administrador"))
                 {
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Eliminar</a>
                 }
             }
             break;
@@ -439,7 +439,7 @@ else
                 </div>
                 @if (User.IsInRole("Administrador"))
                 {
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Eliminar</a>
                 }
             }
             break;
@@ -450,7 +450,7 @@ else
                 </div>
                 @if (User.IsInRole("Administrador"))
                 {
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Borrar</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Eliminar</a>
                 }
             }
             break;
