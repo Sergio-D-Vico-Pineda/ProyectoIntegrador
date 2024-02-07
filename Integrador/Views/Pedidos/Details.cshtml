@@ -2,8 +2,7 @@
 
 @{
     ViewData["Title"] = "Detalles del pedido";
-    decimal? total = 0;
-    decimal? descuento = 0;
+    decimal? total = 0, descuento = 0;
 }
 
 @if (ViewBag.carrito == true)
@@ -87,22 +86,26 @@ else
                 }
                 else
                 {
+                    decimal? number = Model.Descuento.porcentaje;
+                    string roundedNumber = number.HasValue ? (number % 1 == 0 ? number.Value.ToString("0") : number.Value.ToString("0.##")) : "N/A";
                     @if (Model.EstadoId == 1)
                     {
                         <div class="d-flex flex-row ">
-                                <a asp-action="Descuentos" title="Editar descuento" asp-controller="Pedidos" asp-route-pid="@Model?.Id">
-                                    @Html.DisplayFor(model => model.Descuento.Codigo)
-                                </a>
-                            }
+                            <a asp-action="Descuentos" title="Editar descuento" asp-controller="Pedidos" asp-route-pid="@Model?.Id">
+                                @Html.DisplayFor(model => model.Descuento.Codigo)
+                            </a>
+                            <span>&nbsp; @roundedNumber %</span>
                             <form asp-action="Descuentos" asp-route-pid="@Model?.Id" class="d-print-none">
                                 <input name="Codigo" class="form-control" value="" hidden />
-                                <input type="submit" value="🗑" class="btn btn-link text-decoration-none p-0 ms-3" title="Quitar descuento" />
+                                <input type="submit" value="🗑" class="btn btn-outline-primary border-0 p-0 ms-3" title="Quitar descuento" />
                             </form>
                         </div>
                     }
                     else
                     {
-                        @Html.DisplayFor(model => model.Descuento.Codigo)
+                        <abbr title="Porcentaje: @roundedNumber %">
+                            @Html.DisplayFor(model => model.Descuento.Codigo)
+                        </abbr>
                     }
                 }
             </dd>

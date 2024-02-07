@@ -85,6 +85,14 @@ else
             }
             else
             {
+                <div>
+                    <label class="d-flex align-items-center">
+                        <span class="text-nowrap">
+                            Id del pedido:
+                        </span>
+                        <input asp-for="Id" class="form-control-plaintext ms-3" disabled readonly />
+                    </label>
+                </div>
                 <div class="form-group hidden" hidden>
                     <label asp-for="Id" class="control-label"></label>
                     <input asp-for="Id" class="form-control" hidden disabled />
