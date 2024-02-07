@@ -52,7 +52,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Codigo,Porcentaje")] Descuento descuento)
+        public async Task<IActionResult> Create([Bind("Id,Codigo,Porcentaje,Activo")] Descuento descuento)
         {
             if (_context.Descuentos.Any(x => x.Codigo == descuento.Codigo))
             {
@@ -94,7 +94,7 @@ namespace Integrador.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Porcentaje")] Descuento descuento)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Porcentaje,Activo")] Descuento descuento)
         {
             if (id != descuento.Id)
             {
