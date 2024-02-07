@@ -4,7 +4,7 @@
     ViewData["Title"] = "Escaparate";
 }
 
-<marquee>Testers de esta página: Nerea, Olga, Ricardo, Pablo, Jofran, Lena...</marquee>
+<marquee>Testers de esta página: Nerea, Olga, Ricardo, Pablo, Jofran, Lena, Raúl...</marquee>
 
 <h1 class="text-center">
     @if (ViewBag.marca != null)
@@ -97,7 +97,7 @@
                         <h5>@Html.DisplayFor(modelItem => item.Nombre)</h5>
                         <p>
                             @Html.DisplayFor(modelItem => item.Precio)
-                            @if (User.IsInRole("Proveedor") || User.IsInRole("Administrador"))
+                            @if (!User.IsInRole("Cliente"))
                             {
                                 <br />
                                 @Html.DisplayFor(modelItem => item.Stock)
@@ -134,7 +134,7 @@
                                 }
                                 else
                                 {
-                                    <span class="btn btn-primary text-nowrap disabled">Sin stock</span>
+                                    <span class="btn btn-danger text-nowrap disabled">Sin stock</span>
                                 }
                             }
                             <a class="btn btn-sm btn-secondary text-nowrap" asp-action="Details" asp-controller="Productos" asp-route-id="@item.Id">
