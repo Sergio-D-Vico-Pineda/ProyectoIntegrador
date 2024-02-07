@@ -13,6 +13,7 @@ function toggleDarkMode() {
 
 function cambiarTxtBtn(theme) {
     $btntema.textContent = theme === 'light' ? '🌙' : '☀';
+    $btntema.title = theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro';
 }
 
 const setTheme = (theme) => {
