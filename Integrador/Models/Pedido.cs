@@ -36,6 +36,7 @@ namespace Integrador.Models
         [Display(Name = "Fecha de devolución")]
         public DateTime? FechaDevolucion { get; set; }
 
+        [MaxLength(5000)]
         public string? Comentarios { get; set; }
 
         [Display(Name = "Descuento")]
