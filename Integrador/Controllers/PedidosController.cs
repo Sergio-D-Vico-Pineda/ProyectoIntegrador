@@ -341,6 +341,7 @@ namespace Integrador.Controllers
 
             Descuento? descuento = await _context.Descuentos
                 .Where(d => d.Codigo == desc.Codigo)
+                .Where(d => d.Activo)
                 .FirstOrDefaultAsync();
 
             if (descuento == null)

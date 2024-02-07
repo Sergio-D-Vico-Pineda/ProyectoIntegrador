@@ -21,6 +21,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Porcentaje)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Activo)
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -33,6 +36,16 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Porcentaje) %
+                    </td>
+                    <td>
+                        @if (item.Activo)
+                        {
+                            <span>Sí</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
