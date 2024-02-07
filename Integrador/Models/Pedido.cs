@@ -38,7 +38,9 @@ namespace Integrador.Models
 
         public string? Comentarios { get; set; }
 
-        public decimal? Descuento { get; set; }
+        [Display(Name = "Descuento")]
+        [Column(TypeName = "decimal(5, 2)")]
+        public decimal? Discount { get; set; }
 
         [Display(Name = "Código de descuento")]
         public int? DescuentoId { get; set; }
