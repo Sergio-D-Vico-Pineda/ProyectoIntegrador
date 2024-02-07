@@ -29,6 +29,8 @@ namespace Integrador.Models
             set => porcentaje = decimal.TryParse(value.Replace('.', ','), out var result) ? result : 0;
         }
 
+        public bool Activo { get; set; } = true; // Activado por defecto
+
         public ICollection<Pedido>? Pedidos { get; set; }
     }
 }

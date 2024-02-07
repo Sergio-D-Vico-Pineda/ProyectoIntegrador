@@ -2203,8 +2203,8 @@
     },
     {
       "type": "rectangle",
-      "version": 1164,
-      "versionNonce": 580864175,
+      "version": 1176,
+      "versionNonce": 335028609,
       "isDeleted": false,
       "id": "T0vkwAk6yUsedoBuF7Tge",
       "fillStyle": "solid",
@@ -2213,15 +2213,15 @@
       "roughness": 1,
       "opacity": 100,
       "angle": 0,
-      "x": -221.7524031045763,
+      "x": -222.6783064248888,
       "y": 873.2439468471244,
       "strokeColor": "#ff11aa",
       "backgroundColor": "transparent",
       "width": 338.55091205612354,
-      "height": 260.9523893083843,
+      "height": 273.9153070601206,
       "seed": 567310939,
       "groupIds": [
-        "OlBu7Gbkqg9Sbnc0xlfII"
+        "ppjQUHCEKoqZHQM7lvJH8"
       ],
       "frameId": null,
       "roundness": {
@@ -2233,14 +2233,14 @@
           "type": "arrow"
         }
       ],
-      "updated": 1707301044970,
+      "updated": 1707302021890,
       "link": null,
       "locked": false
     },
     {
       "type": "line",
-      "version": 1077,
-      "versionNonce": 1348083137,
+      "version": 1079,
+      "versionNonce": 1614115599,
       "isDeleted": false,
       "id": "YimUXYUc7Sbtcndi_kJOr",
       "fillStyle": "solid",
@@ -2257,14 +2257,14 @@
       "height": 0,
       "seed": 606500603,
       "groupIds": [
-        "OlBu7Gbkqg9Sbnc0xlfII"
+        "ppjQUHCEKoqZHQM7lvJH8"
       ],
       "frameId": null,
       "roundness": {
         "type": 2
       },
       "boundElements": [],
-      "updated": 1707301044970,
+      "updated": 1707302021890,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -2285,8 +2285,8 @@
     },
     {
       "type": "text",
-      "version": 1063,
-      "versionNonce": 271604431,
+      "version": 1065,
+      "versionNonce": 2119846241,
       "isDeleted": false,
       "id": "6awQ8bJdooq1MCm7DjITl",
       "fillStyle": "solid",
@@ -2303,12 +2303,12 @@
       "height": 43.527955430533304,
       "seed": 802414491,
       "groupIds": [
-        "OlBu7Gbkqg9Sbnc0xlfII"
+        "ppjQUHCEKoqZHQM7lvJH8"
       ],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1707301044970,
+      "updated": 1707302021890,
       "link": null,
       "locked": false,
       "fontSize": 36.27329619211109,
@@ -2323,8 +2323,8 @@
     },
     {
       "type": "text",
-      "version": 1179,
-      "versionNonce": 229817761,
+      "version": 1195,
+      "versionNonce": 1649555759,
       "isDeleted": false,
       "id": "QIRJBfZzNAHrO4ZNHYZGA",
       "fillStyle": "solid",
@@ -2338,31 +2338,31 @@
       "strokeColor": "#ff11aa",
       "backgroundColor": "transparent",
       "width": 164.0625,
-      "height": 168,
+      "height": 192,
       "seed": 2131440699,
       "groupIds": [
-        "OlBu7Gbkqg9Sbnc0xlfII"
+        "ppjQUHCEKoqZHQM7lvJH8"
       ],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1707301044970,
+      "updated": 1707302021890,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 3,
-      "text": "Id PK\nCodigo* PK\nPorcentaje*\n\nporcentaje\n\nIColl Pedidos?",
+      "text": "Id PK\nCodigo* PK\nPorcentaje*\nActivo = true\n\nporcentaje\n\nIColl Pedidos?",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Id PK\nCodigo* PK\nPorcentaje*\n\nporcentaje\n\nIColl Pedidos?",
+      "originalText": "Id PK\nCodigo* PK\nPorcentaje*\nActivo = true\n\nporcentaje\n\nIColl Pedidos?",
       "lineHeight": 1.2,
-      "baseline": 162
+      "baseline": 186
     },
     {
       "type": "arrow",
-      "version": 985,
-      "versionNonce": 313575983,
+      "version": 1009,
+      "versionNonce": 159014817,
       "isDeleted": false,
       "id": "ECJPoF9jrxisg4pFx4OX4",
       "fillStyle": "solid",
@@ -2371,12 +2371,12 @@
       "roughness": 1,
       "opacity": 100,
       "angle": 0,
-      "x": 55.4370423341921,
+      "x": 58.27606926700011,
       "y": 852.3812461580769,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
-      "width": 131.3548200729681,
-      "height": 120.12051025461096,
+      "width": 128.88265605906582,
+      "height": 118.83899950743194,
       "seed": 822178261,
       "groupIds": [],
       "frameId": null,
@@ -2389,7 +2389,7 @@
           "id": "rlfbhwS2DegpCsFwCB1cA"
         }
       ],
-      "updated": 1707301242841,
+      "updated": 1707302019358,
       "link": null,
       "locked": false,
       "startBinding": {
@@ -2411,8 +2411,8 @@
           0
         ],
         [
-          131.3548200729681,
-          -120.12051025461096
+          128.88265605906582,
+          -118.83899950743194
         ]
       ]
     },
