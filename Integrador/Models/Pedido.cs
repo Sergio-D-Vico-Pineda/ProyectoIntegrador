@@ -38,6 +38,8 @@ namespace Integrador.Models
 
         public string? Comentarios { get; set; }
 
+        public decimal? Descuento { get; set; }
+
         [Display(Name = "Código de descuento")]
         public int? DescuentoId { get; set; }
 
