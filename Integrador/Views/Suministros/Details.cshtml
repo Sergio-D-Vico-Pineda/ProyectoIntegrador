@@ -21,7 +21,6 @@
         <dd class="col-sm-9">
             @if (User.IsInRole("Administrador"))
             {
-
                 @if (Model.Proveedor.Email.EndsWith("-DEL."))
                 {
                     <del>@Model.Proveedor.Email</del>
