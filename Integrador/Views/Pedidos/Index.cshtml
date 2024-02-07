@@ -4,7 +4,10 @@
     ViewData["Title"] = User.IsInRole("Cliente") ? "Mis Pedidos" : "Pedidos";
 }
 
-<h1>@ViewData["Title"]</h1>
+@if (Model.Count() != 0)
+{
+    <h1>@ViewData["Title"]</h1>
+}
 
 @if (User.IsInRole("Administrador"))
 {
@@ -24,81 +27,93 @@
     </div>
     <datalist id="clientes">
         @foreach (var item in (List<Cliente>)ViewData["Clientes"])
-        {   
-            <option value="@item.Nombre" />
+        {
             <option value="@item.Email" />
         }
     </datalist>
 }
 
-<div style="max-height:60vh; overflow: auto;">
-    <table class="table">
-        <thead style="position: sticky; top: 0;">
-            <tr>
-                @if (User.IsInRole("Administrador"))
-                {
-                    <th>
-                        Id
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cliente)
-                    </th>
-                }
-                <th>
-                    Fecha
-                </th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Estado)
-                </th>
-                <th class="d-none d-md-table-cell">
-                    Núm. Productos
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+@if (Model.Count() == 0)
+{
+    <div class="d-grid" style="height:80vh;place-content:center;">
+        <h1 class="mb-4">No has hecho pedidos todavía.</h1>
+        <div class="text-center">
+            <a class="btn btn-primary" asp-action="Index" asp-controller="Escaparate">Ir a la tienda</a>
+        </div>
+    </div>
+}
+else
+{
+    <div style="max-height:60vh; overflow: auto;">
+        <table class="table">
+            <thead style="position: sticky; top: 0;">
                 <tr>
                     @if (User.IsInRole("Administrador"))
                     {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
-                            @if (item.Cliente.Email.EndsWith("-DEL."))
-                            {
-                                <del>@item.Cliente.Email</del>
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(modelItem => item.Cliente.Email)
-                            }
-                        </td>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cliente)
+                        </th>
                     }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FechaPedido)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Estado.Nombre)
-                    </td>
-                    <td class="d-none d-md-table-cell">
-                        @Html.DisplayFor(modelItem => item.DetallePedidos.Count)
-                    </td>
-                    <td>
+                    <th>
+                        Fecha
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado)
+                    </th>
+                    <th class="d-none d-md-table-cell">
+                        Núm. Productos
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
                         @if (User.IsInRole("Administrador"))
                         {
-                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @if (item.Cliente.Email.EndsWith("-DEL."))
+                                {
+                                    <del>@item.Cliente.Email</del>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Cliente.Email)
+                                }
+                            </td>
                         }
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
-                        @if (User.IsInRole("Administrador") && (item.EstadoId >= 4 || item.EstadoId == 1))
-                        {
-                            <span>|</span> <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaPedido)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado.Nombre)
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            @Html.DisplayFor(modelItem => item.DetallePedidos.Count)
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
+                            }
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                            @if (User.IsInRole("Administrador") && (item.EstadoId >= 4 || item.EstadoId == 1))
+                            {
+                                <span>|</span> <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+}
