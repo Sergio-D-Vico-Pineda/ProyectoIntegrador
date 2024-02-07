@@ -86,7 +86,7 @@ else
                 }
                 else
                 {
-                    decimal? number = Model.Descuento.porcentaje;
+                    decimal? number = Model.Discount;
                     string roundedNumber = number.HasValue ? (number % 1 == 0 ? number.Value.ToString("0") : number.Value.ToString("0.##")) : "N/A";
                     @if (Model.EstadoId == 1)
                     {
@@ -313,10 +313,10 @@ else
                 }
             </table>
             <div class="text-end">
-                @if (Model.DescuentoId != null)
+                @if (Model.Discount != null)
                 {
                     <h5>Subtotal: @total €</h5>
-                    descuento = Math.Round((decimal)(total * Model.Descuento.porcentaje / 100), 2);
+                    descuento = Math.Round((decimal)(total * Model.Discount / 100), 2);
                     <h5>Descuento: <span class="text-danger">- @descuento €</span></h5>
                     total -= descuento;
                     <h5>Total: @total €</h5>

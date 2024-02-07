@@ -101,6 +101,7 @@ namespace Integrador.Controllers
 
             ViewData["ClienteId"] = new SelectList(listaClientes, "Id", "Email");
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", 1);
+
             return View();
         }
 
@@ -117,8 +118,10 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
+
             return View(pedido);
         }
 
@@ -148,8 +151,9 @@ namespace Integrador.Controllers
                 }
             }
 
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
+
             return View(pedido);
         }
 
@@ -180,10 +184,12 @@ namespace Integrador.Controllers
                         throw;
                     }
                 }
-                if (User.IsInRole("Administrador"))
-                    return RedirectToAction(nameof(Index));
+
+                if (User.IsInRole("Administrador") || (User.IsInRole("Cliente") && pedido.EstadoId != 1))
+                    return RedirectToAction(nameof(Details), "Pedidos", new { id = pedido.Id });
                 else
-                    return RedirectToAction(nameof(Details), new { id = pedido.Id });
+                    return RedirectToAction(nameof(Carrito));
+
             }
 
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
@@ -340,10 +346,12 @@ namespace Integrador.Controllers
             if (descuento == null)
             {
                 pedido.DescuentoId = null;
+                pedido.Discount = null;
             }
             else
             {
                 pedido.DescuentoId = descuento.Id;
+                pedido.Discount = descuento.porcentaje;
             }
 
             try
@@ -358,7 +366,6 @@ namespace Integrador.Controllers
                 else
                     throw;
             }
-
 
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Email", pedido.ClienteId);
             ViewData["EstadoId"] = new SelectList(_context.Estados, "Id", "Descripcion", pedido.EstadoId);
