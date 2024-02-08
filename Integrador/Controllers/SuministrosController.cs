@@ -72,7 +72,16 @@ namespace Integrador.Controllers
         // GET: Suministros/Create
         public async Task<IActionResult> Create(int? id)
         {
-            if (User.IsInRole("Administrador"))
+            if (User.IsInRole("Proveedor"))
+            {
+                // Obtener el proveedor actual
+                Proveedor? proveedor = await _context.Proveedores.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+
+                // Si el cliente no existe, redirigir a la vista de creación de cuenta
+                if (proveedor == null) return RedirectToAction(nameof(Create), "MisDatos", new { role = "Proveedor" });
+            }
+
+                if (User.IsInRole("Administrador"))
             {
                 var listaProveedores = await _context.Proveedores
                     .Where(p => !p.Email.Contains("-DEL."))
