@@ -99,14 +99,22 @@
                             @if (!User.IsInRole("Cliente"))
                             {
                                 <br />
-                                @Html.DisplayFor(modelItem => item.Stock)
-                                @if (item.Stock != 1)
+                                @if (item.Stock == 0)
                                 {
-                                    <span>unidades</span>
+                                    <span class="text-danger">Sin stock</span>
                                 }
                                 else
                                 {
-                                    <span>unidad</span>
+                                    @Html.DisplayFor(modelItem => item.Stock)
+                                    if (item.Stock != 1)
+                                    {
+                                        <span>unidades</span>
+                                    }
+                                    else
+                                    {
+                                        <span>unidad</span>
+
+                                    }
                                 }
                             }
                         </p>
