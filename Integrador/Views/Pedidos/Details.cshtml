@@ -122,7 +122,6 @@ else
                             @Html.DisplayNameFor(model => model.Comentarios)
                         </span>
                     }
-
                 </dt>
                 <dd class="col-sm-8">
                     @if (Model.Comentarios == null)
@@ -131,7 +130,7 @@ else
                     }
                     else
                     {
-                        <div style="max-height: 200px; overflow:auto;">
+                        <div style="max-height: 200px; overflow:auto; max-width:350px; word-wrap:anywhere;">
                             @Html.DisplayFor(model => model.Comentarios)
                         </div>
                     }
