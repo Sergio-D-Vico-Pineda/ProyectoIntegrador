@@ -50,6 +50,36 @@ namespace Integrador.Controllers
                 }
             }
 
+            if (User.IsInRole("Cliente"))
+            {
+                // Obtener el cliente actual
+                Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+
+                // Si el cliente no existe, redirigir a la vista de creación de cuenta
+                if (cliente == null) return RedirectToAction(nameof(Create), "MisDatos", new { role = "Cliente" });
+
+                var listaPedidos = await _context.Pedidos
+                        .Where(p => p.EstadoId == 1)
+                        .Where(p => p.ClienteId == cliente.Id)
+                        .Include(p => p.DetallePedidos)
+                        .ToListAsync();
+
+                if (listaPedidos.Count > 0)
+                {
+                    Pedido ultimo = listaPedidos
+                        .OrderByDescending(p => p.Id)
+                        .First(); // Obtener el último pedido pendiente
+
+                    if (ultimo != null)
+                    {
+                        HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
+
+                        // Obtener pedido en el carrito
+                        ViewBag.carrito = ultimo.DetallePedidos.Select(d => d.ProductoId).ToArray();
+                    }
+                }
+            }
+
             productos = productos
                 .Include(p => p.Modelo)
                 .Where(p => p.Escaparate);

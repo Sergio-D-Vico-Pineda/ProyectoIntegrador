@@ -2,23 +2,14 @@
 
 @{
     ViewData["Title"] = "Escaparate";
+    int[] listaProPeds = ViewBag.carrito;
 }
 
 <marquee>Testers de esta página: Nerea, Olga, Ricardo, Pablo, Jofran, Lena, Raúl...</marquee>
 
 <h1 class="text-center">
-    @if (ViewBag.marca != null)
-    {
-        <span>@ViewBag.marca</span>
-        @if (ViewBag.modelo != null)
-        {
-            <span>- @ViewBag.modelo</span>
-        }
-    }
-    else
-    {
-        <span>Escaparate</span>
-    }
+    <span>@(ViewBag.marca ?? "Escaparate")</span>
+    <span>@(ViewBag.modelo != null ? "- " + ViewBag.modelo : "")</span>
 </h1>
 
 <div class="row gx-3">
@@ -68,10 +59,10 @@
         }
     </aside>
     <script>
-        var detailsElements = document.querySelectorAll("details");
+        let detailsElements = document.querySelectorAll("details");
 
         detailsElements.forEach(function (details) {
-            var spanElements = details.querySelectorAll("span");
+            let spanElements = details.querySelectorAll("span");
 
             if (spanElements.length === 0) {
                 details.remove();
@@ -82,9 +73,17 @@
         <div class="flex-wrap d-flex px-2 justify-content-around row-gap-4 column-gap-3 mb-2">
             @foreach (var item in Model)
             {
-                <figure class="d-flex flex-nowrap flex-grow-1 justify-content-around m-0 px-2 py-2 w-auto border border-1 border-dark-subtle rounded-3" style="min-width:320px; max-width:350px;">
-                    @{
-                        var nombreImagen = item.Imagen ?? "default.png";
+                var nombreImagen = item.Imagen ?? "default.png";
+                <figure class="d-flex flex-nowrap flex-grow-1 justify-content-around m-0 px-2 py-2 w-auto border border-1 border-dark-subtle rounded-3 position-relative" style="min-width:320px; max-width:350px;">
+
+                    @if (listaProPeds != null)
+                    {
+                        @if (listaProPeds.Contains(item.Id))
+                        {
+                            <div title="Ya está en el carrito" class="position-absolute top-0 end-0 p-1">
+                                🛒
+                            </div>
+                        }
                     }
                     <div class="col-5 d-flex flex-column row-gap-2 justify-content-center text-center border-end">
                         <img src="~/img/@nombreImagen" class="mx-auto" height="80" width="80"
