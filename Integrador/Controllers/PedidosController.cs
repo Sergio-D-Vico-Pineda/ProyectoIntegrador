@@ -224,6 +224,7 @@ namespace Integrador.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
+                HttpContext.Session.Remove("NumPedido");
             }
 
             if (pedido == null)
