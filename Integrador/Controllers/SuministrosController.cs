@@ -81,7 +81,7 @@ namespace Integrador.Controllers
                 if (proveedor == null) return RedirectToAction(nameof(Create), "MisDatos", new { role = "Proveedor" });
             }
 
-                if (User.IsInRole("Administrador"))
+            if (User.IsInRole("Administrador"))
             {
                 var listaProveedores = await _context.Proveedores
                     .Where(p => !p.Email.Contains("-DEL."))
