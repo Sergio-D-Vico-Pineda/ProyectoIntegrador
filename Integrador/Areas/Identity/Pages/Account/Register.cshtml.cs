@@ -109,6 +109,10 @@ namespace Integrador.Areas.Identity.Pages.Account
                     {
                         ModelState.AddModelError(string.Empty, "El email ya está registrado.");
                     }
+                    else if (error.Code == "PasswordRequiresLower")
+                    {
+                        ModelState.AddModelError(string.Empty, "La contraseña debe tener al menos una minúscula.");
+                    }
                     else
                     {
                         Console.WriteLine(error.Code); // Quitar comentario
