@@ -96,7 +96,7 @@
                         <h5>@Html.DisplayFor(modelItem => item.Nombre)</h5>
                         <p>
                             @Html.DisplayFor(modelItem => item.Precio)
-                            @if (!User.IsInRole("Cliente"))
+                            @if (!User.IsInRole("Cliente") && User.Identity.IsAuthenticated)
                             {
                                 <br />
                                 @if (item.Stock == 0)
@@ -113,7 +113,6 @@
                                     else
                                     {
                                         <span>unidad</span>
-
                                     }
                                 }
                             }
