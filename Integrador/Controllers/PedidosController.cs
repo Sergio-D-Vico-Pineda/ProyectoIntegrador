@@ -224,7 +224,6 @@ namespace Integrador.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
-                HttpContext.Session.Remove("NumPedido");
             }
 
             if (pedido == null)
@@ -259,6 +258,11 @@ namespace Integrador.Controllers
                 _context.Pedidos.Remove(pedido);
             }
 
+            if (User.IsInRole("Cliente"))
+            {
+                HttpContext.Session.Remove("NumPedido");
+            }
+
             await _context.SaveChangesAsync();
             if (volver == null)
                 return RedirectToAction(nameof(Index));
@@ -269,34 +273,10 @@ namespace Integrador.Controllers
         // GET /Pedidos/Carrito
         [Authorize(Roles = "Cliente")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> Carrito()
+        public IActionResult Carrito()
         {
-            if (User.IsInRole("Administrador")) return RedirectToAction(nameof(Index));
-
-            Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
-
-            if (User.IsInRole("Cliente") && cliente == null)
-            {
-                return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
-            }
-
-            var listaPedidos = await _context.Pedidos
-                    .Where(p => p.EstadoId == 1)
-                    .Where(p => p.ClienteId == cliente.Id)
-                    .ToListAsync();
-
-            if (listaPedidos.Count > 0)
-            {
-                var ultimo = listaPedidos
-                    .OrderByDescending(p => p.Id)
-                    .First(); // Obtener el último pedido pendiente
-
-                if (ultimo != null)
-                    HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
-            }
-
             var numPed = HttpContext.Session.GetString("NumPedido");
-            if (numPed != null && numPed != "0")
+            if (numPed != null)
             {
                 return RedirectToAction("Details", "Pedidos", new { id = numPed, c = true });
             }

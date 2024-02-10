@@ -76,7 +76,7 @@
                 var nombreImagen = item.Imagen ?? "default.png";
                 <figure class="d-flex flex-nowrap flex-grow-1 justify-content-around m-0 px-2 py-2 w-auto border border-1 border-dark-subtle rounded-3 position-relative" style="min-width:320px; max-width:350px;">
 
-                    @if (listaProPeds != null)
+                    @if (listaProPeds != null && User.IsInRole("Cliente"))
                     {
                         @if (listaProPeds.Contains(item.Id))
                         {

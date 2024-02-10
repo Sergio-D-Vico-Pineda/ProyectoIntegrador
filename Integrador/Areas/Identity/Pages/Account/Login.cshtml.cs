@@ -14,19 +14,18 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Integrador.Models;
+using Microsoft.EntityFrameworkCore;
+using Integrador.Data;
 
 namespace Integrador.Areas.Identity.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IntegradorContexto context) : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
+        private readonly SignInManager<IdentityUser> _signInManager = signInManager;
+        private readonly ILogger<LoginModel> _logger = logger;
+        private readonly IntegradorContexto _context = context;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-        }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -74,12 +73,35 @@ namespace Integrador.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    if (User.IsInRole("Cliente"))
+                    {
+                        Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
+
+                        if (cliente == null)
+                        {
+                            return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
+                        }
+
+                        var listaPedidos = await _context.Pedidos
+                                .Where(p => p.EstadoId == 1)
+                                .Where(p => p.ClienteId == cliente.Id)
+                                .ToListAsync();
+
+                        if (listaPedidos.Count > 0)
+                        {
+                            var ultimo = listaPedidos
+                                .OrderByDescending(p => p.Id)
+                                .First(); // Obtener el último pedido pendiente
+
+                            if (ultimo != null)
+                                HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
+                        }
+                    }
                     return LocalRedirect(returnUrl);
                 }
 
