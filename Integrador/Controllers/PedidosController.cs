@@ -276,6 +276,7 @@ namespace Integrador.Controllers
         public IActionResult Carrito()
         {
             var numPed = HttpContext.Session.GetString("NumPedido");
+
             if (numPed != null)
             {
                 return RedirectToAction("Details", "Pedidos", new { id = numPed, c = true });
