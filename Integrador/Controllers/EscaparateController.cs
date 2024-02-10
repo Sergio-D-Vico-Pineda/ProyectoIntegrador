@@ -200,7 +200,7 @@ namespace Integrador.Controllers
                 }
             }
 
-            return RedirectToAction("Carrito", "Pedidos");
+            return RedirectToAction(nameof(Index));
         }
     }
 }
