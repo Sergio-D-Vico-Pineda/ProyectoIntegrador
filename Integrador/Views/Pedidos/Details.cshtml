@@ -93,7 +93,7 @@ else
                             <span>&nbsp; @roundedNumber %</span>
                             <form asp-action="Descuentos" asp-route-pid="@Model?.Id" class="d-print-none">
                                 <input name="Codigo" class="form-control" value="" hidden />
-                                <input type="submit" value="🗑" class="btn btn-outline-primary border-0 p-0 ms-3" title="Quitar descuento" />
+                                <input type="submit" value="🗑" class="btn btn-outline-danger border-0 p-0 ms-3" title="Quitar descuento" />
                             </form>
                         </div>
                     }
@@ -138,16 +138,14 @@ else
             }
             else if (Model.Comentarios != null)
             {
-
                 <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.Comentarios)
                 </dt>
                 <dd class="col-sm-8">
-                    <div style="max-height: 200px; overflow:auto;">
+                    <div style="max-height: 120px; overflow:auto; max-width:400px; word-wrap:anywhere;">
                         @Html.DisplayFor(model => model.Comentarios)
                     </div>
                 </dd>
-
             }
 
             @if (Model.FechaEsperada != null)
@@ -216,107 +214,107 @@ else
         <div class="col-12 col-lg-6">
             <h4>Productos del pedido</h4>
             <hr />
-            <table class="table border-bottom">
-                <tr>
-                    <th></th>
-                    <th>
-                        Modelo
-                    </th>
-                    <th>
-                        Producto
-                    </th>
-                    <th>
-                        Descripción
-                    </th>
-                    <th class="text-center">
-                        Cantidad
-                    </th>
-                    <th>
-                        Precio
-                    </th>
-                </tr>
-                @foreach (var item in Model.DetallePedidos)
-                {
-                    <tr>
-                        <td>
-                            @if (item.Cantidad > 1 && Model.EstadoId == 1)
-                            {
-                                <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
-                                    <input type="hidden" name="pedidoid" value="@Model.Id" hidden />
-                                    <input class="btn btn-danger p-1" value="🗑" type="submit" title="Quitar producto" />
-                                </form>
-                            }
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Descripcion)
-                        </td>
-                        <td class="text-center">
-                            <div class="d-flex flex-row align-items-baseline gap-3">
-                                @if (Model.EstadoId == 1)
+            <div style="max-height:40vh; overflow: auto;">
+                <table class="table">
+                    <thead style="position: sticky; top: 0;">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Modelo
+                            </th>
+                            <th>
+                                Producto
+                            </th>
+                            <th class="text-center">
+                                Cantidad
+                            </th>
+                            <th>
+                                Precio
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.DetallePedidos)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.Cantidad > 1 && Model.EstadoId == 1)
                                 {
-                                    <div class="flex-shrink-1">
-                                        @if (item.Cantidad > 1)
+                                    <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
+                                        <input type="hidden" name="pedidoid" value="@Model.Id" hidden />
+                                        <input class="btn btn-danger p-1" value="🗑" type="submit" title="Quitar producto" />
+                                    </form>
+                                }
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                            </td>
+                            <td>
+                                <a class="text-decoration-none" title="@item.Producto.Descripcion" asp-action="Details" asp-controller="Productos" asp-route-volver="@item.PedidoId" asp-route-id="@item.Producto.Id">
+                                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex flex-row align-items-baseline gap-3">
+                                    @if (Model.EstadoId == 1)
+                                    {
+                                        <div class="flex-shrink-1">
+                                            @if (item.Cantidad > 1)
+                                            {
+                                                <form asp-action="Menos" asp-route-id="@Model?.Id" class="d-print-none">
+                                                    <input type="hidden" name="dpid" value="@item.Id" hidden />
+                                                    <input class="btn btn-primary p-1" value="➖" type="submit" title="Restar cantidad" />
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
+                                                    <input type="hidden" name="pedidoid" value="@Model.Id" hidden />
+                                                    <input class="btn btn-danger p-1" value="🗑" type="submit" title="Quitar producto" />
+                                                </form>
+                                            }
+                                        </div>
+                                    }
+                                    <div class="d-flex flex-grow-1">
+                                        @* CHECK CANTIDAD *@
+                                        <span class="flex-grow-1">@Html.DisplayFor(modelItem => item.Cantidad)</span>
+                                        @if (item.Cantidad > item.Producto.Stock && Model.EstadoId == 1)
                                         {
-                                            <form asp-action="Menos" asp-route-id="@Model?.Id" class="d-print-none">
-                                                <input type="hidden" name="dpid" value="@item.Id" hidden />
-                                                <input class="btn btn-primary p-1" value="➖" type="submit" title="Restar cantidad" />
-                                            </form>
-                                        }
-                                        else
-                                        {
-                                            <form asp-action="Delete" asp-controller="DetallePedidos" asp-route-id="@item.Id" class="d-print-none">
-                                                <input type="hidden" name="pedidoid" value="@Model.Id" hidden />
-                                                <input class="btn btn-danger p-1" value="🗑" type="submit" title="Quitar producto" />
-                                            </form>
+                                            <span class="text-danger">*</span>
                                         }
                                     </div>
-                                }
-                                <div class="d-flex flex-grow-1">
-                                    @* CHECK CANTIDAD *@
-                                    <span class="flex-grow-1">@Html.DisplayFor(modelItem => item.Cantidad)</span>
-                                    @if (item.Cantidad > item.Producto.Stock && Model.EstadoId == 1)
+                                    @if (Model.EstadoId == 1)
                                     {
-                                        <span class="text-danger">*</span>
+                                        <div class="flex-shrink-1">
+                                            @if (item.Cantidad >= item.Producto.Stock)
+                                            {
+                                                <input class="btn btn-danger invisible p-1" value="➕" type="submit" />
+                                            }
+                                            else
+                                            {
+                                                <form asp-action="Mas" asp-route-id="@Model?.Id" class="d-print-none">
+                                                    <input type="hidden" name="dpid" value="@item.Id" />
+                                                    <input class="btn btn-primary p-1" value="➕" type="submit" title="Sumar cantidad" />
+                                                </form>
+                                            }
+                                        </div>
                                     }
                                 </div>
-                                @if (Model.EstadoId == 1)
-                                {
-                                    <div class="flex-shrink-1">
-                                        @if (item.Cantidad >= item.Producto.Stock)
-                                        {
-                                            <input class="btn btn-danger invisible p-1" value="➕" type="submit" />
-                                        }
-                                        else
-                                        {
-                                            <form asp-action="Mas" asp-route-id="@Model?.Id" class="d-print-none">
-                                                <input type="hidden" name="dpid" value="@item.Id" />
-                                                <input class="btn btn-primary p-1" value="➕" type="submit" title="Sumar cantidad" />
-                                            </form>
-                                        }
-                                    </div>
-                                }
-                            </div>
-                        </td>
-                        <td class="text-end">
-                            <span class="text-nowrap">@Html.DisplayFor(modelItem => item.PrecioUnidad)</span>
-                        </td>
-                    </tr>
-                    total += Math.Round(item.PrecioUnidad * item.Cantidad, 2);
-                }
-            </table>
-            <div class="text-end">
+                            </td>
+                            <td class="text-end">
+                                <span class="text-nowrap">@Html.DisplayFor(modelItem => item.PrecioUnidad)</span>
+                            </td>
+                        </tr>
+                        total += Math.Round(item.PrecioUnidad * item.Cantidad, 2);
+                    }
+                </table>
+            </div>
+            <div class="text-end mt-2">
                 @if (Model.Discount != null)
                 {
-                    <h5>Subtotal: @total €</h5>
+                    <h5 style="font-size: medium;">Subtotal: @total €</h5>
                     descuento = Math.Round((decimal)(total * Model.Discount / 100), 2);
-                    <h5>Descuento: <span class="text-danger">- @descuento €</span></h5>
+                    <h5 style="font-size: medium;">Descuento: <span class="text-danger">- @descuento €</span></h5>
                     total -= descuento;
                     <h5>Total: @total €</h5>
                 }
@@ -456,7 +454,7 @@ else
     }
 </div>
 
-<div class="pb-4">
+<div class="pb-4 mt-2">
     @if (!ViewBag.carrito)
     {
         <a asp-action="Index">Volver a la lista</a>

@@ -50,7 +50,7 @@
                 <dt class="col-sm-4">
                     @Html.DisplayNameFor(model => model.Comentarios)
                 </dt>
-                <dd class="col-sm-8">
+                <dd class="col-sm-8" style="max-height: 200px; overflow:auto; max-width:400px; word-wrap:anywhere;">
                     @Html.DisplayFor(model => model.Comentarios)
                 </dd>
             }
@@ -122,62 +122,65 @@
         <div class="col-12 col-lg-6">
             <h4>Productos del pedido</h4>
             <hr />
-            <table class="table border-bottom">
-                <tr>
-                    <th>
-                        Modelo
-                    </th>
-                    <th>
-                        Producto
-                    </th>
-                    <th>
-                        Descripción
-                    </th>
-                    <th>
-                        Cantidad
-                    </th>
-                    <th>
-                        Precio
-                    </th>
-                </tr>
-                @foreach (var item in Model.DetallePedidos)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Descripcion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Cantidad)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PrecioUnidad)
-                        </td>
-                    </tr>
-                }
-            </table>
+            <div style="max-height:50vh; overflow: auto;">
+                <table class="table">
+                    <thead style="position: sticky; top: 0;">
+                        <tr>
+                            <th>
+                                Modelo
+                            </th>
+                            <th>
+                                Producto
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            <th>
+                                Cantidad
+                            </th>
+                            <th>
+                                Precio
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.DetallePedidos)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cantidad)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PrecioUnidad)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
     }
 </div>
 
 <div>
-    <form asp-action="Delete">
-        <div class="alert alert-danger" style="width: fit-content;" role="alert">
-            @if (Model.EstadoId >= 4 || Model.EstadoId == 1)
-            {
-                <span>Al borrar este pedido se perderán todos sus datos.</span>
-            }
-            else
-            {
-                <span>No se puede borrar un pedido que no esté entregado, anulado o devuelto.</span>
-            }
-        </div>
-        <input type="hidden" asp-for="Id" />
+    <div class="alert alert-danger" style="width: fit-content;" role="alert">
+        @if (Model.EstadoId >= 4 || Model.EstadoId == 1)
+        {
+            <span>Al borrar este pedido se perderán todos sus datos.</span>
+        }
+        else
+        {
+            <span>No se puede borrar un pedido que no esté entregado, anulado o devuelto.</span>
+        }
+    </div>
+    <div class="my-3">
         @if (ViewBag.volver != null)
         {
             <input type="hidden" name="volver" value="@ViewBag.volver" />
@@ -191,11 +194,14 @@
         |
         @if (Model.EstadoId >= 4 || Model.EstadoId == 1)
         {
-            <input type="submit" value="Borrar" class="btn btn-danger" />
+            <form asp-action="Delete" class="d-inline">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Borrar" class="btn btn-danger" />
+            </form>
         }
         else
         {
             <input type="submit" value="Borrar" class="btn btn-danger" disabled />
         }
-    </form>
+    </div>
 </div>
