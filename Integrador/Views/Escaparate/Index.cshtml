@@ -17,7 +17,7 @@
         <form asp-action="Index">
             <div class="form-group d-flex flex-column gap-2">
                 <div class="d-flex gap-1">
-                    <input name="busq" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
+                    <input name="busq" type="search" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
                     <input type="submit" value="🔎" title="Buscar" class="btn btn-outline-primary border-0 py-1 px-2 d-print-none" style="width:fit-content;" />
                 </div>
                 @if (!String.IsNullOrEmpty(ViewBag.busq))

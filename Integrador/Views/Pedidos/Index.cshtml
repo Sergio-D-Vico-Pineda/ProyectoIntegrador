@@ -19,7 +19,7 @@
         </div>
         <form class="col-12 col-sm-6" style="width:fit-content;">
             <div class="form-group d-flex align-items-center gap-4 mb-1">
-                <input name="busq" list="clientes" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
+                <input name="busq" type="search" list="clientes" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
                 <input type="submit" value="Buscar" class="btn btn-primary" />
                 <a class="btn btn-secondary text-nowrap" asp-action="Index" asp-route-busq="">Borrar filtros</a>
             </div>
