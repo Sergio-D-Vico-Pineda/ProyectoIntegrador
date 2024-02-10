@@ -308,7 +308,7 @@ else
                             <span class="text-nowrap">@Html.DisplayFor(modelItem => item.PrecioUnidad)</span>
                         </td>
                     </tr>
-                    total += item.PrecioUnidad * item.Cantidad;
+                    total += Math.Round(item.PrecioUnidad * item.Cantidad, 2);
                 }
             </table>
             <div class="text-end">
