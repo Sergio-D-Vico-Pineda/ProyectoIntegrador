@@ -119,10 +119,14 @@
     }
     else if (User.IsInRole("Cliente"))
     {
-        <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a> <span>|</span>
-        <a asp-action="AgregarCarrito" asp-controller="Escaparate" asp-route-id="@Model.Id" class="btn btn-primary text-nowrap">
-            Añadir al carrito
-        </a>
+        <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a>
+        if (Model.Stock > 0)
+        {
+            <span>|</span>
+            <a asp-action="AgregarCarrito" asp-controller="Escaparate" asp-route-id="@Model.Id" class="btn btn-primary text-nowrap">
+                Añadir al carrito
+            </a>
+        }
     }
     else if (User.IsInRole("Proveedor"))
     {
