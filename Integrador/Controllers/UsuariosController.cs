@@ -83,7 +83,7 @@ namespace Integrador.Controllers
 
             if (user == null)
             {
-                return NotFound($"Unable to find user with ID '{userId}'.");
+                return NotFound($"No se pudo encontrar al usuario con id: '{userId}'.");
             }
 
             // Comprobar el rol del usuario que se va a borrar

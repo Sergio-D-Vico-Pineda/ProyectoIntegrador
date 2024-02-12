@@ -226,7 +226,7 @@ namespace Integrador.Controllers
 
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"No se pudo encontrar al usuario con id: '{_userManager.GetUserId(User)}'.");
             }
 
             return View();
@@ -246,7 +246,7 @@ namespace Integrador.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"No se pudo encontrar al usuario con id: '{_userManager.GetUserId(User)}'.");
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, input.OldPassword, input.NewPassword);
@@ -300,7 +300,7 @@ namespace Integrador.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"No se pudo encontrar al usuario con id: '{_userManager.GetUserId(User)}'.");
             }
 
             if (await _userManager.HasPasswordAsync(user) && !await _userManager.CheckPasswordAsync(user, input.Password))
@@ -322,7 +322,7 @@ namespace Integrador.Controllers
                 }
                 else
                 {
-                    return NotFound($"Unable to load user with ID '{user.Email}'.");
+                    return NotFound($"No se pudo encontrar al usuario con id: '{user.Email}'.");
                 }
             }
             else if (User.IsInRole("Cliente"))
@@ -336,22 +336,26 @@ namespace Integrador.Controllers
                 }
                 else
                 {
-                    return NotFound($"Unable to load user with ID '{user.Email}'.");
+                    return NotFound($"No se pudo encontrar al usuario con id: '{user.Email}'.");
                 }
             }
 
             var result = await _userManager.DeleteAsync(user);
-            var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"Error: '{error.Code}', '{error.Description}'");
+                }
                 throw new InvalidOperationException($"Error inesperado borrando usuario.");
             }
 
             await _signInManager.SignOutAsync();
 
-            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+            _logger.LogInformation($"El usuario '{user.Email}' ha borrado su cuenta.", user.Email);
+            Console.WriteLine($"El usuario '{user.Email}' ha borrado su cuenta.");
 
-            return Redirect("~/");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

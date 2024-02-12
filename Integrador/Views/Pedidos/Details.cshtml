@@ -45,14 +45,16 @@ else
                     @Html.DisplayNameFor(model => model.Cliente)
                 </dt>
                 <dd class="col-sm-8">
-                    @if (Model.Cliente.Email.EndsWith("-DEL."))
-                    {
-                        <del>@Model.Cliente.Email</del>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(model => model.Cliente.Email)
-                    }
+                    <a asp-action="Details" asp-controller="Clientes" asp-route-id="@Model.ClienteId">
+                        @if (Model.Cliente.Email.EndsWith("-DEL."))
+                        {
+                            <del>@Model.Cliente.Email</del>
+                        }
+                        else
+                        {
+                            @Model.Cliente.Email
+                        }
+                    </a>
                 </dd>
             }
             <dt class="col-sm-4">
