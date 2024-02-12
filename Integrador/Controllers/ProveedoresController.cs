@@ -168,16 +168,55 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, bool? admin)
         {
-            var proveedor = await _context.Proveedores.FindAsync(id);
+            Proveedor? proveedor = await _context.Proveedores
+                .Include(p => p.Suministros)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
 
-            if (proveedor != null)
+            IdentityUser? user = await _userManager.FindByEmailAsync(proveedor.Email);
+
+            if (proveedor == null) return NotFound();
+
+            if (proveedor.Email.Contains("-DEL."))
+            // El usuario del proveedor ya ha sido eliminado
             {
-                _context.Proveedores.Remove(proveedor);
+                if (proveedor.Suministros.Count == 0)
+                {
+                    _context.Proveedores.Remove(proveedor);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (admin == true)
+                {
+                    return RedirectToAction(nameof(Index), "Usuarios");
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+            }
+            else
+            // Tiene suministros
+            {
+                // Elimino el usuario
+                var result = await _userManager.DeleteAsync(user);
+
+                // Tacho el proveedor
+                proveedor.Email += "-DEL.";
+                _context.Update(proveedor);
+                await _context.SaveChangesAsync();
+
+                // Manejar el error en caso de que no se pueda eliminar al usuario
+                if (!result.Succeeded) return BadRequest(result.Errors);
+
             }
 
+
+            _context.Proveedores.Remove(proveedor);
             await _context.SaveChangesAsync();
 
-            if (admin == true && User.IsInRole("Administrador"))
+            if (admin == true)
             {
                 var user = await _userManager.FindByEmailAsync(proveedor.Email);
                 var result = await _userManager.DeleteAsync(user);
