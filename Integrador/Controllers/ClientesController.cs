@@ -174,7 +174,7 @@ namespace Integrador.Controllers
 
             await _context.SaveChangesAsync();
 
-            if (admin == true && User.IsInRole("Administrador"))
+            if (admin == true)
             {
                 var user = await _userManager.FindByEmailAsync(cliente.Email);
                 var result = await _userManager.DeleteAsync(user);
