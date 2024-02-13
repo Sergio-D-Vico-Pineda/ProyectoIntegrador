@@ -165,29 +165,49 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, bool? admin)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            Cliente? cliente = await _context.Clientes
+                .Include(c => c.Pedidos)
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
 
-            if (cliente != null)
+            if (cliente == null) return NotFound();
+
+            IdentityUser? user = await _userManager.FindByEmailAsync(cliente.Email);
+
+            if (cliente.Pedidos.Count == 0)
+            // El cliente no tiene pedidos
             {
+                // Borro cliente
                 _context.Clientes.Remove(cliente);
+
+                // Si el usuario no ha sido eliminado
+                if (user != null)
+                {
+                    // Borro usuario del cliente
+                    IdentityResult? result = await _userManager.DeleteAsync(user);
+
+                    // Manejar el error en caso de que no se pueda eliminar al usuario
+                    if (!result.Succeeded) return BadRequest(result.Errors);
+                }
+            }
+            else if (!cliente.Email.EndsWith("-DEL."))
+            // Tiene pedidos y El usuario no ha sido eliminado
+            {
+                // Tacho el cliente
+                cliente.Email += "-DEL.";
+                _context.Update(cliente);
+
+                // Borro usuario del cliente
+                IdentityResult? result = await _userManager.DeleteAsync(user);
+
+                // Manejar el error en caso de que no se pueda eliminar al usuario
+                if (!result.Succeeded) return BadRequest(result.Errors);
             }
 
             await _context.SaveChangesAsync();
 
-            if (admin == true)
-            {
-                var user = await _userManager.FindByEmailAsync(cliente.Email);
-                var result = await _userManager.DeleteAsync(user);
-
-                if (!result.Succeeded)
-                {
-                    // Manejar el error en caso de que no se pueda eliminar al usuario
-                    return BadRequest(result.Errors);
-                }
-
-                return RedirectToAction(nameof(Index), "Usuarios");
-            }
-
+            // Si tiene pedidos y ya ha sido borrado no se borra
+            if (admin == true) return RedirectToAction(nameof(Index), "Usuarios");
             return RedirectToAction(nameof(Index));
         }
 
