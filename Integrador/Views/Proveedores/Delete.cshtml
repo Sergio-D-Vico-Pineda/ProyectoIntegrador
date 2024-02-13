@@ -65,71 +65,57 @@
             <div style="max-height:50vh; overflow: auto;">
                 <table class="table">
                     <thead style="position: sticky; top: 0;">
-                <tr>
-                    <th>
-                        Fecha
-                    </th>
-                    <th>
-                        Modelo
-                    </th>
-                    <th>
-                        Producto
-                    </th>
-                    <th>
-                        Unidades
-                    </th>
-                    <th></th>
-                </tr>
-                </thead>
-                @foreach (var item in Model.Suministros)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FechaSuministro)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Unidades)
-                        </td>
-                        <td>
-                            <div class="d-print-none">
-                                <a asp-action="Delete" asp-controller="Suministros"
-                                   asp-route-id="@item.Id">Eliminar</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </table>
+                        <tr>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Modelo
+                            </th>
+                            <th>
+                                Producto
+                            </th>
+                            <th>
+                                Unidades
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Suministros)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaSuministro)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Unidades)
+                            </td>
+                            <td>
+                                <div class="d-print-none">
+                                    <a asp-action="Delete" asp-controller="Suministros"
+                                       asp-route-id="@item.Id">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
     }
 </div>
 <div>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        @if (Model.Suministros.Count == 0)
-        {
-            if (ViewBag.admin)
-            {
-                <input type="hidden" name="admin" value="true" />
-                <a asp-action="Index" asp-controller="Usuarios">Volver</a>
-            }
-            else
-            {
-                <a asp-action="Index">Volver a la lista</a>
-            }
-            <span>|</span>
-            <input type="submit" value="Borrar" class="btn btn-danger" />
-        }
-        else
+    @if (Model.Suministros.Count != 0)
+    {
+        if (Model.Email.EndsWith("-DEL."))
         {
             <div class="alert alert-danger" style="width: fit-content;" role="alert">
-                No se puede borrar el proveedor porque tiene suministros.
+                No se puede borrar al proveedor completamente porque tiene suministros.
             </div>
             if (ViewBag.admin)
             {
@@ -142,5 +128,52 @@
             <span>|</span>
             <input type="submit" value="Borrar" class="btn btn-danger" disabled />
         }
-    </form>
+        else
+        {
+            <div class="alert alert-warning" style="width: fit-content;" role="alert">
+                Se borrará la cuenta del proveedor, y se marcará al proveedor como eliminado, pero no se borrarán sus suministros.
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                @if (ViewBag.admin)
+                {
+                    <input type="hidden" name="admin" value="true" />
+                    <a asp-action="Index" asp-controller="Usuarios">Volver</a>
+                }
+                else
+                {
+                    <a asp-action="Index">Volver a la lista</a>
+                }
+                <span>|</span>
+                <input type="submit" value="Borrar" class="btn btn-danger" />
+            </form>
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning" style="width: fit-content;" role="alert">
+            @if (Model.Email.EndsWith("-DEL."))
+            {
+                <span>Se borrará completamente el proveedor.</span>
+            }
+            else
+            {
+                <span>Se borrará el proveedor y su cuenta.</span>
+            }
+        </div>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            @if (ViewBag.admin)
+            {
+                <input type="hidden" name="admin" value="true" />
+                <a asp-action="Index" asp-controller="Usuarios">Volver</a>
+            }
+            else
+            {
+                <a asp-action="Index">Volver a la lista</a>
+            }
+            <span>|</span>
+            <input type="submit" value="Borrar" class="btn btn-danger" />
+        </form>
+    }
 </div>
