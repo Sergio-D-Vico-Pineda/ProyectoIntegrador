@@ -173,63 +173,45 @@ namespace Integrador.Controllers
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync();
 
+            if (proveedor == null) return NotFound();
+
             IdentityUser? user = await _userManager.FindByEmailAsync(proveedor.Email);
 
-            if (proveedor.Email.EndsWith("-DEL."))
-            // El usuario del proveedor ya ha sido eliminado
+            if (proveedor.Suministros.Count == 0)
+            // El proveedor no tiene suministros
             {
-                if (proveedor.Suministros.Count == 0)
-                {
-                    _context.Proveedores.Remove(proveedor);
-                    await _context.SaveChangesAsync();
-                }
+                // Borro proveedor
+                _context.Proveedores.Remove(proveedor);
 
-                if (admin == true)
+                // Si el usuario no ha sido eliminado
+                if (user != null)
                 {
-                    return RedirectToAction(nameof(Index), "Usuarios");
-                }
-                else
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                    // Borro usuario del proveedor
+                    var result = await _userManager.DeleteAsync(user);
 
+                    // Manejar el error en caso de que no se pueda eliminar al usuario
+                    if (!result.Succeeded) return BadRequest(result.Errors);
+                }
             }
-            else
-            // Tiene suministros
+            else if (!proveedor.Email.EndsWith("-DEL."))
+            // Tiene suministros y El usuario no ha sido eliminado
             {
-                // Elimino el usuario
-                var result = await _userManager.DeleteAsync(user);
-
                 // Tacho el proveedor
                 proveedor.Email += "-DEL.";
                 _context.Update(proveedor);
-                await _context.SaveChangesAsync();
+
+                // Borro usuario del proveedor
+                var result = await _userManager.DeleteAsync(user);
 
                 // Manejar el error en caso de que no se pueda eliminar al usuario
                 if (!result.Succeeded) return BadRequest(result.Errors);
-
             }
 
-
-            _context.Proveedores.Remove(proveedor);
             await _context.SaveChangesAsync();
 
-            if (admin == true)
-            {
-                var user = await _userManager.FindByEmailAsync(proveedor.Email);
-                var result = await _userManager.DeleteAsync(user);
-
-                if (!result.Succeeded)
-                {
-                    // Manejar el error en caso de que no se pueda eliminar al usuario
-                    return BadRequest(result.Errors);
-                }
-
-                return RedirectToAction(nameof(Index), "Usuarios");
-            }
-
+            // Si tiene suministros y ya ha sido borrado no se borra
+            if (admin == true) return RedirectToAction(nameof(Index), "Usuarios");
             return RedirectToAction(nameof(Index));
-
         }
 
         private bool ProveedorExists(int id)
