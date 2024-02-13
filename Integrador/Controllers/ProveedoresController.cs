@@ -187,7 +187,7 @@ namespace Integrador.Controllers
                 if (user != null)
                 {
                     // Borro usuario del proveedor
-                    var result = await _userManager.DeleteAsync(user);
+                    IdentityResult? result = await _userManager.DeleteAsync(user);
 
                     // Manejar el error en caso de que no se pueda eliminar al usuario
                     if (!result.Succeeded) return BadRequest(result.Errors);
@@ -201,7 +201,7 @@ namespace Integrador.Controllers
                 _context.Update(proveedor);
 
                 // Borro usuario del proveedor
-                var result = await _userManager.DeleteAsync(user);
+                IdentityResult? result = await _userManager.DeleteAsync(user);
 
                 // Manejar el error en caso de que no se pueda eliminar al usuario
                 if (!result.Succeeded) return BadRequest(result.Errors);
