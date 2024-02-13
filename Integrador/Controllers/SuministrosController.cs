@@ -84,7 +84,7 @@ namespace Integrador.Controllers
             if (User.IsInRole("Administrador"))
             {
                 var listaProveedores = await _context.Proveedores
-                    .Where(p => !p.Email.Contains("-DEL."))
+                    .Where(p => !p.Email.EndsWith("-DEL."))
                     .ToListAsync();
 
                 ViewData["ProveedorId"] = new SelectList(listaProveedores, "Id", "Email");

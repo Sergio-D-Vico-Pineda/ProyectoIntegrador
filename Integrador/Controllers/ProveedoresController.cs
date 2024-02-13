@@ -175,9 +175,7 @@ namespace Integrador.Controllers
 
             IdentityUser? user = await _userManager.FindByEmailAsync(proveedor.Email);
 
-            if (proveedor == null) return NotFound();
-
-            if (proveedor.Email.Contains("-DEL."))
+            if (proveedor.Email.EndsWith("-DEL."))
             // El usuario del proveedor ya ha sido eliminado
             {
                 if (proveedor.Suministros.Count == 0)

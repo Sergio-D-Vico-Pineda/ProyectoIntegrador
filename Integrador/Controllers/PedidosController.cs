@@ -96,7 +96,7 @@ namespace Integrador.Controllers
         public async Task<IActionResult> Create()
         {
             var listaClientes = await _context.Clientes
-                .Where(p => !p.Email.Contains("-DEL."))
+                .Where(p => !p.Email.EndsWith("-DEL."))
                 .ToListAsync();
 
             ViewData["ClienteId"] = new SelectList(listaClientes, "Id", "Email");
