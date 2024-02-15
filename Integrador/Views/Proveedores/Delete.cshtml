@@ -115,7 +115,7 @@
         if (Model.Email.EndsWith("-DEL."))
         {
             <div class="alert alert-danger" style="width: fit-content;" role="alert">
-                No se puede borrar al proveedor completamente porque tiene suministros.
+                No se puede borrar al proveedor completamente porque todavía tiene suministros.
             </div>
             if (ViewBag.admin)
             {
@@ -131,7 +131,7 @@
         else
         {
             <div class="alert alert-warning" style="width: fit-content;" role="alert">
-                Se borrará la cuenta del proveedor, y se marcará al proveedor como eliminado, pero no se borrarán sus suministros.
+                Se borrará la cuenta del proveedor, y se marcará como eliminado, pero no se borrarán sus suministros.
             </div>
             <form asp-action="Delete">
                 <input type="hidden" asp-for="Id" />
