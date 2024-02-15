@@ -18,10 +18,10 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET: Pedidos
-        public async Task<IActionResult> Index(string? busq)
+        public async Task<IActionResult> Index(string? busq, int? pageNumber)
         {
             ViewBag.busq = busq;
-
+            int pageSize = 9;
             var pedidos = _context.Pedidos.AsQueryable();
 
             if (User.IsInRole("Cliente"))
@@ -52,7 +52,7 @@ namespace Integrador.Controllers
                     .Include(p => p.DetallePedidos)
                     .OrderByDescending(p => p.Id);
 
-            return View(await pedidos.ToListAsync());
+            return View(await PaginatedList<Pedido>.CreateAsync(pedidos.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Pedidos/Details/5
@@ -515,8 +515,6 @@ namespace Integrador.Controllers
                 .Where(dp => dp.PedidoId == id)
                 .FirstOrDefaultAsync(dp => dp.Id == dpid);
 
-            Pedido? pedido = await _context.Pedidos.FirstOrDefaultAsync(p => p.Id == id);
-
             if (dp.Cantidad < dp.Producto.Stock)
             {
                 dp.Cantidad++;
@@ -524,10 +522,7 @@ namespace Integrador.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            if (User.IsInRole("Administrador"))
-                return RedirectToAction(nameof(Details), "Pedidos", new { id });
-            else
-                return RedirectToAction(nameof(Carrito));
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
         }
 
         // POST /Pedidos/Menos
@@ -538,19 +533,16 @@ namespace Integrador.Controllers
             DetallePedido? dp = await _context.DetallePedidos
                 .Where(dp => dp.PedidoId == id)
                 .FirstOrDefaultAsync(dp => dp.Id == dpid);
-            Pedido? pedido = await _context.Pedidos.FirstOrDefaultAsync(p => p.Id == id);
 
             if (dp.Cantidad > 1)
             {
                 dp.Cantidad--;
                 _context.Update(dp);
-                await _context.SaveChangesAsync();
             }
 
-            if (User.IsInRole("Administrador"))
-                return RedirectToAction(nameof(Details), "Pedidos", new { id });
-            else
-                return RedirectToAction(nameof(Carrito));
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), "Pedidos", new { id });
         }
 
         private bool PedidoExists(int id)
