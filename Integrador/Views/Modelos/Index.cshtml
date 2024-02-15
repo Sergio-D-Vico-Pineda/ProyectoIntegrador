@@ -34,9 +34,7 @@
             {
                 <tr>
                     <td>
-                        <a asp-action="Details" asp-controller="Marcas" asp-route-id="@item.MarcaId">
-                            @Html.DisplayFor(modelItem => item.Marca.Nombre)
-                        </a>
+                        @Html.DisplayFor(modelItem => item.Marca.Nombre)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Nombre)
