@@ -20,12 +20,10 @@ using Integrador.Data;
 
 namespace Integrador.Areas.Identity.Pages.Account
 {
-    public class LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IntegradorContexto context) : PageModel
+    public class LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger) : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager = signInManager;
         private readonly ILogger<LoginModel> _logger = logger;
-        private readonly IntegradorContexto _context = context;
-
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -78,30 +76,6 @@ namespace Integrador.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
 
-                    if (User.IsInRole("Cliente"))
-                    {
-                        Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == User.Identity.Name);
-
-                        if (cliente == null)
-                        {
-                            return RedirectToAction("Create", "MisDatos", new { role = "Cliente" });
-                        }
-
-                        var listaPedidos = await _context.Pedidos
-                                .Where(p => p.EstadoId == 1)
-                                .Where(p => p.ClienteId == cliente.Id)
-                                .ToListAsync();
-
-                        if (listaPedidos.Count > 0)
-                        {
-                            var ultimo = listaPedidos
-                                .OrderByDescending(p => p.Id)
-                                .First(); // Obtener el último pedido pendiente
-
-                            if (ultimo != null)
-                                HttpContext.Session.SetString("NumPedido", ultimo.Id.ToString());
-                        }
-                    }
                     return LocalRedirect(returnUrl);
                 }
 
