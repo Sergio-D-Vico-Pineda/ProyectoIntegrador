@@ -54,40 +54,44 @@
         <div class="col-12 col-md-6">
             <h5>@Html.DisplayNameFor(model => model.Productos)</h5>
             <hr />
-            <table class="table border-bottom">
-                <tr>
-                    <th>
-                        Nombre
-                    </th>
-                    <th class="d-print-none">
-                    </th>
-                </tr>
-                @foreach (var item in Model.Productos)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => item.Nombre)
-                        </td>
-                        <td class="d-print-none">
-                            @if (User.IsInRole("Administrador"))
-                            {
-                                <a asp-action="Edit" asp-controller="Productos"
-                                   asp-route-id="@item.Id">Editar</a> <span>|</span>
-                                <a asp-action="Details" asp-controller="Productos"
-                                   asp-route-id="@item.Id">Detalles</a> <span>|</span>
-                                <a asp-action="Delete" asp-controller="Productos"
-                                   asp-route-id="@item.Id">Eliminar</a>
-                            }
-                            else
-                            {
-                                <a asp-action="Details" asp-controller="Productos"
-                                   asp-route-id="@item.Id">Detalles</a>
-                            }
+            <div style="max-height:50vh; overflow: auto;">
+                <table class="table">
+                    <thead style="position: sticky; top: 0;">
+                        <tr>
+                            <th>
+                                Nombre
+                            </th>
+                            <th class="d-print-none">
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Productos)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => item.Nombre)
+                            </td>
+                            <td class="d-print-none">
+                                @if (User.IsInRole("Administrador"))
+                                {
+                                    <a asp-action="Edit" asp-controller="Productos"
+                                       asp-route-id="@item.Id">Editar</a> <span>|</span>
+                                    <a asp-action="Details" asp-controller="Productos"
+                                       asp-route-id="@item.Id">Detalles</a> <span>|</span>
+                                    <a asp-action="Delete" asp-controller="Productos"
+                                       asp-route-id="@item.Id">Eliminar</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Details" asp-controller="Productos"
+                                       asp-route-id="@item.Id">Detalles</a>
+                                }
 
-                        </td>
-                    </tr>
-                }
-            </table>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
             <a asp-action="Index" asp-controller="Productos">Ver todos los productos</a>
         </div>
     }
