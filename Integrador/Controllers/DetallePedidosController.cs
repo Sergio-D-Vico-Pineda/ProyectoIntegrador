@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-    
+
     public class DetallePedidosController(IntegradorContexto context) : Controller
     {
         private readonly IntegradorContexto _context = context;
@@ -172,10 +172,23 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, int? pedidoid)
         {
-            var detallePedido = await _context.DetallePedidos.FindAsync(id);
+            DetallePedido? detallePedido = await _context.DetallePedidos.FindAsync(id);
+
             if (detallePedido != null)
             {
                 _context.DetallePedidos.Remove(detallePedido);
+
+                Pedido? pedido = await _context.Pedidos
+                    .Include(p => p.DetallePedidos)
+                    .FirstOrDefaultAsync(p => p.Id == pedidoid);
+
+                if (pedido != null)
+                {
+                    if (!pedido.DetallePedidos.Any())
+                    {
+                        _context.Remove(pedido);
+                    }
+                }
             }
 
             await _context.SaveChangesAsync();
