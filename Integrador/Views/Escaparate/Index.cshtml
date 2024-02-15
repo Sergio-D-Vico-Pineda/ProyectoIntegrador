@@ -26,7 +26,7 @@
                 }
             </div>
         </form>
-        @foreach (Marca? marca in (List<Marca>)ViewData["ListaMarcas"])
+        @foreach (Marca? marca in (List<Marca>?)ViewData["ListaMarcas"])
         {
             @if (marca.Modelos.Any())
             {

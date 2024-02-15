@@ -29,7 +29,7 @@
         </form>
     </div>
     <datalist id="clientes">
-        @foreach (var item in (List<Cliente>)ViewData["Clientes"])
+        @foreach (var item in (List<Cliente>?)ViewData["Clientes"])
         {
             <option value="@item.Email" />
         }
