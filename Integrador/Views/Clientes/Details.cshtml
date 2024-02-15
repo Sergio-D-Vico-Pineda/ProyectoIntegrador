@@ -53,6 +53,15 @@
             <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.Direccion)
             </dd>
+            @if (Model.Pedidos.Count() > 0)
+            {
+                <dt class="col-sm-4">
+                    Número de pedidos
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Pedidos.Count()
+                </dd>
+            }
         </dl>
     </div>
 
