@@ -50,10 +50,11 @@
                 }
             </dd>
             <dt class="col-sm-4 col-md-3 col-lg-2">
+
                 @Html.DisplayNameFor(model => model.Descripcion)
             </dt>
             <dd class="col-sm-8 col-md-9 col-lg-10">
-                <div style="max-width: 350px;">
+                <div style="max-height: 100px; overflow:auto; max-width:600px; word-wrap:anywhere;" class="pe-2">
                     @Html.DisplayFor(model => model.Descripcion)
                 </div>
             </dd>
@@ -87,12 +88,15 @@
                         <span>No</span>
                     }
                 </dd>
-                <dt class="col-sm-4 col-md-3 col-lg-2">
-                    Veces pedido
-                </dt>
-                <dd class="col-sm-8 col-md-9 col-lg-10">
-                    @Model.DetallePedidos.Count
-                </dd>
+                @if (Model.DetallePedidos.Count() != 0)
+                {
+                    <dt class="col-sm-4 col-md-3 col-lg-2">
+                        Veces pedido
+                    </dt>
+                    <dd class="col-sm-8 col-md-9 col-lg-10">
+                        @Model.DetallePedidos.Count
+                    </dd>
+                }
             }
         </dl>
     </div>
