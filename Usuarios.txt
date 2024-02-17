@@ -1,0 +1,10 @@
+Admins
+	a@a.s 	admin1
+	admin@empresa.com	Admin-123
+
+Clientes
+	s@s.c	scarpy1
+	s@s.c1	scarpy1
+
+Proveedores
+	s@s.p1 scarpy1
