@@ -227,13 +227,11 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, int? volver)
         {
-            var producto = await _context.Productos.FindAsync(id);
+            Producto? producto = await _context.Productos.FindAsync(id);
 
-            if (producto != null)
-            {
-                _context.Productos.Remove(producto);
-            }
+            if (producto == null) return NotFound();
 
+            _context.Productos.Remove(producto);
             await _context.SaveChangesAsync();
 
             if (producto.Imagen != null)

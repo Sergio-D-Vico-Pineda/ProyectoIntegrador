@@ -6,7 +6,6 @@
 
 <h1>Productos</h1>
 
-
 <div class="row mb-2 justify-content-between">
     <div class="col-12 col-sm-6">
         @if (User.IsInRole("Administrador"))
@@ -20,7 +19,10 @@
         <div class="form-group d-flex align-items-center gap-4 mb-1">
             <input name="busq" type="search" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
             <input type="submit" value="Buscar" class="btn btn-primary" />
-            <a class="btn btn-secondary text-nowrap" asp-action="Index" asp-route-busq="">Borrar filtros</a>
+            @if (ViewBag.busq != null)
+            {
+                <a class="btn btn-secondary text-nowrap" asp-action="Index" asp-route-busq="">Borrar filtros</a>
+            }
         </div>
     </form>
 </div>
@@ -44,12 +46,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Nombre)
                 </th>
-                <th class="d-none d-lg-table-cell">
-                    @Html.DisplayNameFor(model => model.Descripcion)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Precio)
-                </th>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.Precio)
+                    </th>
+                }
                 <th>
                     @Html.DisplayNameFor(model => model.Stock)
                 </th>
@@ -85,14 +87,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Nombre)
                     </td>
-                    <td class="d-none d-lg-table-cell" style="max-width:350px;">
-                        <div style="max-height:100px;" class="overflow-hidden pe-2">
-                            @Html.DisplayFor(modelItem => item.Descripcion)
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        @Html.DisplayFor(modelItem => item.Precio)
-                    </td>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <td class="text-nowrap">
+                            @Html.DisplayFor(modelItem => item.Precio)
+                        </td>
+                    }
                     <td>
                         @Html.DisplayFor(modelItem => item.Stock)
                     </td>
@@ -109,7 +109,7 @@
                             }
                         </td>
                     }
-                    <td>
+                    <td style="width:fit-content;">
                         @if (User.IsInRole("Administrador"))
                         {
                             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> <span>|</span>
