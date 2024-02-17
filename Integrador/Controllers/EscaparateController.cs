@@ -74,7 +74,8 @@ namespace Integrador.Controllers
 
             productos = productos
                 .Include(p => p.Modelo)
-                .Where(p => p.Escaparate);
+                .Where(p => p.Escaparate)
+                .OrderByDescending(p => p.Id);
 
             return View(await productos.ToListAsync());
         }
