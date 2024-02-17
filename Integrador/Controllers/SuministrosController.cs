@@ -17,17 +17,25 @@ namespace Integrador.Controllers
         private readonly IntegradorContexto _context = context;
 
         // GET: Suministros
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? busq)
         {
-            var suministros = _context.Suministros;
+            var suministros = _context.Suministros
+                    .Include(d => d.Proveedor)
+                    .Include(d => d.Producto)
+                    .ThenInclude(p => p.Modelo)
+                    .OrderByDescending(s => s.Id);
+
+            ViewBag.busq = busq;
+
+            if (!String.IsNullOrEmpty(busq))
+            {
+                suministros = (IOrderedQueryable<Suministro>)suministros
+                    .Where(s => s.Producto.Nombre.Contains(busq) || s.Producto.Modelo.Nombre.Contains(busq));
+            }
 
             if (User.IsInRole("Administrador"))
             {
-                return View(await suministros
-                        .Include(d => d.Proveedor)
-                        .Include(d => d.Producto)
-                        .ThenInclude(d => d.Modelo)
-                        .ToListAsync());
+                return View(await suministros.ToListAsync());
             }
             else
             {
@@ -39,10 +47,6 @@ namespace Integrador.Controllers
 
                 return View(await suministros
                         .Where(s => s.ProveedorId == proveedor.Id)
-                        .OrderByDescending(s => s.FechaSuministro)
-                        .Include(s => s.Proveedor)
-                        .Include(s => s.Producto)
-                        .ThenInclude(p => p.Modelo)
                         .ToListAsync());
             }
         }
