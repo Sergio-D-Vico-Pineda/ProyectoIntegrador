@@ -106,6 +106,11 @@ namespace Integrador.Controllers
                     ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
                     ViewBag.nif2 = nif2;
                 }
+                else if (nif2.Length > 9)
+                {
+                    ModelState.AddModelError("Nif", "El NIF no puede tener más de 9 caracteres.");
+                    ViewBag.nif2 = nif2;
+                }
                 else proveedor.Nif = nif2;
             }
 
@@ -124,7 +129,6 @@ namespace Integrador.Controllers
                     }
                     else
                         throw;
-
                 }
 
                 return RedirectToAction("Index", "Escaparate");
@@ -181,6 +185,11 @@ namespace Integrador.Controllers
                 if (ClienteExistsNif(nif2))
                 {
                     ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+                    ViewBag.nif2 = nif2;
+                }
+                else if (nif2.Length > 9)
+                {
+                    ModelState.AddModelError("Nif", "El NIF no puede tener más de 9 caracteres.");
                     ViewBag.nif2 = nif2;
                 }
                 else cliente.Nif = nif2;

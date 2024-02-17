@@ -29,7 +29,7 @@
                     var nif = ViewBag.nif2 ?? Model.Nif;
                 }
                 <label for="nif2" class="control-label">NIF</label>
-                <input id="nif2" name="nif2" value="@nif" class="form-control" />
+                <input id="nif2" name="nif2" value="@nif" class="form-control" maxlength="9" />
                 <span asp-validation-for="Nif" class="text-danger"></span>
             </div>
             <div class="form-group">
