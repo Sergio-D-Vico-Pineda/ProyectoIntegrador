@@ -19,7 +19,10 @@ namespace Integrador.Controllers
         // GET: Estados
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Estados.ToListAsync());
+            var estados = _context.Estados
+                .Include(e => e.Pedidos);
+
+            return View(await estados.ToListAsync());
         }
 
         // GET: Estados/Create
