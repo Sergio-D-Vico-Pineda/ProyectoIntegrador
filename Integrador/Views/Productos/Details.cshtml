@@ -133,6 +133,10 @@
         {
             <a asp-action="Details" asp-controller="Pedidos" asp-route-id="@ViewBag.volver">Volver al pedido</a> <span>|</span>
         }
+        else if (ViewBag.volver != null)
+        {
+            <a asp-action="Details" asp-controller="Suministros" asp-route-id="@ViewBag.volver2">Volver al suministro</a> <span>|</span>
+        }
         else
         {
             <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a> <span>|</span>
@@ -160,8 +164,15 @@
     }
     else if (User.IsInRole("Proveedor"))
     {
-        <a asp-action="Index" asp-controller="Productos">Volver a la lista</a> <span>|</span>
-        <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a> <span>|</span>
+        if (ViewBag.volver2 != null)
+        {
+            <a asp-action="Details" asp-controller="Suministros" asp-route-id="@ViewBag.volver2">Volver al suministro</a> <span>|</span>
+        }
+        else
+        {
+            <a asp-action="Index" asp-controller="Productos">Volver a la lista</a> <span>|</span>
+            <a asp-action="Index" asp-controller="Escaparate">Volver al escaparate</a> <span>|</span>
+        }
         <a asp-action="Create" asp-controller="Suministros" asp-route-id="@Model.Id" class="btn btn-primary text-nowrap">
             Añadir stock
         </a>

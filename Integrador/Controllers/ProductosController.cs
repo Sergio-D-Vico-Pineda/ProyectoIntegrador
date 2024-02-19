@@ -39,7 +39,7 @@ namespace Integrador.Controllers
 
         // GET: Productos/Details/5
         [Authorize(Roles = "Proveedor, Cliente, Administrador")]
-        public async Task<IActionResult> Details(int? id, int? volver)
+        public async Task<IActionResult> Details(int? id, int? volver, int? volver2)
         {
             if (id == null)
             {
@@ -56,6 +56,7 @@ namespace Integrador.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewBag.volver2 = volver2;
             ViewBag.volver = volver;
             return View(producto);
         }

@@ -60,16 +60,9 @@
             @Html.DisplayNameFor(model => model.ProductoId)
         </dt>
         <dd class="col-sm-9">
-            @if (User.IsInRole("Administrador"))
-            {
-                <a asp-action="Details" asp-controller="Productos" asp-route-id="@Model.ProductoId">
-                    @Html.DisplayFor(model => model.Producto.Nombre)
-                </a>
-            }
-            else
-            {
+            <a asp-action="Details" asp-controller="Productos" asp-route-id="@Model.ProductoId" asp-route-volver2="@Model.Id">
                 @Html.DisplayFor(model => model.Producto.Nombre)
-            }
+            </a>
         </dd>
         <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Unidades)
