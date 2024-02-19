@@ -28,7 +28,8 @@ namespace Integrador.Models
         public required string Telefono { get; set; }
 
         [Display(Name = "Dirección")]
-        public string? Direccion { get; set; }
+        [Required(ErrorMessage = "La dirección es obligatoria.")]
+        public required string Direccion { get; set; }
 
         public ICollection<Pedido>? Pedidos { get; set; }
     }
