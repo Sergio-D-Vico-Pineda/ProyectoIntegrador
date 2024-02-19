@@ -11,19 +11,32 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Integrador.Controllers
 {
-
+    [Authorize(Roles = "Cliente, Administrador")]
     public class DetallePedidosController(IntegradorContexto context) : Controller
     {
         private readonly IntegradorContexto _context = context;
 
         // GET: DetallePedidos
         [Authorize(Roles = "Administrador")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? busq)
         {
+            ViewBag.busq = busq;
+
             var detallePedidos = _context.DetallePedidos
+                .AsQueryable();
+
+            if (!String.IsNullOrEmpty(busq))
+            {
+                detallePedidos = detallePedidos
+                    .Where(dp => dp.Producto.Nombre.Contains(busq) || dp.Producto.Modelo.Nombre.Contains(busq) || dp.Pedido.Cliente.Email.Contains(busq));
+            }
+
+            detallePedidos = detallePedidos
                             .Include(dp => dp.Pedido)
+                            .ThenInclude(p => p.Cliente)
                             .Include(dp => dp.Producto)
                             .ThenInclude(p => p.Modelo);
+
             return View(await detallePedidos.ToListAsync());
         }
 
@@ -184,7 +197,7 @@ namespace Integrador.Controllers
 
                 if (pedido != null)
                 {
-                    if (!pedido.DetallePedidos.Any())
+                    if (pedido.DetallePedidos.Count == 0)
                     {
                         _context.Remove(pedido);
                     }

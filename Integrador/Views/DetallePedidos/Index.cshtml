@@ -6,19 +6,37 @@
 
 <h1>Productos en pedidos</h1>
 
-<p>
-    <a asp-action="Create">Añadir producto a un pedido existente</a>
-</p>
+<div class="row mb-2 justify-content-between">
+    <div class="col-12 col-sm-6">
+        <p>
+            <a asp-action="Create">Añadir producto a un pedido existente</a>
+        </p>
+    </div>
+    <form class="col-12 col-sm-6" style="width:fit-content;" asp-action="Index">
+        <div class="form-group d-flex align-items-center gap-4 mb-1">
+            @if (ViewBag.busq != null)
+            {
+                <div class="text-nowrap" style="width:fit-content;">Número de productos: @Model.Count()</div>
+            }
+            <input name="busq" type="search" value="@ViewBag.busq" class="form-control" placeholder="Buscar..." />
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+            @if (ViewBag.busq != null)
+            {
+                <a class="btn btn-secondary text-nowrap" asp-action="Index" asp-route-busq="">Borrar filtros</a>
+            }
+        </div>
+    </form>
+</div>
 
-<div style="max-height:68vh; overflow: auto;">
+<div style="max-height:67vh; overflow: auto;">
     <table class="table">
         <thead style="position: sticky; top: 0;">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Pedido.ClienteId)
+                    @Html.DisplayNameFor(model => model.Pedido)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Pedido)
+                    @Html.DisplayNameFor(model => model.Pedido.ClienteId)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Producto.Modelo)
@@ -26,7 +44,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Producto)
                 </th>
-                <th>
+                <th class="d-none d-md-table-cell">
                     @Html.DisplayNameFor(model => model.Cantidad)
                 </th>
                 <th>
@@ -40,10 +58,17 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Pedido.ClienteId)
+                        @Html.DisplayFor(modelItem => item.PedidoId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PedidoId)
+                        @if (item.Pedido.Cliente.Email.EndsWith("-DEL."))
+                        {
+                            <del>@item.Pedido.Cliente.Email</del>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Pedido.Cliente.Email)
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
@@ -51,14 +76,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Producto.Nombre)
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                         @Html.DisplayFor(modelItem => item.Cantidad)
                     </td>
-                    <td>
+                    <td class="text-nowrap">
                         @Html.DisplayFor(modelItem => item.PrecioUnidad)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
                         <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                     </td>
