@@ -83,6 +83,10 @@
     </dl>
 </div>
 <div class="d-print-none">
-    <a asp-action="Index">Volver a la lista</a> |
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+    <a asp-action="Index">Volver a la lista</a>
+    @if (User.IsInRole("Administrador"))
+    {
+        <span>|</span>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
+    }
 </div>

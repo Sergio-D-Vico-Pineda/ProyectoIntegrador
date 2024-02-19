@@ -152,6 +152,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             var suministro = await _context.Suministros.FindAsync(id);
@@ -252,6 +253,7 @@ namespace Integrador.Controllers
         }
 
         // GET: Suministros/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
