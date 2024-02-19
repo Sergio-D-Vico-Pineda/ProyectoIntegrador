@@ -16,15 +16,16 @@ namespace Integrador.Models
         [EmailAddress(ErrorMessage = "El correo electrónico no es válido.")]
         public required string Email { get; set; }
 
-        [StringLength(10)]
+        [StringLength(9, ErrorMessage = "El NIF debe tener una longitud de 9.")]
         [Display(Name = "NIF")]
         [Required(ErrorMessage = "El NIF es obligatorio.")]
-        /*[RegularExpression(@"^\d{8}[A-Za-z]$", ErrorMessage = "El NIF no es válido.")]*/
+        [RegularExpression(@"^\d{8}[A-Za-z]$", ErrorMessage = "El NIF no es válido.")]
         public required string Nif { get; set; }
 
         [StringLength(12)]
         [Display(Name = "Teléfono")]
         [Required(ErrorMessage = "El teléfono es obligatorio.")]
+        [RegularExpression(@"^(\+34)?\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{3})$", ErrorMessage = "El número de teléfono no es válido.")]
         public required string Telefono { get; set; }
 
         [Display(Name = "Dirección")]
