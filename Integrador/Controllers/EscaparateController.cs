@@ -29,7 +29,7 @@ namespace Integrador.Controllers
             if (!String.IsNullOrEmpty(busq))
             {
                 productos = productos
-                    .Where(p => p.Nombre.Contains(busq) || p.Descripcion.Contains(busq) || p.Modelo.Nombre.Contains(busq));
+                    .Where(p => p.Nombre.Contains(busq) || p.Descripcion.Contains(busq) || p.Modelo.Nombre.Contains(busq) || p.Modelo.Marca.Nombre.Contains(busq));
             }
 
             if (id != null)
