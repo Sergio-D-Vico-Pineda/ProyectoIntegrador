@@ -142,7 +142,7 @@ namespace Integrador.Controllers
         {
             cliente.Email = User.Identity.Name;
 
-            if (ClienteExistsNif(cliente.Nif))
+            if (ClienteExistsNIF(cliente.Nif))
             {
                 ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
             }
@@ -193,7 +193,7 @@ namespace Integrador.Controllers
             return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private bool ClienteExistsNif(string nif)
+        private bool ClienteExistsNIF(string nif)
         {
             return _context.Clientes.Any(e => e.Nif == nif);
         }
