@@ -59,7 +59,7 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
         {
-            if (ClienteExistsNif(cliente.Nif))
+            if (ClienteExistsNIF(cliente.Nif))
             {
                 ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
             }
@@ -87,10 +87,14 @@ namespace Integrador.Controllers
             }
 
             var cliente = await _context.Clientes.FindAsync(id);
+
             if (cliente == null)
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.nif2 = cliente.Nif;
+
             return View(cliente);
         }
 
@@ -101,23 +105,17 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string nif2, [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
         {
-            if (id != cliente.Id)
-            {
-                return NotFound();
-            }
-
-            if (cliente.Nif != nif2)
-            {
-                if (ClienteExistsNif(nif2))
-                {
-                    ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
-                    ViewBag.nif2 = nif2;
-                }
-                else cliente.Nif = nif2;
-            }
+            if (id != cliente.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
+                if (cliente.Nif != nif2 && ClienteExistsNIF(cliente.Nif))
+                {
+                    ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
+                    ViewBag.nif2 = nif2;
+                    return View(cliente);
+                }
+
                 try
                 {
                     _context.Update(cliente);
@@ -216,7 +214,7 @@ namespace Integrador.Controllers
             return _context.Clientes.Any(e => e.Id == id);
         }
 
-        private bool ClienteExistsNif(string nif)
+        private bool ClienteExistsNIF(string nif)
         {
             return _context.Clientes.Any(e => e.Nif == nif);
         }

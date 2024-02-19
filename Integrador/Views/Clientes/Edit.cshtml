@@ -24,12 +24,9 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input asp-for="Nif" class="form-control" hidden />
-                @{
-                    var nif = ViewBag.nif2 ?? Model.Nif;
-                }
-                <label for="nif2" class="control-label">NIF</label>
-                <input id="nif2" name="nif2" value="@nif" class="form-control" />
+                <label asp-for="Nif" class="control-label">NIF</label>
+                <input type="hidden" id="nif2" name="nif2" value="@ViewBag.nif2" readonly />
+                <input asp-for="Nif" class="form-control" />
                 <span asp-validation-for="Nif" class="text-danger"></span>
             </div>
             <div class="form-group">

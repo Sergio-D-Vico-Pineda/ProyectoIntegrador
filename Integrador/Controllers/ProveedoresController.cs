@@ -92,6 +92,9 @@ namespace Integrador.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.nif2 = proveedor.Nif;
+
             return View(proveedor);
         }
 
@@ -102,23 +105,17 @@ namespace Integrador.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string nif2, [Bind("Id,Nombre,Nif,Email,Telefono,Direccion")] Proveedor proveedor)
         {
-            if (id != proveedor.Id)
-            {
-                return NotFound();
-            }
-
-            if (proveedor.Nif != nif2)
-            {
-                if (ProveedorExistsNIF(nif2))
-                {
-                    ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
-                    ViewBag.nif2 = nif2;
-                }
-                else proveedor.Nif = nif2;
-            }
+            if (id != proveedor.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
+                if (proveedor.Nif != nif2 && ProveedorExistsNIF(proveedor.Nif))
+                {
+                    ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
+                    ViewBag.nif2 = nif2;
+                    return View(proveedor);
+                }
+
                 try
                 {
                     _context.Update(proveedor);
