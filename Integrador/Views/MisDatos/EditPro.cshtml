@@ -13,6 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Email" readonly />
+            <input type="hidden" asp-for="Nif" readonly />
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
@@ -24,12 +25,8 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input asp-for="Nif" class="form-control" hidden />
-                @{
-                    var nif = ViewBag.nif2 ?? Model.Nif;
-                }
-                <label for="nif2" class="control-label">NIF</label>
-                <input id="nif2" name="nif2" value="@nif" class="form-control" maxlength="9" />
+                <label asp-for="Nif" class="control-label"></label>
+                <input asp-for="Nif" class="form-control" disabled readonly />
                 <span asp-validation-for="Nif" class="text-danger"></span>
             </div>
             <div class="form-group">

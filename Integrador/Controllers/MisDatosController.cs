@@ -94,25 +94,10 @@ namespace Integrador.Controllers
         // POST: MisDatos/EditPro
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPro(int id, string nif2,
+        public async Task<IActionResult> EditPro(int id,
             [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Proveedor proveedor)
         {
             if (id != proveedor.Id) return NotFound();
-
-            if (proveedor.Nif != nif2)
-            {
-                if (ProveedorExistsNIF(nif2))
-                {
-                    ModelState.AddModelError("Nif", "Ya existe un proveedor con ese NIF.");
-                    ViewBag.nif2 = nif2;
-                }
-                else if (nif2.Length > 9)
-                {
-                    ModelState.AddModelError("Nif", "El NIF no puede tener más de 9 caracteres.");
-                    ViewBag.nif2 = nif2;
-                }
-                else proveedor.Nif = nif2;
-            }
 
             if (ModelState.IsValid)
             {
@@ -175,25 +160,10 @@ namespace Integrador.Controllers
         // POST: MisDatos/EditCli
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCli(int id, string nif2,
+        public async Task<IActionResult> EditCli(int id,
             [Bind("Id,Nombre,Email,Nif,Telefono,Direccion")] Cliente cliente)
         {
             if (id != cliente.Id) return NotFound();
-
-            if (cliente.Nif != nif2)
-            {
-                if (ClienteExistsNif(nif2))
-                {
-                    ModelState.AddModelError("Nif", "Ya existe un cliente con ese NIF.");
-                    ViewBag.nif2 = nif2;
-                }
-                else if (nif2.Length > 9)
-                {
-                    ModelState.AddModelError("Nif", "El NIF no puede tener más de 9 caracteres.");
-                    ViewBag.nif2 = nif2;
-                }
-                else cliente.Nif = nif2;
-            }
 
             if (ModelState.IsValid)
             {
