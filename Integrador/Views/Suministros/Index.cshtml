@@ -4,94 +4,110 @@
     ViewData["Title"] = User.IsInRole("Proveedor") ? "Tus Suministros" : "Suministros";
 }
 
-<h1>@ViewData["Title"]</h1>
+@if ((Model.Count() != 0 && User.IsInRole("Proveedor")) || User.IsInRole("Administrador"))
+{
+    <h1>@ViewData["Title"]</h1>
 
-<div class="row mb-2 justify-content-between">
-    <div class="col-12 col-sm-6">
-        <p>
-            <a asp-action="Create">Nuevo suministro</a>
-        </p>
-    </div>
-    <form class="col-12 col-sm-6" style="width:fit-content;" asp-action="Index">
-        <div class="form-group d-flex align-items-center gap-4 mb-1">
-            <input name="busq" type="search" value="@ViewBag.busq" class="form-control" placeholder="Producto o modelo" />
-            <input type="submit" value="Buscar" class="btn btn-primary" />
-            @if (ViewBag.busq != null)
-            {
-                <a class="btn btn-secondary text-nowrap" asp-action="Index" asp-route-busq="">Borrar filtros</a>
-            }
+    <div class="row mb-2 justify-content-between">
+        <div class="col-12 col-sm-6">
+            <p>
+                <a asp-action="Create">Nuevo suministro</a>
+            </p>
         </div>
-    </form>
-</div>
-
-<div style="max-height:68vh; overflow: auto;">
-    <table class="table">
-        <thead style="position: sticky; top: 0;">
-            <tr>
-                @if (User.IsInRole("Administrador"))
+        <form class="col-12 col-sm-6" style="width:fit-content;" asp-action="Index">
+            <div class="form-group d-flex align-items-center gap-4 mb-1">
+                <input name="busq" type="search" value="@ViewBag.busq" class="form-control" placeholder="Producto o modelo" />
+                <input type="submit" value="Buscar" class="btn btn-primary" />
+                @if (ViewBag.busq != null)
                 {
-                    <th>
-                        @Html.DisplayNameFor(model => model.Id)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProveedorId)
-                    </th>
+                    <a class="btn btn-secondary text-nowrap" asp-action="Index" asp-route-busq="">Borrar filtros</a>
                 }
-                <th>
-                    @Html.DisplayNameFor(model => model.FechaSuministro)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductoId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Producto.Modelo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Unidades)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+            </div>
+        </form>
+    </div>
+}
+
+@if (Model.Count() == 0 && User.IsInRole("Proveedor"))
+{
+    <div class="d-grid" style="height:80vh;place-content:center;">
+        <h1 class="mb-4">No has hecho suministros todavía.</h1>
+        <div class="text-center">
+            <a class="btn btn-primary" asp-action="Create">Nuevo suministro</a>
+            <a class="btn btn-secondary" asp-action="Index" asp-controller="Escaparate">Ir al escaparate</a>
+        </div>
+    </div>
+}
+else
+{
+    <div style="max-height:68vh; overflow: auto;">
+        <table class="table">
+            <thead style="position: sticky; top: 0;">
                 <tr>
                     @if (User.IsInRole("Administrador"))
                     {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-
-                        <td>
-                            @if (item.Proveedor.Email.EndsWith("-DEL."))
-                            {
-                                <del>@item.Proveedor.Email</del>
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(modelItem => item.Proveedor.Email)
-                            }
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProveedorId)
+                        </th>
                     }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FechaSuministro)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Unidades)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FechaSuministro)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductoId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producto.Modelo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Unidades)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+
+                            <td>
+                                @if (item.Proveedor.Email.EndsWith("-DEL."))
+                                {
+                                    <del>@item.Proveedor.Email</del>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Proveedor.Email)
+                                }
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaSuministro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Modelo.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Unidades)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
