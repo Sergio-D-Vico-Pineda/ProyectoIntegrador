@@ -19,19 +19,21 @@ namespace Integrador.Controllers
         // GET: Suministros
         public async Task<IActionResult> Index(string? busq)
         {
-            var suministros = _context.Suministros
-                    .Include(d => d.Proveedor)
-                    .Include(d => d.Producto)
-                    .ThenInclude(p => p.Modelo)
-                    .OrderByDescending(s => s.Id);
+            var suministros = _context.Suministros.AsQueryable();
 
             ViewBag.busq = busq;
 
             if (!String.IsNullOrEmpty(busq))
             {
-                suministros = (IOrderedQueryable<Suministro>)suministros
+                suministros = suministros
                     .Where(s => s.Producto.Nombre.Contains(busq) || s.Producto.Modelo.Nombre.Contains(busq));
             }
+
+            suministros = suministros
+                .Include(d => d.Proveedor)
+                    .Include(d => d.Producto)
+                    .ThenInclude(p => p.Modelo)
+                    .OrderByDescending(s => s.Id);
 
             if (User.IsInRole("Administrador"))
             {
