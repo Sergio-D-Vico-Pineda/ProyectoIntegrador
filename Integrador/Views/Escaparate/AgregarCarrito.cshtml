@@ -10,49 +10,49 @@
 
 <div>
     <dl class="row">
-        <dt class="col-sm-2"></dt>
-        <dd class="col-sm-10">
+        <dt class="col-sm-4 col-md-3 col-lg-2"></dt>
+        <dd class="col-sm-8 col-md-9 col-lg-10">
             @{
                 var nombreImagen = Model.Imagen ?? "default.png";
             }
             <img src="~/img/@nombreImagen" height="150" width="150"
                  asp-append-version="true" alt="Sin imagen" draggable="false" />
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4 col-md-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Nombre)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8 col-md-9 col-lg-10">
             @Html.DisplayFor(model => model.Nombre)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4 col-md-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Modelo)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8 col-md-9 col-lg-10">
             @Html.DisplayFor(model => model.Modelo.Nombre)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4 col-md-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Descripcion)
         </dt>
-        <dd class="col-sm-10">
-            <div style="max-width: 350px;">
+        <dd class="col-sm-8 col-md-9 col-lg-10">
+            <div style="max-height: 75px; overflow:auto; max-width:600px; word-wrap:anywhere;" class="pe-2">
                 @Html.DisplayFor(model => model.Descripcion)
             </div>
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4 col-md-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Precio)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8 col-md-9 col-lg-10">
             @Html.DisplayFor(model => model.Precio)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4 col-md-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Stock)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8 col-md-9 col-lg-10">
             @Html.DisplayFor(model => model.Stock)
         </dd>
     </dl>
 </div>
-<div>
+<div class="pb-2">
     <div asp-validation-summary="All" class="text-danger"></div>
     <form class="w-25 d-flex flex-row align-items-end gap-3" asp-action="AgregarCarrito" asp-route-id="@Model?.Id">
         <label style="width:85px;">
