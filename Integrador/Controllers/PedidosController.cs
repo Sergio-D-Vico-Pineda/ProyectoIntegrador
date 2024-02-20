@@ -255,12 +255,11 @@ namespace Integrador.Controllers
 
             if (pedido != null)
             {
-                _context.Pedidos.Remove(pedido);
-            }
-
-            if (User.IsInRole("Cliente"))
-            {
-                HttpContext.Session.Remove("NumPedido");
+                _context.Remove(pedido);
+                if (User.IsInRole("Cliente"))
+                {
+                    HttpContext.Session.Remove("NumPedido");
+                }
             }
 
             await _context.SaveChangesAsync();

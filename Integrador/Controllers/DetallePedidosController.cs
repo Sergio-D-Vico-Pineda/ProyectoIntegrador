@@ -200,6 +200,7 @@ namespace Integrador.Controllers
                     if (pedido.DetallePedidos.Count == 0)
                     {
                         _context.Remove(pedido);
+                        HttpContext.Session.Remove("NumPedido");
                     }
                 }
             }

@@ -10,7 +10,6 @@ namespace Integrador.Controllers
 {
     public class EscaparateController(IntegradorContexto context) : Controller
     {
-
         private readonly IntegradorContexto _context = context;
 
         // GET /Escaparate/Index
