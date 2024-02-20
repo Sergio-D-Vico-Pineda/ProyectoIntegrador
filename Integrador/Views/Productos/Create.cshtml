@@ -41,7 +41,7 @@
             <div class="form-group">
                 <label asp-for="Imagen" class="control-label">Imagen</label>
                 <br />
-                <img id="imgshow" src="~/img/default.png" alt="new img" height="150" width="150" class="mb-2" />
+                <img id="imgshow" src="~/img/default.png" alt="new img" height="150" width="150" class="mb-2" draggable="false" />
                 <input id="imginput" type="file" accept=".jpg, .jpeg, image/png, image/gif, .webp" asp-for="Imagen" class="form-control" />
                 <script>
                     const img = document.getElementById("imgshow");
