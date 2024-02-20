@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="DataBase\" />
+    <Folder Include="wwwroot\img\ads\" />
   </ItemGroup>
 
 </Project>
